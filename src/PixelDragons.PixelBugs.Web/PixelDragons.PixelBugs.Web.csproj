@@ -159,6 +159,7 @@
     <Content Include="Content\Js\validation.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Config\Logging.config" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />
   </ItemGroup>

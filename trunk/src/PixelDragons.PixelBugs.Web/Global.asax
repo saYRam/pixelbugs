@@ -1,0 +1,1 @@
+﻿<%@ Application Inherits="PixelDragons.PixelBugs.Web.GlobalApplication" %>

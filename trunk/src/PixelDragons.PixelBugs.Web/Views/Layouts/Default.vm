@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link rel="stylesheet" type="text/css" href="$siteroot/Content/Css/Common.css" />
+		
+        <script type="text/javascript" src="$siteroot/Content/Js/prototype.js"></script>
+        <script type="text/javascript" src="$siteroot/Content/Js/validation.js"></script>
+						
+		$!head
+		
+		<title>$title</title>
+		
+		#if($!script)
+		<script language="javascript">
+			$!script
+		</script>
+		#end
+    </head>
+    <body>
+    	<div id="content">		
+			$childContent
+		</div>					
+    </body>
+</html>

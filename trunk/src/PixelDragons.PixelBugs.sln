@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Web", "PixelDragons.PixelBugs.Web\PixelDragons.PixelBugs.Web.csproj", "{3452E046-F29D-43AA-88D8-C66E4E804060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Core", "PixelDragons.PixelBugs.Core\PixelDragons.PixelBugs.Core.csproj", "{7FADDAC7-5837-406D-8BB8-605069B925F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Tests", "PixelDragons.PixelBugs.Tests\PixelDragons.PixelBugs.Tests.csproj", "{AACE2517-880D-4584-A986-BCB4096946AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3452E046-F29D-43AA-88D8-C66E4E804060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3452E046-F29D-43AA-88D8-C66E4E804060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3452E046-F29D-43AA-88D8-C66E4E804060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3452E046-F29D-43AA-88D8-C66E4E804060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FADDAC7-5837-406D-8BB8-605069B925F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FADDAC7-5837-406D-8BB8-605069B925F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FADDAC7-5837-406D-8BB8-605069B925F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FADDAC7-5837-406D-8BB8-605069B925F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AACE2517-880D-4584-A986-BCB4096946AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AACE2517-880D-4584-A986-BCB4096946AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AACE2517-880D-4584-A986-BCB4096946AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AACE2517-880D-4584-A986-BCB4096946AA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -10,7 +10,7 @@
 						
 		$!head
 		
-		<title>$title</title>
+		<title>$!title</title>
 		
 		#if($!script)
 		<script language="javascript">
@@ -20,6 +20,8 @@
     </head>
     <body>
     	<div id="content">		
+    	    <h1>$!title</h1>
+    	    
 			$childContent
 		</div>					
     </body>

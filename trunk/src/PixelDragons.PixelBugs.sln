@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Tests", "PixelDragons.PixelBugs.Tests\PixelDragons.PixelBugs.Tests.csproj", "{AACE2517-880D-4584-A986-BCB4096946AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.Commons", "PixelDragons.Commons\PixelDragons.Commons.csproj", "{F14F3D16-E36B-405F-A908-F1106BCF38F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{AACE2517-880D-4584-A986-BCB4096946AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AACE2517-880D-4584-A986-BCB4096946AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AACE2517-880D-4584-A986-BCB4096946AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14F3D16-E36B-405F-A908-F1106BCF38F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14F3D16-E36B-405F-A908-F1106BCF38F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14F3D16-E36B-405F-A908-F1106BCF38F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14F3D16-E36B-405F-A908-F1106BCF38F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,27 @@
+﻿#capturefor(title)
+    New Issue
+#end
+
+#capturefor(script)
+    Event.observe(window, 'load', function() {   
+        new Validation('form', {
+            immediate: true
+        });         
+    });
+#end
+
+<form action="Create.ashx" method="post" id="form">
+    <div>
+        $Form.LabelFor("issue.summary", "Summary")
+        $Form.TextField("issue.summary", "%{class='required'}")
+    </div>
+    
+    <div>
+        $Form.LabelFor("issue.description", "Description")
+        $Form.TextField("issue.description", "%{class='required'}")
+    </div>
+    
+    <div>
+        $Form.Submit("Save")
+    </div>
+</form>

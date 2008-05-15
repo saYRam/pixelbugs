@@ -146,6 +146,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="GlobalApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -160,10 +161,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Logging.config" />
+    <None Include="Views\Issue\New.vm" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">
+      <Project>{F14F3D16-E36B-405F-A908-F1106BCF38F2}</Project>
+      <Name>PixelDragons.Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PixelDragons.PixelBugs.Core\PixelDragons.PixelBugs.Core.csproj">
       <Project>{7FADDAC7-5837-406D-8BB8-605069B925F4}</Project>
       <Name>PixelDragons.PixelBugs.Core</Name>
@@ -171,7 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -187,7 +192,7 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
+          <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>1323</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>

@@ -92,6 +92,9 @@
       <HintPath>..\..\lib\Castle\NVelocity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -103,9 +106,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acceptance\IssuesFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\Controllers\IssueControllerFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">
+      <Project>{F14F3D16-E36B-405F-A908-F1106BCF38F2}</Project>
+      <Name>PixelDragons.Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PixelDragons.PixelBugs.Core\PixelDragons.PixelBugs.Core.csproj">
       <Project>{7FADDAC7-5837-406D-8BB8-605069B925F4}</Project>
       <Name>PixelDragons.PixelBugs.Core</Name>
@@ -114,10 +123,6 @@
       <Project>{3452E046-F29D-43AA-88D8-C66E4E804060}</Project>
       <Name>PixelDragons.PixelBugs.Web</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Acceptance\" />
-    <Folder Include="Unit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,17 +1,15 @@
 ﻿using System;
 using MbUnit.Framework;
-using System.Threading;
 using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
-    [TestFixture(ApartmentState = ApartmentState.STA)]
-    public class IssuesFixture
+    public class IssuesFixture : AcceptanceTestBase
     {
         [Test]
         public void New_RenderNewIssuePage()
         {
-            using (IE browser = new IE("http://localhost:1323/Issue/New.ashx"))
+            using (IE browser = new IE(BuildUrl("Issue", "New")))
             {
                 //Check the text of the rendered html
                 Assert.IsTrue(browser.ContainsText("New Issue"), 
@@ -22,9 +20,31 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                     String.Format("New issue page doesn't contain the description label. The html is: {0}", browser.Html));
 
                 //Check the form controls are part of the rendered html
-                Assert.IsNotNull(browser.TextField(Find.ByName("issue.summary")).HTMLElement);
-                Assert.IsNotNull(browser.TextField(Find.ByName("issue.description")).HTMLElement);
-                Assert.IsNotNull(browser.Button(Find.ByValue("Save")).HTMLElement);
+                Assert.IsNotNull(browser.TextField(Find.ByName("issue.summary")).HTMLElement, 
+                    "Unable to find the summary text box. The html is: {0}", browser.Html);
+                Assert.IsNotNull(browser.TextField(Find.ByName("issue.description")).HTMLElement, 
+                    "Unable to find the description text box. The html is: {0}", browser.Html);
+                Assert.IsNotNull(browser.Button(Find.ById("save")).HTMLElement, 
+                    "Unable to find the save button. The html is: {0}", browser.Html);
+            }
+        }
+
+        [Test]
+        public void New_CompleteFormAndSubmit()
+        {
+            using (IE browser = new IE(BuildUrl("Issue", "New")))
+            {
+                Guid testId = Guid.NewGuid();
+                string summary = String.Format("Summary {0}", testId);
+                string description = String.Format("Description {0}", testId);
+
+                browser.TextField(Find.ByName("issue.summary")).TypeText(summary);
+                browser.TextField(Find.ByName("issue.description")).TypeText(description);
+
+                browser.Button(Find.ById("save")).Click();
+
+                Assert.IsTrue(browser.ContainsText(summary),
+                    "Unable to find the summary text confirmation. The html is: {0}", browser.Html);
             }
         }
     }

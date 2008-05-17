@@ -1,5 +1,5 @@
 ﻿using System.Web;
-
+using Castle.ActiveRecord;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 
@@ -12,6 +12,8 @@ namespace PixelDragons.PixelBugs.Web
         public void Application_OnStart()
         {
             _container = new WindsorContainer(new XmlInterpreter());
+
+            ActiveRecordStarter.CreateSchema();
         }
 
         public void Application_OnEnd()

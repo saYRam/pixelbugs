@@ -20,5 +20,10 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
             RedirectToAction("List");
         }
+
+        public void List()
+        {
+            PropertyBag["issues"] = IssueRepository.FindAll();
+        }
     }
 }

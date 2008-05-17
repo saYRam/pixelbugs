@@ -1,0 +1,16 @@
+﻿#capturefor(title)
+    Issues List
+#end
+
+<div><a href="$siteroot/Issue/New.ashx">New Issue</a></div>
+
+<table>
+    <tr>
+        <th>Summary</th>
+    </tr>
+    #foreach($issue in $issues)
+    <tr>
+        <td>$issue.Summary</td>
+    </tr>
+    #end
+</table>

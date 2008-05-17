@@ -18,10 +18,10 @@
     
     <div>
         $Form.LabelFor("issue.description", "Description")
-        $Form.TextField("issue.description", "%{class='required'}")
+        $Form.TextArea("issue.description", "%{class='required'}")
     </div>
     
     <div>
-        $Form.Submit("Save")
+        $Form.Submit("Save", "%{id='save'}")
     </div>
 </form>

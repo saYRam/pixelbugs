@@ -12,7 +12,7 @@ namespace PixelDragons.PixelBugs.Core.Domain
         [Property]
         public string Summary { get; set; }
 
-        [Property]
+        [Property(SqlType = "NVARCHAR(MAX)")]
         public string Description { get; set; }
     }
 }

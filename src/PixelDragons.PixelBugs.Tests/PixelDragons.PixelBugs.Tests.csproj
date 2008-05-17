@@ -87,11 +87,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Testing\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate, Version=1.2.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\NVelocity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -106,8 +111,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acceptance\AcceptanceTestBase.cs" />
     <Compile Include="Acceptance\IssuesFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\Controllers\ControllerUnitTestBase.cs" />
     <Compile Include="Unit\Controllers\IssueControllerFixture.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +130,9 @@
       <Project>{3452E046-F29D-43AA-88D8-C66E4E804060}</Project>
       <Name>PixelDragons.PixelBugs.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

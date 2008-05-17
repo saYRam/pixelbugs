@@ -161,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Logging.config" />
+    <Content Include="Config\Repositories.config" />
+    <None Include="Views\Issue\List.vm" />
     <None Include="Views\Issue\New.vm" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />

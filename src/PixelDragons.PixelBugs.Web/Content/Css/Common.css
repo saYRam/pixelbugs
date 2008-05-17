@@ -1,3 +1,78 @@
 ﻿body {
-	
+	font: normal 13px/1.6em  Tahoma, Verdana, Arial, Helvetica, Sans-Serif;
+	color: #000000;
+	margin: 0px;
+	background: #ffffff;
+}
+
+h1, h2, h3, h4, h5 {
+	font: normal 1em 'Trebuchet MS', Tahoma, Verdana, Arial, Helvetica, Sans-Serif;
+	margin:0px;
+}
+
+h1 { 
+	font-size: 3em; 
+    letter-spacing: -2px; 
+    margin:0 0 10px 0; 
+    border-bottom:solid 1px #666666;
+} 
+h2 { font-size: 2.5em; }
+h3 { font-size: 1.8em; }
+h4 { font-size: 1.5em; }
+h5 { font-size: 1.2em; }
+
+table {
+	border-collapse: collapse;
+	margin:10px 0 0 0;
+}
+
+table th {
+	font-weight:bold;
+	border: 1px solid #666666;
+	background:#efefef;
+}
+
+table td {
+	padding: 4px;
+	border: 1px solid #666666;
+}
+
+label {
+	display:block;
+	width:100px;
+	float:left;
+	margin-top:2px;
+	font-weight:bold;
+}
+
+input[type=text] {
+	width: 500px;
+	padding:4px;
+}
+
+input[type=submit] {
+	padding:3px 10px;
+	margin-left:100px;
+}
+
+textarea {
+	width: 500px;
+	height: 300px;
+	padding:4px;
+}
+
+form div {
+	margin-bottom:20px;
+}
+
+div#content {
+	width:1000px;
+	margin:auto;
+	background:#ffffff;
+	padding:10px;
+}
+
+.validation-advice {
+	color:Red;
+	font-weight:bold;
 }

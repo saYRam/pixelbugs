@@ -1,17 +1,13 @@
-﻿using Castle.MonoRail.TestSupport;
-using MbUnit.Framework;
-using PixelDragons.PixelBugs.Web.Controllers;
+﻿using MbUnit.Framework;
 using Moq;
-using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Repositories;
-using Castle.MonoRail.Framework;
-using System.IO;
+using PixelDragons.PixelBugs.Web.Controllers;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 {
     [TestFixture]
-    public class IssueControllerFixture : BaseControllerTest
+    public class IssueControllerFixture : ControllerUnitTestBase
     {
         [Test]
         public void New_Success()
@@ -43,10 +39,23 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Assert.AreEqual(Response.RedirectedTo, @"/Issue/List.ashx", "The action did not redirect correctly");
         }
 
-        protected override UrlInfo BuildUrlInfo(string areaName, string controllerName, string actionName)
+        [Test]
+        public void List_Success()
         {
-            return new UrlInfo("app.com", "www", virtualDir, "http", 80,
-                Path.Combine(Path.Combine(areaName, controllerName), actionName), areaName, controllerName, actionName, "ashx");
+            Issue[] issues = new Issue[] { new Issue() };
+
+            var mock = new Mock<IIssueRepository>();
+            mock.Expect(r => r.FindAll()).Returns(issues);
+
+            IssueController controller = new IssueController();
+            controller.IssueRepository = mock.Object;
+
+            PrepareController(controller, "Issue", "List");
+
+            controller.List();
+
+            Assert.AreEqual(controller.PropertyBag["issues"], issues, "The property bag doesn't contain the issues list");
+            Assert.AreEqual(controller.SelectedViewName, @"Issue\List", "The wrong view was rendered");
         }
     }
 }

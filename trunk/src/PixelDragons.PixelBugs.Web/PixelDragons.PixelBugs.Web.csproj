@@ -148,7 +148,13 @@
   <ItemGroup>
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="GlobalApplication.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Controllers\IssueController.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IssueController.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Facilities.config" />
@@ -176,6 +182,13 @@
       <Project>{7FADDAC7-5837-406D-8BB8-605069B925F4}</Project>
       <Name>PixelDragons.PixelBugs.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Controllers\IssueController.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IssueController.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Images\" />

@@ -1,16 +1,22 @@
 ﻿#capturefor(title)
-    Issues List
+    $strings.Titles_IssuesList
 #end
 
-<div><a href="$siteroot/Issue/New.ashx">New Issue</a></div>
+<div><a href="$siteroot/Issue/New.ashx">$strings.Links_NewIssue</a></div>
 
 <table>
     <tr>
-        <th>Summary</th>
+        <th>$strings.Columns_Created</th>
+        <th>$strings.Columns_Summary</th>
+        <th>$strings.Columns_Assigned</th>
+        <th>$strings.Columns_Reported</th>
     </tr>
     #foreach($issue in $issues)
     <tr>
+        <td>$UI.FormatDate($issue.CreatedDate)</td>
         <td>$issue.Summary</td>
+        <td>$UI.FormatUser($issue.AssignedTo, $strings.Options_Unassigned)</td>
+        <td>$UI.FormatUser($issue.ReportedBy, $strings.Options_Anonymous)</td>
     </tr>
     #end
 </table>

@@ -11,12 +11,21 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
     {
         [Test]
         public void New_Success()
-        {
-            IssueController controller = new IssueController();
+        { 
+            User[] users = new User[] { };
+
+            var issueRepository = new Mock<IIssueRepository>();
+            var userRepository = new Mock<IUserRepository>();
+
+            userRepository.Expect(r => r.FindAll()).Returns(users);
+
+            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object); 
             PrepareController(controller, "Issue", "New");
 
             controller.New();
-            Assert.AreEqual(controller.SelectedViewName, @"Issue\New", "The wrong view was rendered");
+
+            Assert.AreEqual(users, controller.PropertyBag["users"], "The property bag doesn't contain the users list");
+            Assert.AreEqual(@"Issue\New", controller.SelectedViewName, "The wrong view was rendered");
         }
 
         [Test]
@@ -25,37 +34,39 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Issue issue = new Issue();
             issue.Summary = "This is a summary";
             issue.Description = "This is a description";
-            
-            var mock = new Mock<IIssueRepository>();
-            mock.Expect(r => r.Save(issue)).Returns(issue);
-            
-            IssueController controller = new IssueController();
-            controller.IssueRepository = mock.Object;
+
+            var issueRepository = new Mock<IIssueRepository>();
+            var userRepository = new Mock<IUserRepository>();
+
+            issueRepository.Expect(r => r.Save(issue)).Returns(issue);
+
+            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
 
             PrepareController(controller, "Issue", "Create");
 
             controller.Create(issue);
 
-            Assert.AreEqual(Response.RedirectedTo, @"/Issue/List.ashx", "The action did not redirect correctly");
+            Assert.AreEqual(@"/Issue/List.ashx", Response.RedirectedTo, "The action did not redirect correctly");
         }
 
         [Test]
         public void List_Success()
         {
-            Issue[] issues = new Issue[] { new Issue() };
+            Issue[] issues = new Issue[] { };
 
-            var mock = new Mock<IIssueRepository>();
-            mock.Expect(r => r.FindAll()).Returns(issues);
+            var issueRepository = new Mock<IIssueRepository>();
+            var userRepository = new Mock<IUserRepository>();
 
-            IssueController controller = new IssueController();
-            controller.IssueRepository = mock.Object;
+            issueRepository.Expect(r => r.FindAll()).Returns(issues);
+
+            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
 
             PrepareController(controller, "Issue", "List");
 
             controller.List();
 
-            Assert.AreEqual(controller.PropertyBag["issues"], issues, "The property bag doesn't contain the issues list");
-            Assert.AreEqual(controller.SelectedViewName, @"Issue\List", "The wrong view was rendered");
+            Assert.AreEqual(issues, controller.PropertyBag["issues"], "The property bag doesn't contain the issues list");
+            Assert.AreEqual(@"Issue\List", controller.SelectedViewName, "The wrong view was rendered");
         }
     }
 }

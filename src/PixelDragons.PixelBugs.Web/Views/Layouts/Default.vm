@@ -12,9 +12,9 @@
 		
 		<title>$!title</title>
 		
-		#if($!script)
+		#if($script)
 		<script language="javascript">
-			$!script
+			$script
 		</script>
 		#end
     </head>

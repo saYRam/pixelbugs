@@ -41,7 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Issue.cs" />
+    <Compile Include="Domain\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IIssueRepository.cs" />
     <Compile Include="Repositories\IssueRepository.cs">
       <SubType>Code</SubType>
@@ -52,6 +57,9 @@
       <Project>{F14F3D16-E36B-405F-A908-F1106BCF38F2}</Project>
       <Name>PixelDragons.Commons</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Domain Classes.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

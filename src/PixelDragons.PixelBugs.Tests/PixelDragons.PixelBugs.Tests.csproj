@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\Castle.MicroKernel.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.MonoRail.ActiveRecordSupport, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.MonoRail.ActiveRecordSupport.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.MonoRail.Framework, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\Castle.MonoRail.Framework.dll</HintPath>
@@ -116,6 +120,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Controllers\ControllerUnitTestBase.cs" />
     <Compile Include="Unit\Controllers\IssueControllerFixture.cs" />
+    <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">

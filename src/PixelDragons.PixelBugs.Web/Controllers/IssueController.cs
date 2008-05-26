@@ -1,14 +1,18 @@
 ﻿using System;
-using Castle.MonoRail.Framework;
-using PixelDragons.PixelBugs.Core.Repositories;
-using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Web.Helpers;
 using Castle.MonoRail.ActiveRecordSupport;
+using Castle.MonoRail.Framework;
+using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Repositories;
+using PixelDragons.PixelBugs.Web.Helpers;
+using PixelDragons.PixelBugs.Core.Attributes;
+using PixelDragons.PixelBugs.Web.Filters;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
 {
     [Layout("Default"), Rescue("GeneralError")]
     [Helper(typeof(UIHelper), "UI")]
+    [Filter(ExecuteEnum.BeforeAction, typeof(AuthenticationFilter), ExecutionOrder = 0)]
+    [Filter(ExecuteEnum.BeforeAction, typeof(AuthorizationFilter), ExecutionOrder = 1)]
     [Resource("strings", "PixelDragons.PixelBugs.Web.Resources.Controllers.IssueController")]
     public class IssueController : ARSmartDispatcherController
     {
@@ -25,12 +29,14 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         }
         #endregion
 
+        [PermissionRequired(Permission.CreateIssues)]
         public void New()
         {
             PropertyBag["users"] = UserRepository.FindAll();
         }
 
         [AccessibleThrough(Verb.Post)]
+        [PermissionRequired(Permission.CreateIssues)]
         public void Create([ARDataBind("issue", AutoLoad=AutoLoadBehavior.OnlyNested)]Issue issue)
         {
             issue.CreatedDate = DateTime.Now;
@@ -40,6 +46,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             RedirectToAction("List");
         }
 
+        [PermissionRequired(Permission.ViewIssues)]
         public void List()
         {
             PropertyBag["issues"] = IssueRepository.FindAll();

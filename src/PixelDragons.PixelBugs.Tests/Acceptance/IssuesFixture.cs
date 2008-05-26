@@ -9,8 +9,12 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         [Test]
         public void New_RenderNewIssuePage()
         {
-            using (IE browser = new IE(BuildUrl("Issue", "New")))
+            SecurityFixture security = new SecurityFixture();
+            
+            using (IE browser = security.SignIn())
             {
+                browser.GoTo(BuildUrl("Issue", "New"));
+
                 //Check the text of the rendered html
                 Assert.IsTrue(browser.ContainsText("New Issue"), "New issue page doesn't contain the correct page title. The html is: {0}", browser.Html);
                 Assert.IsTrue(browser.ContainsText("Summary:"), "New issue page doesn't contain the summary label. The html is: {0}", browser.Html);
@@ -30,8 +34,12 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         [Test]
         public void New_CompleteFormAndSubmit_NotSelectingUsers()
         {
-            using (IE browser = new IE(BuildUrl("Issue", "New")))
+            SecurityFixture security = new SecurityFixture();
+            
+            using (IE browser = security.SignIn())
             {
+                browser.GoTo(BuildUrl("Issue", "New"));
+
                 Guid testId = Guid.NewGuid();
                 string summary = String.Format("Summary {0}", testId);
                 string description = String.Format("Description {0}", testId);
@@ -56,8 +64,12 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         [Test]
         public void New_CompleteFormAndSubmit_SelectingUsers()
         {
-            using (IE browser = new IE(BuildUrl("Issue", "New")))
+            SecurityFixture security = new SecurityFixture();
+
+            using (IE browser = security.SignIn())
             {
+                browser.GoTo(BuildUrl("Issue", "New"));
+
                 Guid testId = Guid.NewGuid();
                 string summary = String.Format("Summary {0}", testId);
                 string description = String.Format("Description {0}", testId);

@@ -15,7 +15,10 @@
 	#end
 #end
 
-<h1>Oops! Something went wrong!</h1>
+#capturefor(title)
+    Oops! Something went wrong!
+#end
+
 <p>This is an error page. You are seeing this page because something 
 went wrong and we weren't expecting it. Our developers have been 
 notified of the problem and will be working on a fix. The error details 

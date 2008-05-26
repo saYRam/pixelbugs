@@ -1,17 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="PixelDragons.PixelBugs.Core.Domain.Issue">
-    <Position X="1.25" Y="1" Width="1.5" />
+    <Position X="1.25" Y="1" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AACCAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AACCAAAABAAgAAAAAAAAAAAAAAAAAAAAAgABAAAAAAA=</HashCode>
       <FileName>Domain\Issue.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ReportedBy" />
+      <Property Name="AssignedTo" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="PixelDragons.PixelBugs.Core.Domain.User">
-    <Position X="4.25" Y="1" Width="1.5" />
+    <Position X="4.5" Y="1" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAEAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAACAEAACCAAAIQAAAAAAAAAAgAAAAACAUAAAAAAAAg=</HashCode>
       <FileName>Domain\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Roles" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.19" />
+  </Class>
+  <Class Name="PixelDragons.PixelBugs.Core.Domain.Role">
+    <Position X="7.75" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Role.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Tahoma" Size="8.25" />

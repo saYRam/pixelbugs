@@ -5,5 +5,6 @@ namespace PixelDragons.PixelBugs.Core.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        User FindByUserNameAndPassword(string userName, string password);
     }
 }

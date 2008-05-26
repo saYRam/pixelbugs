@@ -1,0 +1,23 @@
+﻿#capturefor(title)
+    $strings.Titles_SignIn
+#end
+
+#if($error)
+<div class="error">$strings.GetString("Errors_$error")</div>
+#end
+
+<form action="Authenticate.ashx" method="post" id="form">
+    <div>
+        $Form.LabelFor("userName", $strings.Labels_UserName)
+        $Form.TextField("userName")
+    </div>
+    
+    <div>
+        $Form.LabelFor("password", $strings.Labels_Password)
+        $Form.PasswordField("password")
+    </div>
+        
+    <div>
+        $Form.Submit($strings.Buttons_SignIn, "%{id='signIn'}")
+    </div>
+</form>

@@ -13,7 +13,7 @@ namespace PixelDragons.PixelBugs.Web
         {
             _container = new WindsorContainer(new XmlInterpreter());
 
-            ActiveRecordStarter.CreateSchema();
+            //ActiveRecordStarter.CreateSchema();
         }
 
         public void Application_OnEnd()

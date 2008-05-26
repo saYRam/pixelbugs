@@ -1,0 +1,7 @@
+﻿#capturefor(title)
+    $strings.Titles_AccessDenied
+#end
+
+<p>$strings.Messages_TriedToAccessRestrictedArea</p>
+
+<a href="$siteroot/Security/Index.ashx">$strings.Links_SignIn</a>

@@ -2,7 +2,9 @@
     $strings.Titles_IssuesList
 #end
 
+#if($currentUser.HasPermission("CreateIssues"))
 <div><a href="$siteroot/Issue/New.ashx">$strings.Links_NewIssue</a></div>
+#end
 
 <table>
     <tr>

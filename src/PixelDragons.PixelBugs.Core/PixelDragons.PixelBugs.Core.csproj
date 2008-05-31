@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,10 @@
     <Compile Include="Repositories\IssueRepository.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\IIssueService.cs" />
+    <Compile Include="Services\ISecurityService.cs" />
+    <Compile Include="Services\IssueService.cs" />
+    <Compile Include="Services\SimpleSecurityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">

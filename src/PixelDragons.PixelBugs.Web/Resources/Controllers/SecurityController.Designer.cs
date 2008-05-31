@@ -106,15 +106,6 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your session has expired due to inactivity so as a security measure we have automatically signed you out..
-        /// </summary>
-        internal static string Messages_SessionHasTimedOut {
-            get {
-                return ResourceManager.GetString("Messages_SessionHasTimedOut", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You have tried to access a restricted area without the proper permissions..
         /// </summary>
         internal static string Messages_TriedToAccessRestrictedArea {
@@ -138,15 +129,6 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         internal static string Titles_SignIn {
             get {
                 return ResourceManager.GetString("Titles_SignIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Session Timeout.
-        /// </summary>
-        internal static string Titles_Timeout {
-            get {
-                return ResourceManager.GetString("Titles_Timeout", resourceCulture);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using NHibernate.Expression;
 using System.Collections.Generic;
 using Castle.MonoRail.Framework.Helpers;
+using NHibernate.Criterion;
 
 namespace PixelDragons.Commons.Repositories
 {

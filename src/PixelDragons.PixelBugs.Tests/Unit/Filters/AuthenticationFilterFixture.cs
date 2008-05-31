@@ -1,56 +1,51 @@
-﻿using System.Collections.Generic;
-using Castle.MonoRail.Framework;
+﻿using System.Web;
 using MbUnit.Framework;
 using Moq;
+using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Repositories;
-using PixelDragons.PixelBugs.Tests.Unit.Controllers;
+using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using PixelDragons.PixelBugs.Web.Filters;
-using System;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 {
     [TestFixture]
-    public class AuthenticationFilterFixture : ControllerUnitTestBase
+    public class AuthenticationFilterFixture : FilterUnitTestBase
     {
-        [Test]
-        public void Perform_Success()
+        Mock<ISecurityService> _securityService;
+
+        [SetUp]
+        public void TestSetup()
         {
-            User user = new User();
-            user.Id = Guid.NewGuid();
-            
-            var issueRepository = new Mock<IIssueRepository>();
-            var userRepository = new Mock<IUserRepository>();
+            Mock<IIssueService> issueService = new Mock<IIssueService>();
+            _securityService = new Mock<ISecurityService>();
 
-            userRepository.Expect(r => r.FindById(user.Id)).Returns(user);
+            _filter = new AuthenticationFilter(_securityService.Object);
 
-            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
-            PrepareController(controller, "Issue", "List");
-
-            controller.Context.Session["currentUserId"] = user.Id;
-
-            AuthenticationFilter filter = new AuthenticationFilter(userRepository.Object);
-
-            Assert.IsTrue(filter.Perform(ExecuteEnum.BeforeAction, controller.Context, controller));
-            Assert.AreEqual(user, controller.PropertyBag["currentUser"], "The property bag doesn't contain the current user");
+            _controller = new IssueController(issueService.Object);
+            PrepareController(_controller, "Issue", "List");
         }
 
         [Test]
-        public void Perform_EmptySession()
+        public void Perform_Success()
         {
-            var issueRepository = new Mock<IIssueRepository>();
-            var userRepository = new Mock<IUserRepository>();
+            string token = "ABC123";
+            User user = new User();
 
-            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
-            PrepareController(controller, "Issue", "List");
+            _securityService.Expect(s => s.GetAuthenticatedUserFromToken(token)).Returns(user);
+            
+            Cookies.Add("token", new HttpCookie("token", token));
+                        
+            Assert.IsTrue(ExecuteFilter(), "The filter returned false");
+            Assert.AreEqual(user, Context.CurrentUser, "The current user wasn't stored in the context");
+            Assert.AreEqual(user, _controller.PropertyBag["currentUser"], "The property bag doesn't contain the current user");
+        }
 
-            controller.Context.Session["currentUserId"] = null;
-
-            AuthenticationFilter filter = new AuthenticationFilter(userRepository.Object);
-
-            Assert.IsFalse(filter.Perform(ExecuteEnum.BeforeAction, controller.Context, controller));
-            Assert.AreEqual(@"/Security/Timeout.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
+        [Test]
+        public void Perform_EmptyCookie()
+        {
+            Assert.IsFalse(ExecuteFilter(), "The filter returned true");
+            Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
         }
     }
 }

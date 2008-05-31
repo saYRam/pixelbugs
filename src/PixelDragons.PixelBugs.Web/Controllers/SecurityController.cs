@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Security;
+using System.Web;
 using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
-using PixelDragons.PixelBugs.Core.Repositories;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Services;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
 {
@@ -11,43 +12,63 @@ namespace PixelDragons.PixelBugs.Web.Controllers
     public class SecurityController : ARSmartDispatcherController
     {
         #region Properties
-        private IUserRepository UserRepository { get; set; }
+        private ISecurityService _securityService;
         #endregion
 
         #region Constructors
-        public SecurityController(IUserRepository userRepository)
+        public SecurityController(ISecurityService securityService)
         {
-            UserRepository = userRepository;
+            _securityService = securityService;
         }
         #endregion
 
         public void Index()
         {
+            RenderView("Index");
         }
 
         public void Authenticate(string userName, string password)
         {
-            User user = UserRepository.FindByUserNameAndPassword(userName, password);
-
-            if (user != null)
+            try
             {
-                Session["currentUserId"] = user.Id;
+                string token = _securityService.Authenticate(userName, password);
+
+                StoreTokenCookie(token);
+
                 Redirect("Issue", "List");
             }
-            else
+            catch(SecurityException)
             {
-                Session["currentUserId"] = null;
                 Flash["error"] = "InvalidCredentials";
-                RedirectToAction("Index");
+
+                ClearTokenCookieAndRedirect();
             }
         }
 
-        public void Timeout()
-        { 
+        public void SignOut()
+        {
+            ClearTokenCookieAndRedirect();
         }
 
         public void AccessDenied()
         {
+            RenderView("AccessDenied");
         }
+
+        #region Helper Methods
+        private void ClearTokenCookieAndRedirect()
+        {
+            Response.RemoveCookie("token");
+            RedirectToAction("Index");
+        }
+
+        private void StoreTokenCookie(string token)
+        {
+            HttpCookie tokenCookie = new HttpCookie("token", token);
+            tokenCookie.Expires = DateTime.Now.AddYears(1);
+
+            Response.CreateCookie(tokenCookie);
+        }
+        #endregion
     }
 }

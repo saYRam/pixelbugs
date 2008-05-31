@@ -1,6 +1,6 @@
 ﻿using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using NHibernate.Expression;
+using NHibernate.Criterion;
 
 namespace PixelDragons.PixelBugs.Core.Repositories
 {
@@ -8,8 +8,8 @@ namespace PixelDragons.PixelBugs.Core.Repositories
     {
         public User FindByUserNameAndPassword(string userName, string password)
         {
-            ICriterion[] criteria = new ICriterion[]{ new EqExpression("UserName", userName), 
-                                                      new EqExpression("Password", password) };
+            ICriterion[] criteria = new ICriterion[]{ Expression.Eq("UserName", userName), 
+                                                      Expression.Eq("Password", password) };
 
             return FindOne(criteria);
         }

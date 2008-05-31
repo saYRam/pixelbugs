@@ -1,47 +1,44 @@
-﻿using System;
-using Castle.MonoRail.ActiveRecordSupport;
+﻿using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
-using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Repositories;
-using PixelDragons.PixelBugs.Web.Helpers;
 using PixelDragons.PixelBugs.Core.Attributes;
+using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Filters;
+using PixelDragons.PixelBugs.Web.Helpers;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
 {
     [Layout("Default"), Rescue("GeneralError")]
     [Helper(typeof(UIHelper), "UI")]
-    [Filter(ExecuteEnum.BeforeAction, typeof(AuthenticationFilter), ExecutionOrder = 0)]
-    [Filter(ExecuteEnum.BeforeAction, typeof(AuthorizationFilter), ExecutionOrder = 1)]
+    [Filter(ExecuteWhen.BeforeAction, typeof(AuthenticationFilter), ExecutionOrder = 0)]
+    [Filter(ExecuteWhen.BeforeAction, typeof(AuthorizationFilter), ExecutionOrder = 1)]
     [Resource("strings", "PixelDragons.PixelBugs.Web.Resources.Controllers.IssueController")]
     public class IssueController : ARSmartDispatcherController
     {
         #region Properties
-        private IIssueRepository IssueRepository { get; set; }
-        private IUserRepository UserRepository { get; set; }
+        private IIssueService _issueService;
         #endregion
 
         #region Constructors
-        public IssueController(IIssueRepository issueRepository, IUserRepository userRepository)
+        public IssueController(IIssueService issueService)
         {
-            IssueRepository = issueRepository;
-            UserRepository = userRepository;
+            _issueService = issueService;
         }
         #endregion
 
         [PermissionRequired(Permission.CreateIssues)]
         public void New()
         {
-            PropertyBag["users"] = UserRepository.FindAll();
+            PropertyBag["users"] = _issueService.GetUsersThatCanOwnIssues();
+
+            RenderView("New");
         }
 
         [AccessibleThrough(Verb.Post)]
         [PermissionRequired(Permission.CreateIssues)]
         public void Create([ARDataBind("issue", AutoLoad=AutoLoadBehavior.OnlyNested)]Issue issue)
         {
-            issue.CreatedDate = DateTime.Now;
-
-            IssueRepository.Save(issue);
+            _issueService.SaveIssue(issue, Context.CurrentUser as User);
 
             RedirectToAction("List");
         }
@@ -49,7 +46,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.ViewIssues)]
         public void List()
         {
-            PropertyBag["issues"] = IssueRepository.FindAll();
+            PropertyBag["issues"] = _issueService.GetAllIssues();
+
+            RenderView("List");
         }
     }
 }

@@ -8,9 +8,9 @@ namespace PixelDragons.PixelBugs.Web.Filters
 {
     public class AuthorizationFilter : IFilter
     {
-        public bool Perform(ExecuteEnum exec, IRailsEngineContext context, Controller controller)
+        public bool Perform(ExecuteWhen exec, IEngineContext context, IController controller, IControllerContext controllerContext)
         {
-            MethodInfo action = controller.MetaDescriptor.Actions[controller.Action] as MethodInfo;
+            MethodInfo action = controllerContext.ControllerDescriptor.Actions[controllerContext.Action] as MethodInfo;
             if (action == null)
             {
                 throw new InvalidOperationException("The method info for the currently executing action could not be retrieved.");
@@ -34,7 +34,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
                     {
                         if (!user.HasPermission(attribute.Permission))
                         {
-                            controller.Redirect("Security", "AccessDenied");
+                            context.Response.Redirect("Security", "AccessDenied");
                             return false;
                         }
                     }
@@ -44,7 +44,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
                 else
                 {
                     //There is no user so we can't authorize this action
-                    controller.Redirect("Security", "AccessDenied");
+                    context.Response.Redirect("Security", "AccessDenied");
                     return false;
                 }
             }

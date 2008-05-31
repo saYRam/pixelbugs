@@ -177,13 +177,13 @@
     <Content Include="Config\Logging.config" />
     <Content Include="Config\Repositories.config" />
     <Content Include="Config\Filters.config" />
+    <Content Include="Config\Services.config" />
     <None Include="Views\Issue\List.vm" />
     <None Include="Views\Issue\New.vm" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />
     <None Include="Views\Security\AccessDenied.vm" />
     <None Include="Views\Security\Index.vm" />
-    <None Include="Views\Security\Timeout.vm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">

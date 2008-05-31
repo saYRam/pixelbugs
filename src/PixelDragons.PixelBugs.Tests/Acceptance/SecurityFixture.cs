@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using WatiN.Core;
+using PixelDragons.Commons.TestSupport;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
     public class SecurityFixture : AcceptanceTestBase
     {
-        [Test]
-        public void Timeout_UserShouldBeDeniedAccessAndRedirected()
-        { 
-            //Request a secure page without logging in and confirm that we are redirected to a timeout page.
-            using (IE browser = new IE(BuildUrl("Issue", "List")))
-            {
-                Assert.IsTrue(browser.ContainsText("Session Timeout"), "The timeout page doesn't contain the correct title. The html is: {0}", browser.Html);
-            }
-        }
-
         [Test]
         public void AccessDenied_RequestActionWithoutCorrectPermission()
         {
@@ -64,6 +51,18 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             }
         }
 
+        [Test]
+        public void SignOut_TryToAccessProtectedPage()
+        {
+            using (IE browser = new IE(BuildUrl("Security", "SignOut")))
+            {
+                //Navigating to the sign out page should clear out token cookie, so try to access a protected page
+                browser.GoTo(BuildUrl("Issue", "List"));
+
+                Assert.IsTrue(browser.ContainsText("Access Denied"), "Access Denied title is not present. The html is: {0}", browser.Html);
+            }
+        }
+
         public IE SignIn()
         {
             IE browser = new IE(BuildUrl("Security", "Index"));
@@ -74,6 +73,11 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             browser.Button(Find.ById("signIn")).Click();
 
             return browser;
+        }
+
+        public void SignOut(IE browser)
+        {
+            browser.GoTo(BuildUrl("Security", "SignOut"));
         }
     }
 }

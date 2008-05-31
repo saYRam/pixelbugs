@@ -11,7 +11,7 @@
     });
 #end
 
-<form action="Create.ashx" method="post" id="form">
+$Form.FormTag("%{action='Create',id='form'}")
     <div>
         $Form.LabelFor("issue.summary", $strings.Labels_Summary)
         $Form.TextField("issue.summary", "%{class='required', title='$strings.Errors_RequiredField'}")
@@ -23,16 +23,11 @@
     </div>
     
     <div>
-        $Form.LabelFor("issue.assignedTo.id", $strings.Labels_AssignedTo)
-        $Form.Select("issue.assignedTo.id", $users, "%{value='Id', text='FullName', firstoption='$strings.Options_Unassigned'}")
-    </div>
-    
-    <div>
-        $Form.LabelFor("issue.reportedBy.id", $strings.Labels_ReportedBy)
-        $Form.Select("issue.reportedBy.id", $users, "%{value='Id', text='FullName', firstoption='$strings.Options_Anonymous'}")
+        $Form.LabelFor("issue.ownedBy.id", $strings.Labels_OwnedBy)
+        $Form.Select("issue.ownedBy.id", $users, "%{value='Id', text='FullName', firstoption='$strings.Options_NoOwner'}")
     </div>
     
     <div>
         $Form.Submit($strings.Buttons_Save, "%{id='save'}")
     </div>
-</form>
+$Form.EndFormTag()

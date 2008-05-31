@@ -9,7 +9,7 @@ namespace PixelDragons.Commons.CustomMappings
 {
     public class EnumList<T> : IUserType
     {
-        private int _fieldSize = 500;
+        private int _fieldSize = 1000;
 
         public EnumList()
         {

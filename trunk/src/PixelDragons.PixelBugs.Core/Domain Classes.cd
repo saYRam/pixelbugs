@@ -3,12 +3,12 @@
   <Class Name="PixelDragons.PixelBugs.Core.Domain.Issue">
     <Position X="1.25" Y="1" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AACCAAAABAAgAAAAAAAAAAAAAAAAAAAAAgABAAAAAAA=</HashCode>
+      <HashCode>AACCAAAAAAAgAAAAAAAAAAAAAAAAAAAAAgAAABAAAAE=</HashCode>
       <FileName>Domain\Issue.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ReportedBy" />
-      <Property Name="AssignedTo" />
+      <Property Name="CreatedBy" />
+      <Property Name="OwnedBy" />
     </ShowAsAssociation>
   </Class>
   <Class Name="PixelDragons.PixelBugs.Core.Domain.User">

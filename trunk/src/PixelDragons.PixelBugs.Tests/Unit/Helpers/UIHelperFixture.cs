@@ -8,26 +8,30 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
     [TestFixture]
     public class UIHelperFixture
     {
+        UIHelper _helper;
+
+        [SetUp]
+        public void TestSetup()
+        {
+            _helper = new UIHelper();
+        }
+
         [Test]
         public void FormatUser_PassedNull()
         {
-            UIHelper helper = new UIHelper();
+            string text = _helper.FormatUser(null, "No Owner");
 
-            string text = helper.FormatUser(null, "Unassigned");
-
-            Assert.AreEqual("Unassigned", text);
+            Assert.AreEqual("No Owner", text);
         }
 
         [Test]
         public void FormatUser_PassedUser()
         {
-            UIHelper helper = new UIHelper();
-
             User user = new User();
             user.FirstName = "Andy";
             user.LastName = "Pike";
 
-            string text = helper.FormatUser(user, "Unassigned");
+            string text = _helper.FormatUser(user, "No Owner");
 
             Assert.AreEqual("Andy Pike", text);
         }
@@ -35,11 +39,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
         [Test]
         public void FormatDate_Success()
         {
-            UIHelper helper = new UIHelper();
-
             DateTime date = DateTime.Now;
 
-            string text = helper.FormatDate(date);
+            string text = _helper.FormatDate(date);
 
             Assert.AreEqual(date.ToString("d MMM yyyy"), text);
         }

@@ -19,9 +19,9 @@ namespace PixelDragons.PixelBugs.Core.Domain
         public string Description { get; set; }
 
         [BelongsTo]
-        public User ReportedBy { get; set; }
+        public User CreatedBy { get; set; }
 
         [BelongsTo]
-        public User AssignedTo { get; set; }
+        public User OwnedBy { get; set; }
     }
 }

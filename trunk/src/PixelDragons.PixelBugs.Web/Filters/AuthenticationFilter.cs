@@ -4,41 +4,40 @@ using System.Reflection;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Repositories;
+using PixelDragons.PixelBugs.Core.Services;
 
 namespace PixelDragons.PixelBugs.Web.Filters
 {
     public class AuthenticationFilter : IFilter
     {
         #region Properties
-        private IUserRepository UserRepository { get; set; }
+        private ISecurityService _securityService;
         #endregion
 
         #region Constructors
-        public AuthenticationFilter(IUserRepository userRepository)
+        public AuthenticationFilter(ISecurityService securityService)
         {
-            UserRepository = userRepository;
+            _securityService = securityService;
         }
         #endregion
 
-        public bool Perform(ExecuteEnum exec, IRailsEngineContext context, Controller controller)
+        public bool Perform(ExecuteWhen exec, IEngineContext context, IController controller, IControllerContext controllerContext)
         {
-            if (context.Session.Contains("currentUserId") && context.Session["currentUserId"] != null)
+            string token = context.Request.ReadCookie("token");
+
+            User user = _securityService.GetAuthenticatedUserFromToken(token);
+
+            if (user != null)
             {
-                Guid userId = (Guid)context.Session["currentUserId"];
+                context.CurrentUser = user;
+                controllerContext.PropertyBag["currentUser"] = user;
 
-                User user = UserRepository.FindById(userId);
-
-                if (user != null)
-                {
-                    context.CurrentUser = user;
-                    controller.PropertyBag["currentUser"] = user;
-
-                    return true;
-                }
+                return true;
             }
-
+            
             context.CurrentUser = null;
-            controller.Redirect("Security", "Timeout");
+            context.Response.Redirect("Security", "AccessDenied");
+
             return false;
         }
     }

@@ -4,4 +4,4 @@
 
 <p>$strings.Messages_TriedToAccessRestrictedArea</p>
 
-<a href="$siteroot/Security/Index.ashx">$strings.Links_SignIn</a>
+$Url.Link($strings.Links_SignIn, "%{action='Index'}")

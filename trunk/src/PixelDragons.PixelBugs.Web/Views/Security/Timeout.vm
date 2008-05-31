@@ -1,7 +1,0 @@
-﻿#capturefor(title)
-    $strings.Titles_Timeout
-#end
-
-<p>$strings.Messages_SessionHasTimedOut</p>
-
-<a href="$siteroot/Security/Index.ashx">$strings.Links_SignIn</a>

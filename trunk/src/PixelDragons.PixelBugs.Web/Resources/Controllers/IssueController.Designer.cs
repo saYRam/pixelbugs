@@ -70,20 +70,20 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned.
-        /// </summary>
-        internal static string Columns_Assigned {
-            get {
-                return ResourceManager.GetString("Columns_Assigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Created.
         /// </summary>
         internal static string Columns_Created {
             get {
                 return ResourceManager.GetString("Columns_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owner.
+        /// </summary>
+        internal static string Columns_Owner {
+            get {
+                return ResourceManager.GetString("Columns_Owner", resourceCulture);
             }
         }
         
@@ -115,20 +115,20 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assigned To:.
-        /// </summary>
-        internal static string Labels_AssignedTo {
-            get {
-                return ResourceManager.GetString("Labels_AssignedTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         internal static string Labels_Description {
             get {
                 return ResourceManager.GetString("Labels_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Owned By:.
+        /// </summary>
+        internal static string Labels_OwnedBy {
+            get {
+                return ResourceManager.GetString("Labels_OwnedBy", resourceCulture);
             }
         }
         
@@ -169,11 +169,11 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unassigned.
+        ///   Looks up a localized string similar to No Owner.
         /// </summary>
-        internal static string Options_Unassigned {
+        internal static string Options_NoOwner {
             get {
-                return ResourceManager.GetString("Options_Unassigned", resourceCulture);
+                return ResourceManager.GetString("Options_NoOwner", resourceCulture);
             }
         }
         

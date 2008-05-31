@@ -120,8 +120,8 @@
   <data name="Buttons_Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Columns_Assigned" xml:space="preserve">
-    <value>Assigned</value>
+  <data name="Columns_Owner" xml:space="preserve">
+    <value>Owner</value>
   </data>
   <data name="Columns_Created" xml:space="preserve">
     <value>Created</value>
@@ -135,8 +135,8 @@
   <data name="Errors_RequiredField" xml:space="preserve">
     <value>This field is required</value>
   </data>
-  <data name="Labels_AssignedTo" xml:space="preserve">
-    <value>Assigned To:</value>
+  <data name="Labels_OwnedBy" xml:space="preserve">
+    <value>Owned By:</value>
   </data>
   <data name="Labels_Description" xml:space="preserve">
     <value>Description:</value>
@@ -153,8 +153,8 @@
   <data name="Options_Anonymous" xml:space="preserve">
     <value>Anonymous</value>
   </data>
-  <data name="Options_Unassigned" xml:space="preserve">
-    <value>Unassigned</value>
+  <data name="Options_NoOwner" xml:space="preserve">
+    <value>No Owner</value>
   </data>
   <data name="Titles_IssuesList" xml:space="preserve">
     <value>Issues List</value>

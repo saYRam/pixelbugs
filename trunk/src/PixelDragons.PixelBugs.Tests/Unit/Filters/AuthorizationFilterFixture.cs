@@ -1,58 +1,43 @@
 ﻿using System.Collections.Generic;
-using Castle.MonoRail.Framework;
 using MbUnit.Framework;
 using Moq;
+using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Repositories;
-using PixelDragons.PixelBugs.Tests.Unit.Controllers;
+using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using PixelDragons.PixelBugs.Web.Filters;
+using System;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 {
     [TestFixture]
-    public class AuthorizationFilterFixture : ControllerUnitTestBase
+    public class AuthorizationFilterFixture : FilterUnitTestBase
     {
+        [SetUp]
+        public void TestSetup()
+        {
+            Mock<IIssueService> issueService = new Mock<IIssueService>();
+            
+            _filter = new AuthorizationFilter();
+
+            _controller = new IssueController(issueService.Object);
+            PrepareController(_controller, "Issue", "New");
+        }
+
         [Test]
         public void Perform_NoPrinciple()
         {
-            User user = null;
-            
-            var contextMock = new Mock<IRailsEngineContext>();
-            var issueRepository = new Mock<IIssueRepository>();
-            var userRepository = new Mock<IUserRepository>();
-
-            contextMock.Expect(c => c.CurrentUser).Returns(user);
-
-            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
-            PrepareController(controller, "Issue", "Create");
-
-            AuthorizationFilter filter = new AuthorizationFilter();
-
-            Assert.IsFalse(filter.Perform(ExecuteEnum.BeforeAction, contextMock.Object, controller));
+            Assert.IsFalse(ExecuteFilter());
             Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
-
-            contextMock.VerifyAll();
         }
 
         [Test]
         public void Perform_PrincipleDoesNotHavePermission()
         {
-            var contextMock = new Mock<IRailsEngineContext>();
-            var issueRepository = new Mock<IIssueRepository>();
-            var userRepository = new Mock<IUserRepository>();
+            _controller.Context.CurrentUser = new User();
 
-            contextMock.Expect(c => c.CurrentUser).Returns(new User());
-
-            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
-            PrepareController(controller, "Issue", "Create");
-
-            AuthorizationFilter filter = new AuthorizationFilter();
-
-            Assert.IsFalse(filter.Perform(ExecuteEnum.BeforeAction, contextMock.Object, controller));
+            Assert.IsFalse(ExecuteFilter());
             Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
-
-            contextMock.VerifyAll();
         }
 
         [Test]
@@ -66,21 +51,31 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             user.Roles.Add(new Role());
             user.Roles[0].Permissions = new List<Permission>();
             user.Roles[0].Permissions.Add(Permission.CreateIssues);
-            
-            var contextMock = new Mock<IRailsEngineContext>();
-            var issueRepository = new Mock<IIssueRepository>();
-            var userRepository = new Mock<IUserRepository>();
 
-            contextMock.Expect(c => c.CurrentUser).Returns(user);
+            _controller.Context.CurrentUser = user;
 
-            IssueController controller = new IssueController(issueRepository.Object, userRepository.Object);
-            PrepareController(controller, "Issue", "Create");
+            Assert.IsTrue(ExecuteFilter(), "The filter did not allow execution to continue");
+        }
 
-            AuthorizationFilter filter = new AuthorizationFilter();
+        [Test]
+        public void Perform_ActionHasNoPermissionRequirements_AndNoPrinciple()
+        {
+            Mock<ISecurityService> securityService = new Mock<ISecurityService>();
+            _controller = new SecurityController(securityService.Object);
+            PrepareController(_controller, "Security", "Index");
 
-            Assert.IsTrue(filter.Perform(ExecuteEnum.BeforeAction, contextMock.Object, controller), "The filter did not allow execution to continue");
+            Assert.IsTrue(ExecuteFilter(), "The filter did not allow execution to continue");
+        }
 
-            contextMock.VerifyAll();
+        [Test]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Perform_NoActionInformation()
+        {
+            Mock<ISecurityService> securityService = new Mock<ISecurityService>();
+            _controller = new SecurityController(securityService.Object);
+            PrepareController(_controller, "Security");
+
+            ExecuteFilter();    //This should throw an InvalidOperationException
         }
     }
 }

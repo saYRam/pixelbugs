@@ -22,14 +22,14 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class IssueController {
+    internal class CardController {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal IssueController() {
+        internal CardController() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PixelDragons.PixelBugs.Web.Resources.Controllers.IssueController", typeof(IssueController).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PixelDragons.PixelBugs.Web.Resources.Controllers.CardController", typeof(CardController).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,38 +70,11 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created.
+        ///   Looks up a localized string similar to This field can only contain a number.
         /// </summary>
-        internal static string Columns_Created {
+        internal static string Errors_NumbersOnly {
             get {
-                return ResourceManager.GetString("Columns_Created", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Owner.
-        /// </summary>
-        internal static string Columns_Owner {
-            get {
-                return ResourceManager.GetString("Columns_Owner", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reported.
-        /// </summary>
-        internal static string Columns_Reported {
-            get {
-                return ResourceManager.GetString("Columns_Reported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Summary.
-        /// </summary>
-        internal static string Columns_Summary {
-            get {
-                return ResourceManager.GetString("Columns_Summary", resourceCulture);
+                return ResourceManager.GetString("Errors_NumbersOnly", resourceCulture);
             }
         }
         
@@ -133,29 +106,56 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reported By:.
+        ///   Looks up a localized string similar to Points:.
         /// </summary>
-        internal static string Labels_ReportedBy {
+        internal static string Labels_Points {
             get {
-                return ResourceManager.GetString("Labels_ReportedBy", resourceCulture);
+                return ResourceManager.GetString("Labels_Points", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Summary:.
+        ///   Looks up a localized string similar to Priority:.
         /// </summary>
-        internal static string Labels_Summary {
+        internal static string Labels_Priority {
             get {
-                return ResourceManager.GetString("Labels_Summary", resourceCulture);
+                return ResourceManager.GetString("Labels_Priority", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Issue.
+        ///   Looks up a localized string similar to Status:.
         /// </summary>
-        internal static string Links_NewIssue {
+        internal static string Labels_Status {
             get {
-                return ResourceManager.GetString("Links_NewIssue", resourceCulture);
+                return ResourceManager.GetString("Labels_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title:.
+        /// </summary>
+        internal static string Labels_Title {
+            get {
+                return ResourceManager.GetString("Labels_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type:.
+        /// </summary>
+        internal static string Labels_Type {
+            get {
+                return ResourceManager.GetString("Labels_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Card.
+        /// </summary>
+        internal static string Links_NewCard {
+            get {
+                return ResourceManager.GetString("Links_NewCard", resourceCulture);
             }
         }
         
@@ -178,20 +178,20 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Issues List.
+        ///   Looks up a localized string similar to Card Wall.
         /// </summary>
-        internal static string Titles_IssuesList {
+        internal static string Titles_CardWall {
             get {
-                return ResourceManager.GetString("Titles_IssuesList", resourceCulture);
+                return ResourceManager.GetString("Titles_CardWall", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Issue.
+        ///   Looks up a localized string similar to New Card.
         /// </summary>
-        internal static string Titles_NewIssue {
+        internal static string Titles_NewCard {
             get {
-                return ResourceManager.GetString("Titles_NewIssue", resourceCulture);
+                return ResourceManager.GetString("Titles_NewCard", resourceCulture);
             }
         }
     }

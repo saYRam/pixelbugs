@@ -35,6 +35,7 @@ table td,
 table th {
 	padding: 4px;
 	border: 1px solid #666666;
+	vertical-align:top;
 }
 
 label {
@@ -45,7 +46,8 @@ label {
 	font-weight:bold;
 }
 
-input[type=text] {
+input[type=text],
+input[type=password] {
 	width: 500px;
 	padding:4px;
 }
@@ -75,4 +77,16 @@ div#content {
 .validation-advice {
 	color:Red;
 	font-weight:bold;
+}
+
+div.card {
+	width:170px;
+	border:solid 1px #666;
+	font-size:10px;
+	padding:4px;
+	margin-bottom:4px;
+}
+
+table.wall td {
+	width:178px;
 }

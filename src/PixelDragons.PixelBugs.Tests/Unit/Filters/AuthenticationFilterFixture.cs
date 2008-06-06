@@ -17,13 +17,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [SetUp]
         public void TestSetup()
         {
-            Mock<IIssueService> issueService = new Mock<IIssueService>();
+            Mock<ICardService> cardService = new Mock<ICardService>();
             _securityService = new Mock<ISecurityService>();
 
             _filter = new AuthenticationFilter(_securityService.Object);
 
-            _controller = new IssueController(issueService.Object);
-            PrepareController(_controller, "Issue", "List");
+            _controller = new CardController(cardService.Object);
+            PrepareController(_controller, "Card", "List");
         }
 
         [Test]

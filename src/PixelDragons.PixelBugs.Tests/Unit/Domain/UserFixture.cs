@@ -33,40 +33,40 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Domain
         [Test]
         public void HasPermission_WithEnum_ReturnTrue()
         {
-            _user.Roles[0].Permissions.Add(Permission.CreateIssues);
+            _user.Roles[0].Permissions.Add(Permission.CreateCards);
 
-            Assert.IsTrue(_user.HasPermission(Permission.CreateIssues));
+            Assert.IsTrue(_user.HasPermission(Permission.CreateCards));
         }
 
         [Test]
         public void HasPermission_WithEnum_ReturnFalse()
         {
-            _user.Roles[0].Permissions.Add(Permission.ViewIssues);
+            _user.Roles[0].Permissions.Add(Permission.ViewCards);
 
-            Assert.IsFalse(_user.HasPermission(Permission.CreateIssues));
+            Assert.IsFalse(_user.HasPermission(Permission.CreateCards));
         }
 
         [Test]
         public void HasPermission_WithString_ReturnTrue()
         {
-            _user.Roles[0].Permissions.Add(Permission.CreateIssues);
+            _user.Roles[0].Permissions.Add(Permission.CreateCards);
 
-            Assert.IsTrue(_user.HasPermission("CreateIssues"));
+            Assert.IsTrue(_user.HasPermission("CreateCards"));
         }
 
         [Test]
         public void HasPermission_WithString_ReturnFalse()
         {
-            _user.Roles[0].Permissions.Add(Permission.ViewIssues);
+            _user.Roles[0].Permissions.Add(Permission.ViewCards);
 
-            Assert.IsFalse(_user.HasPermission("CreateIssues"));
+            Assert.IsFalse(_user.HasPermission("CreateCards"));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void HasPermission_WithString_InvalidArgument()
         {
-            _user.Roles[0].Permissions.Add(Permission.ViewIssues);
+            _user.Roles[0].Permissions.Add(Permission.ViewCards);
 
             _user.HasPermission("This is not a valid permission");  //This should throw an ArgumentException
         }

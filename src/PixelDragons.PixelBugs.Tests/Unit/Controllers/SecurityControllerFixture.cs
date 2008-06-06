@@ -40,7 +40,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             _controller.Authenticate("test.user", "test123");
 
             Assert.AreEqual(token, Cookies["token"].Value, "The security token wasn't stored in a cookie");
-            Assert.AreEqual(@"/Issue/List.ashx", Response.RedirectedTo, "The action did not redirect correctly");
+            Assert.AreEqual(@"/Card/Index.ashx", Response.RedirectedTo, "The action did not redirect correctly");
 
             _securityService.VerifyAll();
         }

@@ -16,12 +16,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [SetUp]
         public void TestSetup()
         {
-            Mock<IIssueService> issueService = new Mock<IIssueService>();
+            Mock<ICardService> cardService = new Mock<ICardService>();
             
             _filter = new AuthorizationFilter();
 
-            _controller = new IssueController(issueService.Object);
-            PrepareController(_controller, "Issue", "New");
+            _controller = new CardController(cardService.Object);
+            PrepareController(_controller, "Card", "New");
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             user.Roles = new List<Role>();
             user.Roles.Add(new Role());
             user.Roles[0].Permissions = new List<Permission>();
-            user.Roles[0].Permissions.Add(Permission.CreateIssues);
+            user.Roles[0].Permissions.Add(Permission.CreateCards);
 
             _controller.Context.CurrentUser = user;
 

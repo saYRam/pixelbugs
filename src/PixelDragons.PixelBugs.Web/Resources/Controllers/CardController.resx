@@ -120,18 +120,6 @@
   <data name="Buttons_Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Columns_Owner" xml:space="preserve">
-    <value>Owner</value>
-  </data>
-  <data name="Columns_Created" xml:space="preserve">
-    <value>Created</value>
-  </data>
-  <data name="Columns_Reported" xml:space="preserve">
-    <value>Reported</value>
-  </data>
-  <data name="Columns_Summary" xml:space="preserve">
-    <value>Summary</value>
-  </data>
   <data name="Errors_RequiredField" xml:space="preserve">
     <value>This field is required</value>
   </data>
@@ -141,14 +129,11 @@
   <data name="Labels_Description" xml:space="preserve">
     <value>Description:</value>
   </data>
-  <data name="Labels_ReportedBy" xml:space="preserve">
-    <value>Reported By:</value>
+  <data name="Labels_Title" xml:space="preserve">
+    <value>Title:</value>
   </data>
-  <data name="Labels_Summary" xml:space="preserve">
-    <value>Summary:</value>
-  </data>
-  <data name="Links_NewIssue" xml:space="preserve">
-    <value>New Issue</value>
+  <data name="Links_NewCard" xml:space="preserve">
+    <value>New Card</value>
   </data>
   <data name="Options_Anonymous" xml:space="preserve">
     <value>Anonymous</value>
@@ -156,10 +141,25 @@
   <data name="Options_NoOwner" xml:space="preserve">
     <value>No Owner</value>
   </data>
-  <data name="Titles_IssuesList" xml:space="preserve">
-    <value>Issues List</value>
+  <data name="Titles_CardWall" xml:space="preserve">
+    <value>Card Wall</value>
   </data>
-  <data name="Titles_NewIssue" xml:space="preserve">
-    <value>New Issue</value>
+  <data name="Titles_NewCard" xml:space="preserve">
+    <value>New Card</value>
+  </data>
+  <data name="Labels_Priority" xml:space="preserve">
+    <value>Priority:</value>
+  </data>
+  <data name="Labels_Status" xml:space="preserve">
+    <value>Status:</value>
+  </data>
+  <data name="Labels_Type" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="Errors_NumbersOnly" xml:space="preserve">
+    <value>This field can only contain a number</value>
+  </data>
+  <data name="Labels_Points" xml:space="preserve">
+    <value>Points:</value>
   </data>
 </root>

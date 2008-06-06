@@ -51,9 +51,8 @@ namespace PixelDragons.Commons.Repositories
         /// by order
         /// </summary>
         /// <param name="criteria">the criteria to look for</param>
-        /// <param name="orders"> the order to load the entities</param>
         /// <returns>All the entities that match the criteria</returns>
-        T[] FindAll(DetachedCriteria criteria, params Order[] orders);
+        T[] FindAll(DetachedCriteria criteria);
 
         /// <summary>
         /// Loads all the entities that match the criteria

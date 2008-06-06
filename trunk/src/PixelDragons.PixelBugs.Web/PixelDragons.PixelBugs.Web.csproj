@@ -146,17 +146,17 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Filters\AuthorizationFilter.cs" />
     <Compile Include="Filters\AuthenticationFilter.cs" />
     <Compile Include="GlobalApplication.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Controllers\IssueController.Designer.cs">
+    <Compile Include="Resources\Controllers\CardController.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IssueController.resx</DependentUpon>
+      <DependentUpon>CardController.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Controllers\SecurityController.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -175,11 +175,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Logging.config" />
-    <Content Include="Config\Repositories.config" />
+    <Content Include="Config\Persistence.config" />
     <Content Include="Config\Filters.config" />
     <Content Include="Config\Services.config" />
-    <None Include="Views\Issue\List.vm" />
-    <None Include="Views\Issue\New.vm" />
+    <None Include="Views\Card\Index.vm" />
+    <None Include="Views\Card\New.vm" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />
     <None Include="Views\Security\AccessDenied.vm" />
@@ -196,9 +196,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Controllers\IssueController.resx">
+    <EmbeddedResource Include="Resources\Controllers\CardController.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>IssueController.Designer.cs</LastGenOutput>
+      <LastGenOutput>CardController.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Controllers\SecurityController.resx">

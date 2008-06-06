@@ -3,7 +3,6 @@ using Castle.MonoRail.Framework;
 using System.Reflection;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Repositories;
 using PixelDragons.PixelBugs.Core.Services;
 
 namespace PixelDragons.PixelBugs.Web.Filters

@@ -40,9 +40,9 @@ namespace PixelDragons.Commons.Repositories
             return ActiveRecordMediator<T>.FindAll(new Order[] { order }, criteria);
         }
 
-        public T[] FindAll(DetachedCriteria criteria, params Order[] orders)
+        public T[] FindAll(DetachedCriteria criteria)
         {
-            return ActiveRecordMediator<T>.FindAll(criteria, orders);
+            return ActiveRecordMediator<T>.FindAll(criteria);
         }        
 
         public T[] FindAll(Order[] orders, params ICriterion[] criteria)

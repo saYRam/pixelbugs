@@ -35,7 +35,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
                 StoreTokenCookie(token);
 
-                Redirect("Issue", "List");
+                Redirect("Card", "Index");
             }
             catch(SecurityException)
             {

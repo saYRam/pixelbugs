@@ -70,7 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomMappings\ColourMapping.cs" />
     <Compile Include="CustomMappings\EnumList.cs" />
     <Compile Include="MonoRail\Filters\PerformanceFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

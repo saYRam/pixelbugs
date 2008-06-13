@@ -1,0 +1,42 @@
+﻿#capturefor(title)
+    $strings.Titles_CardWall
+#end
+
+#capturefor(script)
+    Event.observe(window, 'load', function() {   
+        var cards = $$("div.card");    
+        cards.each(function(card) {
+            var statusId = card.readAttribute("status");
+            
+            //Change the card element's parent
+            card.parentNode.removeChild(card);
+            $(statusId).appendChild(card);
+        });  
+    });
+#end
+
+#if($currentUser.HasPermission("CreateCards"))
+<div>$Url.Link($strings.Links_NewCard, "%{action='New'}")</div>
+#end
+
+<table class="wall">
+    <tr>
+        #foreach($status in $statuses)
+        <th>$status.Name</th>
+        #end
+    </tr>
+    <tr>
+        #foreach($status in $statuses)
+        <td id="$status.Id"></td>
+        #end
+    </tr>
+</table>
+
+#foreach($card in $cards)
+<div status="$card.Status.Id" class="card" style="background:$card.Type.Colour">
+    <div>#$card.Number $card.Title</div>
+    <div style="background:$card.Priority.Colour">$card.Priority.Name</div>
+    <div>$card.Points pt</div>
+    <div>$UI.FormatUser($card.Owner, $strings.Options_NoOwner)</div>
+</div>
+#end

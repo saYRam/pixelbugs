@@ -43,6 +43,11 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// <returns>Returns an array of card priorities</returns>
         CardPriority[] GetCardPriorities();
 
-        
+        /// <summary>
+        /// Gets a card with the given id
+        /// </summary>
+        /// <param name="id">The id of the card to get</param>
+        /// <returns>Returns the matching card</returns>
+        Card GetCard(Guid id);
     }
 }

@@ -72,5 +72,10 @@ namespace PixelDragons.PixelBugs.Core.Services
         {
             return _cardPriorityRepository.FindAll();
         }
+
+        public Card GetCard(Guid id)
+        {
+            return _cardRepository.FindById(id);
+        }
     }
 }

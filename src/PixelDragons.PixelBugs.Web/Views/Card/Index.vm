@@ -33,7 +33,7 @@
 </table>
 
 #foreach($card in $cards)
-<div status="$card.Status.Id" class="card" style="background:$card.Type.Colour">
+<div id="$card.Id" onclick="location.href='$Url.For("%{action='Show', querystring='id=$card.id'}")'" status="$card.Status.Id" class="card" style="background:$card.Type.Colour">
     <div>#$card.Number $card.Title</div>
     <div style="background:$card.Priority.Colour">$card.Priority.Name</div>
     <div>$card.Points pt</div>

@@ -81,5 +81,71 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _cardService.VerifyAll();
         }
+
+        [Test]
+        public void Show_Success()
+        {
+            Guid id = Guid.NewGuid();
+
+            Card card = new Card();
+            card.Id = id;
+
+            _cardService.Expect(s => s.GetCard(id)).Returns(card);
+
+            _controller.Show(id);
+
+            Assert.AreEqual(card, _controller.PropertyBag["card"], "The property bag doesn't contain the card");
+            Assert.AreEqual(@"Card\Show", _controller.SelectedViewName, "The wrong view was rendered");
+        }
+
+        [Test]
+        public void Edit_Success()
+        {
+            Guid id = Guid.NewGuid();
+
+            Card card = new Card();
+            card.Id = id;
+
+            User[] users = new User[] { };
+            CardType[] types = new CardType[] { };
+            CardStatus[] statuses = new CardStatus[] { };
+            CardPriority[] priorities = new CardPriority[] { };
+
+            _cardService.Expect(s => s.GetUsersThatCanOwnCards()).Returns(users);
+            _cardService.Expect(s => s.GetCardTypes()).Returns(types);
+            _cardService.Expect(s => s.GetCardStatuses()).Returns(statuses);
+            _cardService.Expect(s => s.GetCardPriorities()).Returns(priorities);
+            _cardService.Expect(s => s.GetCard(id)).Returns(card);
+
+            _controller.Edit(id);
+
+            Assert.AreEqual(card, _controller.PropertyBag["card"], "The property bag doesn't contain the card");
+            Assert.AreEqual(users, _controller.PropertyBag["users"], "The property bag doesn't contain the users list");
+            Assert.AreEqual(types, _controller.PropertyBag["types"], "The property bag doesn't contain the types list");
+            Assert.AreEqual(statuses, _controller.PropertyBag["statuses"], "The property bag doesn't contain the statuses list");
+            Assert.AreEqual(priorities, _controller.PropertyBag["priorities"], "The property bag doesn't contain the priorities list");
+            Assert.AreEqual(@"Card\Edit", _controller.SelectedViewName, "The wrong view was rendered");
+
+            _cardService.VerifyAll();
+        }
+
+        [Test]
+        public void Update_Success()
+        {
+            Card card = new Card();
+            card.Id = Guid.NewGuid();
+
+            User user = new User();
+
+            _cardService.Expect(s => s.SaveCard(card, user)).Returns(card);
+
+            Context.CurrentUser = user;
+
+            _controller.Update(card);
+
+            Assert.AreEqual(String.Format(@"/Card/Show.ashx?Id={0}", card.Id), Response.RedirectedTo, "The action did not redirect correctly");
+
+            _cardService.VerifyAll();
+        }
     }
 }

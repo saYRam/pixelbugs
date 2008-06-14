@@ -5,6 +5,7 @@ using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Filters;
 using PixelDragons.PixelBugs.Web.Helpers;
+using System;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
 {
@@ -53,6 +54,35 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             PropertyBag["statuses"] = _cardService.GetCardStatuses();
 
             RenderView("Index");
+        }
+
+        [PermissionRequired(Permission.ViewCards)]
+        public void Show(Guid id)
+        {
+            PropertyBag["card"] = _cardService.GetCard(id);
+
+            RenderView("Show");
+        }
+
+        [PermissionRequired(Permission.EditCards)]
+        public void Edit(Guid id)
+        {
+            PropertyBag["card"] = _cardService.GetCard(id);
+            PropertyBag["users"] = _cardService.GetUsersThatCanOwnCards();
+            PropertyBag["types"] = _cardService.GetCardTypes();
+            PropertyBag["statuses"] = _cardService.GetCardStatuses();
+            PropertyBag["priorities"] = _cardService.GetCardPriorities();
+
+            RenderView("Edit");
+        }
+
+        [AccessibleThrough(Verb.Post)]
+        [PermissionRequired(Permission.EditCards)]
+        public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)]Card card)
+        {
+            _cardService.SaveCard(card, (User)Context.CurrentUser);
+
+            RedirectToAction("Show", new {Id = card.Id} );
         }
     }
 }

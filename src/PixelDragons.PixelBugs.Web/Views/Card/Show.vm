@@ -1,0 +1,40 @@
+﻿#capturefor(title)
+    #$card.Number $card.Title
+#end
+
+<div>$Url.Link($strings.Links_BackToCardWall, "%{action='Index'}")</div>
+#if($currentUser.HasPermission("EditCards"))
+<div>$Url.Link($strings.Links_EditCard, "%{action='Edit', querystring='id=$card.id'}", "%{id='EditLink'}")</div>
+#end
+
+<div class="main">
+    <div>$card.Description</div>
+
+    
+</div>
+
+<div class="sideBar">
+    <div>
+        <label>$strings.Labels_Type</label> $card.Type.Name
+    </div>
+    
+    <div>
+        <label>$strings.Labels_Priority</label> $card.Priority.Name
+    </div>
+    
+    <div>
+        <label>$strings.Labels_Status</label> $card.Status.Name
+    </div>
+    
+    <div>
+        <label>$strings.Labels_OwnedBy</label> $UI.FormatUser($card.Owner, $strings.Options_NoOwner)
+    </div>
+    
+    <div>
+        <label>$strings.Labels_Points</label> $card.Points
+    </div>
+    
+    <div>
+        <label>$strings.Labels_Created</label> $UI.FormatDate($card.CreatedDate) by $card.CreatedBy.FullName
+    </div>
+</div>

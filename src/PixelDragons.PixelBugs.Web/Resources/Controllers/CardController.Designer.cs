@@ -88,6 +88,15 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created:.
+        /// </summary>
+        internal static string Labels_Created {
+            get {
+                return ResourceManager.GetString("Labels_Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         internal static string Labels_Description {
@@ -151,6 +160,42 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go back to card wall.
+        /// </summary>
+        internal static string Links_BackToCardWall {
+            get {
+                return ResourceManager.GetString("Links_BackToCardWall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Links_Cancel {
+            get {
+                return ResourceManager.GetString("Links_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel and go back to the card wall.
+        /// </summary>
+        internal static string Links_CancelBackToCardWall {
+            get {
+                return ResourceManager.GetString("Links_CancelBackToCardWall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Card.
+        /// </summary>
+        internal static string Links_EditCard {
+            get {
+                return ResourceManager.GetString("Links_EditCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Card.
         /// </summary>
         internal static string Links_NewCard {
@@ -183,6 +228,15 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         internal static string Titles_CardWall {
             get {
                 return ResourceManager.GetString("Titles_CardWall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Card.
+        /// </summary>
+        internal static string Titles_EditCard {
+            get {
+                return ResourceManager.GetString("Titles_EditCard", resourceCulture);
             }
         }
         

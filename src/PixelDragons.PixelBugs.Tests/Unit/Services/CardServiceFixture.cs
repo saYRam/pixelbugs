@@ -111,5 +111,20 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             _cardPriorityRepository.VerifyAll();
         }
+
+        [Test]
+        public void GetCard_Success()
+        {
+            Guid id = Guid.NewGuid();
+            
+            Card card = new Card();
+            card.Id = id;
+
+            _cardRepository.Expect(r => r.FindById(id)).Returns(card);
+
+            Assert.AreEqual(card, _service.GetCard(id));
+
+            _cardRepository.VerifyAll();
+        }
     }
 }

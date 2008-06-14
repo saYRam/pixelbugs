@@ -162,4 +162,22 @@
   <data name="Labels_Points" xml:space="preserve">
     <value>Points:</value>
   </data>
+  <data name="Links_EditCard" xml:space="preserve">
+    <value>Edit Card</value>
+  </data>
+  <data name="Titles_EditCard" xml:space="preserve">
+    <value>Edit Card</value>
+  </data>
+  <data name="Labels_Created" xml:space="preserve">
+    <value>Created:</value>
+  </data>
+  <data name="Links_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Links_BackToCardWall" xml:space="preserve">
+    <value>Go back to card wall</value>
+  </data>
+  <data name="Links_CancelBackToCardWall" xml:space="preserve">
+    <value>Cancel and go back to the card wall</value>
+  </data>
 </root>

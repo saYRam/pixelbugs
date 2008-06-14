@@ -19,7 +19,7 @@ delete CardComment
 insert into [User] (Id, FirstName, LastName, Email, UserName, Password) values (@adminUserId, 'Test', 'Admin', 'test.admin@domain.com', 'test.admin', 'password')
 insert into [User] (Id, FirstName, LastName, Email, UserName, Password) values (@viewOnlyUserId, 'Test', 'ViewOnly', 'test.viewOnly@domain.com', 'test.viewOnly', 'password')
 
-insert into Role (Id, [Name], [Permissions]) values	(@adminRoleId, 'Administrator', 'CreateCards,ViewCards')
+insert into Role (Id, [Name], [Permissions]) values	(@adminRoleId, 'Administrator', 'CreateCards,ViewCards,EditCards')
 insert into Role (Id, [Name], [Permissions]) values (@viewOnlyRoleId, 'View Only', 'ViewCards')
 
 insert into UserRole ([User_Id], [Role_Id]) values (@adminUserId, @adminRoleId)

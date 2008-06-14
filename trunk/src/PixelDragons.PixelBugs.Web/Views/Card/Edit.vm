@@ -1,5 +1,5 @@
 ﻿#capturefor(title)
-    $strings.Titles_NewCard
+    $strings.Titles_EditCard
 #end
 
 #capturefor(script)
@@ -11,9 +11,11 @@
     });
 #end
 
-<div>$Url.Link($strings.Links_CancelBackToCardWall, "%{action='Index'}")</div>
+<div>$Url.Link($strings.Links_Cancel, "%{action='Show', querystring='Id=$card.id'}")</div>
 
-$Form.FormTag("%{action='Create',id='form'}")
+$Form.FormTag("%{action='Update',id='form'}")
+    $Form.HiddenField("card.id")
+    
     <div>
         $Form.LabelFor("card.title", $strings.Labels_Title)
         $Form.TextField("card.title", "%{class='required', title='$strings.Errors_RequiredField'}")

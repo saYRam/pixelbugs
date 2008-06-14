@@ -7,7 +7,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
     public class SecurityFixture : AcceptanceTestBase
     {
         [Test]
-        public void AccessDenied_RequestActionWithoutCorrectPermission()
+        public void Should_display_access_denied_view_when_accessing_page_without_correct_permissions()
         {
             //Sign in as a user without the CreateCards permission, then request the Card/New page and check that
             //we are redirected to the access denied page.
@@ -27,9 +27,9 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         }
 
         [Test]
-        public void SignIn_EnterCorrectCredentials()
+        public void Should_sign_in_successfully_with_correct_credentials()
         {
-            //Go to the sign in page a sign in with correct username and password. Confirm that we are on the card board page.
+            //Go to the sign in page a sign in with correct username and password. Confirm that we are on the card wall page.
             using (IE browser = SignIn())
             {
                 Assert.IsTrue(browser.ContainsText("Card Wall"), "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
@@ -37,7 +37,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         }
 
         [Test]
-        public void SignIn_EnterInvalidCredentials()
+        public void Should_not_allow_sign_in_with_incorrect_credentials()
         {
             //Go to the sign in page and sign in with wrong username and password. Confirm that we are redirected back to sign in page with message.
             using (IE browser = new IE(BuildUrl("Security", "Index")))
@@ -52,7 +52,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         }
 
         [Test]
-        public void SignOut_TryToAccessProtectedPage()
+        public void Should_not_allow_access_to_protected_pages_after_sign_out()
         {
             using (IE browser = new IE(BuildUrl("Security", "SignOut")))
             {

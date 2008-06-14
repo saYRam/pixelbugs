@@ -178,8 +178,10 @@
     <Content Include="Config\Persistence.config" />
     <Content Include="Config\Filters.config" />
     <Content Include="Config\Services.config" />
+    <None Include="Views\Card\Edit.vm" />
     <None Include="Views\Card\Index.vm" />
     <None Include="Views\Card\New.vm" />
+    <None Include="Views\Card\Show.vm" />
     <None Include="Views\Layouts\Default.vm" />
     <None Include="Views\Rescues\GeneralError.vm" />
     <None Include="Views\Security\AccessDenied.vm" />

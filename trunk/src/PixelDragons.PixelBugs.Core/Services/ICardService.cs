@@ -49,5 +49,14 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// <param name="id">The id of the card to get</param>
         /// <returns>Returns the matching card</returns>
         Card GetCard(Guid id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cardId"></param>
+        /// <param name="statusId"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Card ChangeCardStatus(Guid cardId, Guid statusId, User user);
     }
 }

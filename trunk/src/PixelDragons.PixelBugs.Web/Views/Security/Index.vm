@@ -20,4 +20,4 @@ $Form.FormTag("%{action='Authenticate',id='form'}")
     <div>
         $Form.Submit($strings.Buttons_SignIn, "%{id='signIn'}")
     </div>
-$Form.EndFormTag()
+</form>

@@ -126,5 +126,24 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             _cardRepository.VerifyAll();
         }
+
+        [Test]
+        public void ChangeCardStatus_Success()
+        {
+            Guid cardId = Guid.NewGuid();
+            Guid statusId = Guid.NewGuid();
+            User user = new User();
+            Card card = new Card();
+            CardStatus status = new CardStatus();
+
+            _cardRepository.Expect(r => r.FindById(cardId)).Returns(card);
+            _cardStatusRepository.Expect(r => r.FindById(statusId)).Returns(status);
+            _cardRepository.Expect(r => r.Save(card)).Returns(card);
+
+            _service.ChangeCardStatus(cardId, statusId, user);
+
+            _cardStatusRepository.VerifyAll();
+            _cardRepository.VerifyAll();
+        }
     }
 }

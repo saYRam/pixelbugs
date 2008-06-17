@@ -147,5 +147,25 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _cardService.VerifyAll();
         }
+
+        [Test]
+        public void Should_update_the_card_status_on_an_ajax_call_from_the_client()
+        {
+            Guid cardId = Guid.NewGuid();
+            Guid statusId = Guid.NewGuid();
+            User user = new User();
+
+            _cardService.Expect(s => s.ChangeCardStatus(cardId, statusId, user)).Returns(new Card());
+
+            Context.CurrentUser = user;
+
+            _controller.UpdateStatus(cardId, statusId);
+
+            Assert.IsNull(_controller.LayoutName);
+            Assert.IsNull(_controller.SelectedViewName);
+
+            _cardService.VerifyAll();
+        }
+
     }
 }

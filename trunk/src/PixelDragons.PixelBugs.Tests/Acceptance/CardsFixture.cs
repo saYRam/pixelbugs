@@ -100,9 +100,9 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             string title = String.Empty;
             foreach (Div div in browser.Divs)
             {
-                if (div.ClassName == "card")
+                if (div.ClassName != null && div.ClassName.Contains("card"))
                 {
-                    title = div.Divs[0].InnerHtml;
+                    title = div.Divs[1].InnerHtml;
                     div.Click();
                     break;
                 }

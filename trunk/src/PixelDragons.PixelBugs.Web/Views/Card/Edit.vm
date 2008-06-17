@@ -3,11 +3,8 @@
 #end
 
 #capturefor(script)
-    Event.observe(window, 'load', function() {   
-        new Validation('form', {
-            immediate: true,
-            useTitles: true
-        });         
+    $(document).ready(function() {
+        $("#form").validate();
     });
 #end
 
@@ -28,7 +25,7 @@ $Form.FormTag("%{action='Update',id='form'}")
     
     <div>
         $Form.LabelFor("card.points", $strings.Labels_Points)
-        $Form.TextField("card.points", "%{class='validate-number', title='$strings.Errors_NumbersOnly'}")
+        $Form.TextField("card.points", "%{class='number', title='$strings.Errors_NumbersOnly'}")
     </div>
     
     <div>
@@ -54,4 +51,4 @@ $Form.FormTag("%{action='Update',id='form'}")
     <div>
         $Form.Submit($strings.Buttons_Save, "%{id='save'}")
     </div>
-$Form.EndFormTag()
+</form>

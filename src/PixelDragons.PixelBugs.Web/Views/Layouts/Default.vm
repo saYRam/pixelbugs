@@ -5,8 +5,8 @@
 
         <link rel="stylesheet" type="text/css" href="$siteroot/Content/Css/Common.css" />
 		
-        <script type="text/javascript" src="$siteroot/Content/Js/prototype.js"></script>
-        <script type="text/javascript" src="$siteroot/Content/Js/validation.js"></script>
+        <script type="text/javascript" src="$siteroot/Content/Js/jquery.js"></script>
+        <script type="text/javascript" src="$siteroot/Content/Js/jquery.validate.js"></script>
 						
 		$!head
 		

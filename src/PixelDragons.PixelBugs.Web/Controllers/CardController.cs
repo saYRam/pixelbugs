@@ -84,5 +84,16 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
             RedirectToAction("Show", new {Id = card.Id} );
         }
+
+        [AjaxAction]
+        [AccessibleThrough(Verb.Post)]
+        [PermissionRequired(Permission.EditCards)]
+        public void UpdateStatus(Guid cardId, Guid statusId)
+        {
+            _cardService.ChangeCardStatus(cardId, statusId, (User)Context.CurrentUser);
+
+            CancelLayout();
+            CancelView();
+        }
     }
 }

@@ -77,5 +77,15 @@ namespace PixelDragons.PixelBugs.Core.Services
         {
             return _cardRepository.FindById(id);
         }
+
+        public Card ChangeCardStatus(Guid cardId, Guid statusId, User user)
+        {
+            Card card = _cardRepository.FindById(cardId);
+            card.Status = _cardStatusRepository.FindById(statusId);
+            
+            _cardRepository.Save(card);
+
+            return card;
+        }
     }
 }

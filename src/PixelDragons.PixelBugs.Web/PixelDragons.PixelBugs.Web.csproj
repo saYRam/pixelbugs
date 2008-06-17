@@ -170,14 +170,17 @@
   <ItemGroup>
     <Content Include="Config\Controllers.config" />
     <Content Include="Content\Css\Common.css" />
-    <Content Include="Content\Js\prototype.js" />
-    <Content Include="Content\Js\validation.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Logging.config" />
     <Content Include="Config\Persistence.config" />
     <Content Include="Config\Filters.config" />
     <Content Include="Config\Services.config" />
+    <Content Include="Content\Js\jquery.js" />
+    <Content Include="Content\Js\jquery.validate.js" />
+    <Content Include="Content\Js\ui.core.js" />
+    <Content Include="Content\Js\ui.draggable.js" />
+    <Content Include="Content\Js\ui.droppable.js" />
     <None Include="Views\Card\Edit.vm" />
     <None Include="Views\Card\Index.vm" />
     <None Include="Views\Card\New.vm" />

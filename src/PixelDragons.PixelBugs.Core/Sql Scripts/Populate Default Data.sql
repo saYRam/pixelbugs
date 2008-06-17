@@ -25,11 +25,10 @@ insert into Role (Id, [Name], [Permissions]) values (@viewOnlyRoleId, 'View Only
 insert into UserRole ([User_Id], [Role_Id]) values (@adminUserId, @adminRoleId)
 insert into UserRole ([User_Id], [Role_Id]) values (@viewOnlyUserId, @viewOnlyRoleId)
 	
-insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'Not Played', 0)
-insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'Played', 1)
-insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'In Development', 2)
-insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'In QA', 3)
-insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'Complete', 4)
+insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'Waiting', 0)
+insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'In Dev', 1)
+insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'In QA', 2)
+insert into CardStatus (Id, [Name], Ordinal) values (newid(), 'Complete', 3)
 
 insert into CardPriority (Id, [Name], Colour) values (newid(), 'High', '#FF3A3A')
 insert into CardPriority (Id, [Name], Colour) values (newid(), 'Medium', '#FFD739')

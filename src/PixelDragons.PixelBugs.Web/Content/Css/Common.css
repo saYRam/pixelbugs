@@ -74,9 +74,12 @@ div#content {
 	padding:10px;
 }
 
-.validation-advice {
-	color:Red;
-	font-weight:bold;
+label.error { 
+	float: none; 
+	color: red; 
+	padding-left: 100px; 
+	vertical-align: top; 
+	width:500px;
 }
 
 div.card {
@@ -106,4 +109,15 @@ div.sideBar {
 
 div.sideBar div {
 	height: 30px;
+}
+
+.droppableHover {
+	background:#efefef;
+}
+
+.handle {
+	border:solid 1px black;
+	background:white;
+	text-align:center;
+	cursor:move;
 }

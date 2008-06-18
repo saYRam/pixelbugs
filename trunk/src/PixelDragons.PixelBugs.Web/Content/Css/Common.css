@@ -1,5 +1,5 @@
 ﻿body {
-	font: normal 13px/1.6em  Tahoma, Verdana, Arial, Helvetica, Sans-Serif;
+	font: normal 13px Tahoma, Verdana, Arial, Helvetica, Sans-Serif;
 	color: #000000;
 	margin: 0px;
 	background: #ffffff;
@@ -58,13 +58,13 @@ input[type=submit] {
 }
 
 textarea {
-	width: 500px;
+	width: 610px;
 	height: 300px;
 	padding:4px;
 }
 
-form div {
-	margin-bottom:20px;
+form div.control {
+	margin-top:20px;
 }
 
 div#content {

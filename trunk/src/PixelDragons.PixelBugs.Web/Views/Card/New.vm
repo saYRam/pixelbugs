@@ -2,51 +2,10 @@
     $strings.Titles_NewCard
 #end
 
-#capturefor(script)
-    $(document).ready(function() {
-        $("#form").validate();
-    });
-#end
-
 <div>$Url.Link($strings.Links_CancelBackToCardWall, "%{action='Index'}")</div>
 
 $Form.FormTag("%{action='Create',id='form'}")
-    <div>
-        $Form.LabelFor("card.title", $strings.Labels_Title)
-        $Form.TextField("card.title", "%{class='required', title='$strings.Errors_RequiredField'}")
-    </div>
     
-    <div>
-        $Form.LabelFor("card.description", $strings.Labels_Description)
-        $Form.TextArea("card.description", "%{class='required', title='$strings.Errors_RequiredField'}")
-    </div>
+    #parse("Card/Partial/Form.vm")
     
-    <div>
-        $Form.LabelFor("card.points", $strings.Labels_Points)
-        $Form.TextField("card.points", "%{class='number', title='$strings.Errors_NumbersOnly'}")
-    </div>
-    
-    <div>
-        $Form.LabelFor("card.owner.id", $strings.Labels_OwnedBy)
-        $Form.Select("card.owner.id", $users, "%{value='Id', text='FullName', firstoption='$strings.Options_NoOwner', firstoptionvalue=''}")
-    </div>
-    
-    <div>
-        $Form.LabelFor("card.type.id", $strings.Labels_Type)
-        $Form.Select("card.type.id", $types, "%{value='Id', text='Name'}")
-    </div>
-    
-    <div>
-        $Form.LabelFor("card.status.id", $strings.Labels_Status)
-        $Form.Select("card.status.id", $statuses, "%{value='Id', text='Name'}")
-    </div>
-    
-    <div>
-        $Form.LabelFor("card.priority.id", $strings.Labels_Priority)
-        $Form.Select("card.priority.id", $priorities, "%{value='Id', text='Name'}")
-    </div>
-    
-    <div>
-        $Form.Submit($strings.Buttons_Save, "%{id='save'}")
-    </div>
 </form>

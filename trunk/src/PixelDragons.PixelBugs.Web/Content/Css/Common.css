@@ -121,3 +121,7 @@ div.sideBar div {
 	text-align:center;
 	cursor:move;
 }
+
+#wait {
+	margin:0 0 5px 10px;
+}

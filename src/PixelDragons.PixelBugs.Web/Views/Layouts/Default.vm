@@ -20,7 +20,7 @@
     </head>
     <body>
     	<div id="content">		
-    	    <h1>$!title</h1>
+    	    <h1>$!title<img src="$siteroot/Content/Images/wait.gif" id="wait" style="display:none;" /></h1>
     	    
 			$childContent
 		</div>					

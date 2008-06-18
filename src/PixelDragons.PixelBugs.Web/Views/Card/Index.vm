@@ -32,6 +32,9 @@
             accept: "div.card",
             hoverClass: "droppableHover",
             drop: function(ev, ui) {
+                //Show the wait animation
+                $("#wait").show();
+
                 //Get the id of the card and the new status id
                 var card = ui.draggable[0];
                 var statusId = this.id;
@@ -47,8 +50,11 @@
                         $("div.card").each(function() {
                             $("#" + this.getAttribute("status")).append(this);
                         });
+                        
+                        $("#wait").hide();
                     },
                     error: function() {
+                        $("#wait").hide();
                         alert("Unable to change the card status");
                     }
                 });

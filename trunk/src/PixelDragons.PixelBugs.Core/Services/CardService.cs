@@ -15,6 +15,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         private IRepository<CardStatus> _cardStatusRepository;
         private IRepository<CardPriority> _cardPriorityRepository;
         private ICardStatusQueries _cardStatusQueries;
+        private ICardPriorityQueries _cardPriorityQueries;
         #endregion
 
         #region Constructors
@@ -24,7 +25,8 @@ namespace PixelDragons.PixelBugs.Core.Services
             IRepository<CardType> cardTypeRepository,
             IRepository<CardStatus> cardStatusRepository,
             IRepository<CardPriority> cardPriorityRepository,
-            ICardStatusQueries cardStatusQueries)
+            ICardStatusQueries cardStatusQueries,
+            ICardPriorityQueries cardPriorityQueries)
         {
             _userRepository = userRepository;
             _cardRepository = cardRepository;
@@ -32,6 +34,7 @@ namespace PixelDragons.PixelBugs.Core.Services
             _cardStatusRepository = cardStatusRepository;
             _cardPriorityRepository = cardPriorityRepository;
             _cardStatusQueries = cardStatusQueries;
+            _cardPriorityQueries = cardPriorityQueries;
         }
         #endregion
 
@@ -70,7 +73,9 @@ namespace PixelDragons.PixelBugs.Core.Services
 
         public CardPriority[] GetCardPriorities()
         {
-            return _cardPriorityRepository.FindAll();
+            DetachedCriteria criteria = _cardPriorityQueries.BuildListQuery();
+
+            return _cardPriorityRepository.FindAll(criteria);
         }
 
         public Card GetCard(Guid id)

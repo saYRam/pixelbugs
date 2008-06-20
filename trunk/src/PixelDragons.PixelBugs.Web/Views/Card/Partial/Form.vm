@@ -7,7 +7,7 @@
         new nicEditor({
             iconsPath: '$siteroot/Content/js/nicEdit/nicEditorIcons.gif',
             buttonList: ['bold','italic','underline','forecolor','left','center','right','ol','ul','fontSize','fontFamily','fontFormat','indent','outdent']
-        }).panelInstance('card_description');
+        }).panelInstance('card_body');
     });
     
     $(document).ready(function() {
@@ -21,7 +21,7 @@
 </div>
 
 <div class="control">
-    $Form.TextArea("card.description")
+    $Form.TextArea("card.body")
 </div>
 
 <div class="control">

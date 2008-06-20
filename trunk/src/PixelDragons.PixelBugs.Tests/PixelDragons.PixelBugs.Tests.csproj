@@ -126,6 +126,7 @@
     <Compile Include="Unit\Filters\AuthenticationFilterFixture.cs" />
     <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
     <Compile Include="Unit\Queries\CardStatusQueriesFixture.cs" />
+    <Compile Include="Unit\Queries\CardPriorityQueriesFixture.cs" />
     <Compile Include="Unit\Queries\UserQueriesFixture.cs" />
     <Compile Include="Unit\Services\CardServiceFixture.cs" />
     <Compile Include="Unit\Services\SimpleSecurityServiceFixture.cs" />

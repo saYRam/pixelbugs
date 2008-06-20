@@ -9,12 +9,12 @@ using NHibernate.Criterion;
 namespace PixelDragons.PixelBugs.Tests.Unit.Queries
 {
     [TestFixture]
-    public class CardStatusQueriesFixture
+    public class CardPriorityQueriesFixture
     {
         [Test]
         public void BuildListQuery_Success()
         {
-            ICardStatusQueries queries = new CardStatusQueries();
+            ICardPriorityQueries queries = new CardPriorityQueries();
 
             DetachedCriteria criteria = queries.BuildListQuery();
 

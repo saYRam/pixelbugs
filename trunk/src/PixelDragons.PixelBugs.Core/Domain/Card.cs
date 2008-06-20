@@ -16,7 +16,7 @@ namespace PixelDragons.PixelBugs.Core.Domain
         public string Title { get; set; }
 
         [Property(SqlType = "NVARCHAR(MAX)")]
-        public string Description { get; set; }
+        public string Body { get; set; }
 
         [Property(NotNull = true)]
         public float Points { get; set; }

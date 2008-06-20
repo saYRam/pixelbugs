@@ -14,5 +14,8 @@ namespace PixelDragons.PixelBugs.Core.Domain
 
         [Property(NotNull = true)]
         public string Colour { get; set; }
+
+        [Property(NotNull = true)]
+        public int Ordinal { get; set; }
     }
 }

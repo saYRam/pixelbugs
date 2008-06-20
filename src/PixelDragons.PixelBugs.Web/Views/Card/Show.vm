@@ -8,7 +8,7 @@
 #end
 
 <div class="main">
-    <div>$card.Description</div>
+    <div>$card.Body</div>
 
     
 </div>

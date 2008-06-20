@@ -20,6 +20,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         Mock<IRepository<CardStatus>> _cardStatusRepository;
         Mock<IRepository<CardPriority>> _cardPriorityRepository;
         Mock<ICardStatusQueries> _cardStatusQueries;
+        Mock<ICardPriorityQueries> _cardPriorityQueries;
 
         [SetUp]
         public void TestSetup()
@@ -30,6 +31,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             _cardStatusRepository = new Mock<IRepository<CardStatus>>();
             _cardPriorityRepository = new Mock<IRepository<CardPriority>>();
             _cardStatusQueries = new Mock<ICardStatusQueries>();
+            _cardPriorityQueries = new Mock<ICardPriorityQueries>();
 
             _service = new CardService(
                 _userRepository.Object, 
@@ -37,7 +39,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
                 _cardTypeRepository.Object,
                 _cardStatusRepository.Object,
                 _cardPriorityRepository.Object,
-                _cardStatusQueries.Object
+                _cardStatusQueries.Object,
+                _cardPriorityQueries.Object
             );
         }
 
@@ -105,11 +108,15 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         public void GetAllCardPriorities_Success()
         {
             CardPriority[] priorities = new CardPriority[] { };
-            _cardPriorityRepository.Expect(r => r.FindAll()).Returns(priorities);
+            DetachedCriteria criteria = DetachedCriteria.For<CardPriority>();
+
+            _cardPriorityQueries.Expect(q => q.BuildListQuery()).Returns(criteria);
+            _cardPriorityRepository.Expect(r => r.FindAll(criteria)).Returns(priorities);
 
             Assert.AreEqual(priorities, _service.GetCardPriorities());
 
             _cardPriorityRepository.VerifyAll();
+            _cardPriorityQueries.VerifyAll();
         }
 
         [Test]

@@ -178,6 +178,8 @@
     <Content Include="Config\Services.config" />
     <Content Include="Content\Js\jquery.js" />
     <Content Include="Content\Js\jquery.validate.js" />
+    <Content Include="Content\Js\nicEdit\nicEdit.js" />
+    <Content Include="Content\Js\nicEdit\nicEditorIcons.gif" />
     <Content Include="Content\Js\ui.core.js" />
     <Content Include="Content\Js\ui.draggable.js" />
     <Content Include="Content\Js\ui.droppable.js" />

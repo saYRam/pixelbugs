@@ -18,10 +18,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 Guid testId = Guid.NewGuid();
                 string title = String.Format("Title {0}", testId);
-                string description = String.Format("Description {0}", testId);
 
                 browser.TextField(Find.ByName("card.title")).TypeText(title);
-                browser.TextField(Find.ByName("card.description")).TypeText(description);
                 browser.SelectList(Find.ByName("card.owner.id")).SelectByValue("");
 
                 browser.Button(Find.ById("save")).Click();
@@ -43,10 +41,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 Guid testId = Guid.NewGuid();
                 string title = String.Format("Title {0}", testId);
-                string description = String.Format("Description {0}", testId);
 
                 browser.TextField(Find.ByName("card.title")).TypeText(title);
-                browser.TextField(Find.ByName("card.description")).TypeText(description);
                 Option owner = browser.SelectList(Find.ByName("card.owner.id")).Option(Find.ByIndex(1));
 
                 Assert.AreEqual(1, owner.Index, "There are no users in this database (can't select the owner");

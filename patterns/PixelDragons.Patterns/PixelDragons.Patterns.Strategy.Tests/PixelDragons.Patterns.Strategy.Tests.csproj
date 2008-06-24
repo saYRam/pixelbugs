@@ -40,8 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="When_cant_fly.cs" />
-    <Compile Include="When_flying_with_wings.cs" />
+    <Compile Include="When_a_redhead_duck_is_in_the_simulator_it.cs" />
+    <Compile Include="When_a_decoy_duck_is_in_the_simulator_it.cs" />
+    <Compile Include="When_a_rubber_duck_is_in_the_simulator_it.cs" />
+    <Compile Include="When_a_mallard_duck_is_in_the_simulator_it.cs" />
+    <Compile Include="When_a_duck_can_squeak_it.cs" />
+    <Compile Include="When_a_duck_can_quack_it.cs" />
+    <Compile Include="When_a_duck_cant_fly_it.cs" />
+    <Compile Include="When_a_duck_cant_quack_it.cs" />
+    <Compile Include="When_a_duck_can_fly_it.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

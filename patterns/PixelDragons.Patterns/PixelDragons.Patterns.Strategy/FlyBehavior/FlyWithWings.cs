@@ -4,7 +4,7 @@
 	{
 		public string Fly()
 		{
-			throw new System.NotImplementedException();
+            return "I'm flying";
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace PixelDragons.Patterns.Strategy.Tests
 {
@@ -16,25 +17,25 @@ namespace PixelDragons.Patterns.Strategy.Tests
         [Test]
         public void Should_quack_like_a_normal_duck()
         {
-            Assert.AreEqual("Quack", redheadDuck.PerformQuack(), "The wrong quacking message was returned");
+            Assert.That(redheadDuck.PerformQuack(), Is.EqualTo("Quack"));
         }
 
         [Test]
         public void Should_be_able_to_fly()
         {
-            Assert.AreEqual("I'm flying", redheadDuck.PerformFly(), "The wrong flying message was returned");
+            Assert.That(redheadDuck.PerformFly(), Is.EqualTo("I'm flying"));
         }
 
         [Test]
         public void Should_be_able_to_swim()
         {
-            Assert.AreEqual("All ducks float, even decoys!", redheadDuck.Swim(), "The wrong swimming message was returned");
+            Assert.That(redheadDuck.Swim(), Is.EqualTo("All ducks float, even decoys!"));
         }
 
         [Test]
         public void Should_look_like_a_redhead_duck()
         {
-            Assert.AreEqual("Displaying of a redhead duck is unique", redheadDuck.Display(), "The display message was returned");
+            Assert.That(redheadDuck.Display(), Is.EqualTo("Displaying of a redhead duck is unique"));
         }
     }
 }

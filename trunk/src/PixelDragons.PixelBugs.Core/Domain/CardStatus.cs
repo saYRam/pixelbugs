@@ -1,6 +1,5 @@
-﻿using Castle.ActiveRecord;
-using System;
-using System.Drawing;
+﻿using System;
+using Castle.ActiveRecord;
 
 namespace PixelDragons.PixelBugs.Core.Domain
 {

@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+﻿using NHibernate.Criterion;
+using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Queries;
-using NHibernate.Criterion;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Queries
 {

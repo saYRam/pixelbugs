@@ -1,48 +1,44 @@
-﻿using Castle.MonoRail.ActiveRecordSupport;
+﻿using System;
+using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Filters;
 using PixelDragons.PixelBugs.Web.Helpers;
-using System;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
 {
     [Layout("Default"), Rescue("GeneralError")]
-    [Helper(typeof(UIHelper), "UI")]
-    [Filter(ExecuteWhen.BeforeAction, typeof(AuthenticationFilter), ExecutionOrder = 0)]
-    [Filter(ExecuteWhen.BeforeAction, typeof(AuthorizationFilter), ExecutionOrder = 1)]
+    [Helper(typeof (UIHelper), "UI")]
+    [Filter(ExecuteWhen.BeforeAction, typeof (AuthenticationFilter), ExecutionOrder = 0)]
+    [Filter(ExecuteWhen.BeforeAction, typeof (AuthorizationFilter), ExecutionOrder = 1)]
     [Resource("strings", "PixelDragons.PixelBugs.Web.Resources.Controllers.CardController")]
     public class CardController : ARSmartDispatcherController
     {
-        #region Properties
-        private ICardService _cardService;
-        #endregion
+        private readonly ICardService cardService;
 
-        #region Constructors
         public CardController(ICardService cardService)
         {
-            _cardService = cardService;
+            this.cardService = cardService;
         }
-        #endregion
 
         [PermissionRequired(Permission.CreateCards)]
         public void New()
         {
-            PropertyBag["users"] = _cardService.GetUsersThatCanOwnCards();
-            PropertyBag["types"] = _cardService.GetCardTypes();
-            PropertyBag["statuses"] = _cardService.GetCardStatuses();
-            PropertyBag["priorities"] = _cardService.GetCardPriorities();
+            PropertyBag["users"] = cardService.GetUsersThatCanOwnCards();
+            PropertyBag["types"] = cardService.GetCardTypes();
+            PropertyBag["statuses"] = cardService.GetCardStatuses();
+            PropertyBag["priorities"] = cardService.GetCardPriorities();
 
             RenderView("New");
         }
 
         [AccessibleThrough(Verb.Post)]
         [PermissionRequired(Permission.CreateCards)]
-        public void Create([ARDataBind("card", AutoLoad=AutoLoadBehavior.OnlyNested)]Card card)
+        public void Create([ARDataBind("card", AutoLoad = AutoLoadBehavior.OnlyNested)] Card card)
         {
-            _cardService.SaveCard(card, (User)Context.CurrentUser);
+            cardService.SaveCard(card, (User) Context.CurrentUser);
 
             RedirectToAction("Index");
         }
@@ -50,8 +46,8 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.ViewCards)]
         public void Index()
         {
-            PropertyBag["cards"] = _cardService.GetCards();
-            PropertyBag["statuses"] = _cardService.GetCardStatuses();
+            PropertyBag["cards"] = cardService.GetCards();
+            PropertyBag["statuses"] = cardService.GetCardStatuses();
 
             RenderView("Index");
         }
@@ -59,7 +55,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.ViewCards)]
         public void Show(Guid id)
         {
-            PropertyBag["card"] = _cardService.GetCard(id);
+            PropertyBag["card"] = cardService.GetCard(id);
 
             RenderView("Show");
         }
@@ -67,22 +63,22 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void Edit(Guid id)
         {
-            PropertyBag["card"] = _cardService.GetCard(id);
-            PropertyBag["users"] = _cardService.GetUsersThatCanOwnCards();
-            PropertyBag["types"] = _cardService.GetCardTypes();
-            PropertyBag["statuses"] = _cardService.GetCardStatuses();
-            PropertyBag["priorities"] = _cardService.GetCardPriorities();
+            PropertyBag["card"] = cardService.GetCard(id);
+            PropertyBag["users"] = cardService.GetUsersThatCanOwnCards();
+            PropertyBag["types"] = cardService.GetCardTypes();
+            PropertyBag["statuses"] = cardService.GetCardStatuses();
+            PropertyBag["priorities"] = cardService.GetCardPriorities();
 
             RenderView("Edit");
         }
 
         [AccessibleThrough(Verb.Post)]
         [PermissionRequired(Permission.EditCards)]
-        public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)]Card card)
+        public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Card card)
         {
-            _cardService.SaveCard(card, (User)Context.CurrentUser);
+            cardService.SaveCard(card, (User) Context.CurrentUser);
 
-            RedirectToAction("Show", new {Id = card.Id} );
+            RedirectToAction("Show", new {Id = card.Id});
         }
 
         [AjaxAction]
@@ -90,7 +86,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void UpdateStatus(Guid cardId, Guid statusId)
         {
-            _cardService.ChangeCardStatus(cardId, statusId, (User)Context.CurrentUser);
+            cardService.ChangeCardStatus(cardId, statusId, (User) Context.CurrentUser);
 
             CancelLayout();
             CancelView();

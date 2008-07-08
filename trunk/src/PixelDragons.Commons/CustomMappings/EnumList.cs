@@ -9,7 +9,7 @@ namespace PixelDragons.Commons.CustomMappings
 {
     public class EnumList<T> : IUserType
     {
-        private int _fieldSize = 1000;
+        private readonly int fieldSize = 1000;
 
         public EnumList()
         {
@@ -17,9 +17,9 @@ namespace PixelDragons.Commons.CustomMappings
 
         public EnumList(int fieldSize)
         {
-            _fieldSize = fieldSize;
+            this.fieldSize = fieldSize;
         }
-        
+
         public object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
             List<T> enums = new List<T>();
@@ -33,9 +33,9 @@ namespace PixelDragons.Commons.CustomMappings
                 {
                     try
                     {
-                        enums.Add((T)Enum.Parse(typeof(T), e, true));
+                        enums.Add((T) Enum.Parse(typeof (T), e, true));
                     }
-                    catch (Exception)
+                    catch
                     {
                         //Can't find a matching enum enum.
                         //Just ignore this one as we might have removed this enum.
@@ -48,7 +48,7 @@ namespace PixelDragons.Commons.CustomMappings
 
         public void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            List<T> enums = (List<T>)value;
+            List<T> enums = (List<T>) value;
 
             string enumsAsString = null;
             if (enums != null && enums.Count > 0)
@@ -74,12 +74,10 @@ namespace PixelDragons.Commons.CustomMappings
             {
                 return null;
             }
-            else
-            {
-                List<T> enums = ((List<T>)value);
+            
+            List<T> enums = ((List<T>) value);
 
-                return new List<T>(enums.ToArray());
-            }
+            return new List<T>(enums.ToArray());
         }
 
         public int GetHashCode(object x)
@@ -92,8 +90,8 @@ namespace PixelDragons.Commons.CustomMappings
             //Compare all elements
             if (x != null && y != null)
             {
-                List<T> list1 = (List<T>)x;
-                List<T> list2 = (List<T>)y;
+                List<T> list1 = (List<T>) x;
+                List<T> list2 = (List<T>) y;
 
                 if (list1.Count == list2.Count)
                 {
@@ -107,10 +105,8 @@ namespace PixelDragons.Commons.CustomMappings
 
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                
+                return false;
             }
 
             return (x == y);
@@ -120,31 +116,31 @@ namespace PixelDragons.Commons.CustomMappings
         {
             get { return false; }
         }
-        
+
         public Type ReturnedType
         {
-            get { return typeof(List<T>); }
+            get { return typeof (List<T>); }
         }
 
         public SqlType[] SqlTypes
         {
-            get { return new SqlType[] { new SqlType(DbType.AnsiString, _fieldSize) }; }
+            get { return new[] {new SqlType(DbType.AnsiString, fieldSize)}; }
         }
 
 
         public object Assemble(object cached, object owner)
         {
-            throw new Exception("The method or operation is not implemented (enumsListType.Assemble).");
+            throw new NotImplementedException("The method or operation is not implemented (enumsListType.Assemble).");
         }
 
         public object Disassemble(object value)
         {
-            throw new Exception("The method or operation is not implemented (enumsListType.Disassemble).");
+            throw new NotImplementedException("The method or operation is not implemented (enumsListType.Disassemble).");
         }
 
         public object Replace(object original, object target, object owner)
         {
-            throw new Exception("The method or operation is not implemented. (enumsListType.Replace)");
+            throw new NotImplementedException("The method or operation is not implemented. (enumsListType.Replace)");
         }
     }
 }

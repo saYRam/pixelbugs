@@ -35,13 +35,13 @@ namespace PixelDragons.Commons.Repositories
 
         public T[] FindAll(Order order, params ICriterion[] criteria)
         {
-            return ActiveRecordMediator<T>.FindAll(new Order[] { order }, criteria);
+            return ActiveRecordMediator<T>.FindAll(new[] {order}, criteria);
         }
 
         public T[] FindAll(DetachedCriteria criteria)
         {
             return ActiveRecordMediator<T>.FindAll(criteria);
-        }        
+        }
 
         public T[] FindAll(Order[] orders, params ICriterion[] criteria)
         {
@@ -55,7 +55,7 @@ namespace PixelDragons.Commons.Repositories
 
         public T[] FindAllByProperty(string property, object value)
         {
-            return (T[])ActiveRecordMediator<T>.FindAllByProperty(typeof(T), property, value);
+            return (T[]) ActiveRecordMediator<T>.FindAllByProperty(typeof (T), property, value);
         }
 
         public T[] SlicedFind(int firstResult, int maxResults, Order[] orders, params ICriterion[] criteria)
@@ -64,11 +64,13 @@ namespace PixelDragons.Commons.Repositories
         }
 
         public SliceAndCount<T> SlicedFindWithTotalCount(int firstResult, int maxResults, Order[] orders, params ICriterion[] criteria)
-        { 
-            SliceAndCount<T> sliceAndCount = new SliceAndCount<T>();
-
-            sliceAndCount.TotalCount = ActiveRecordMediator<T>.Count(criteria);     //May need to clone the criteria, see link: http://groups.google.com/group/castle-project-users/browse_thread/thread/39f9b4e9fa5e6e3f#
-            sliceAndCount.Slice = SlicedFind(firstResult, maxResults, orders, criteria);
+        {
+            //May need to clone the criteria, see link: http://groups.google.com/group/castle-project-users/browse_thread/thread/39f9b4e9fa5e6e3f#
+            SliceAndCount<T> sliceAndCount = new SliceAndCount<T>
+            {
+                TotalCount = ActiveRecordMediator<T>.Count(criteria),
+                Slice = SlicedFind(firstResult, maxResults, orders, criteria)
+            };
 
             return sliceAndCount;
         }
@@ -77,7 +79,7 @@ namespace PixelDragons.Commons.Repositories
         {
             page = (page == 0) ? 1 : page;
 
-            int firstResult = ((page - 1) * pageSize);
+            int firstResult = ((page - 1)*pageSize);
 
             SliceAndCount<T> entities = SlicedFindWithTotalCount(firstResult, pageSize, orders, criteria);
 

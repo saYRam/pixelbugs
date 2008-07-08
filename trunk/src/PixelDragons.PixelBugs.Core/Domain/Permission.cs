@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PixelDragons.PixelBugs.Core.Domain
+﻿namespace PixelDragons.PixelBugs.Core.Domain
 {
     public enum Permission
     {

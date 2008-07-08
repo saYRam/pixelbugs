@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using WatiN.Core;
 using PixelDragons.Commons.TestSupport;
+using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
@@ -14,7 +14,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         {
             helper = new AcceptanceHelper();
         }
-        
+
         [Test]
         public void Should_display_access_denied_view_when_accessing_page_without_correct_permissions()
         {
@@ -27,11 +27,13 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("signIn")).Click();
 
-                Assert.That(browser.ContainsText("New Card"), Is.False, "The new card link was not hidden. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("New Card"), Is.False,
+                            "The new card link was not hidden. The html is: {0}", browser.Html);
 
                 browser.GoTo(BuildUrl("Card", "New"));
 
-                Assert.That(browser.ContainsText("Access Denied"), Is.True, "Access Denied title is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("Access Denied"), Is.True,
+                            "Access Denied title is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -41,7 +43,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             //Go to the sign in page a sign in with correct username and password. Confirm that we are on the card wall page.
             using (IE browser = helper.SignIn())
             {
-                Assert.That(browser.ContainsText("Card Wall"), Is.True, "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("Card Wall"), Is.True,
+                            "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -56,7 +59,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("signIn")).Click();
 
-                Assert.That(browser.ContainsText("You entered an invalid user name or password"), Is.True, "Invalid credentials error message is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("You entered an invalid user name or password"), Is.True,
+                            "Invalid credentials error message is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -68,7 +72,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 //Navigating to the sign out page should clear out token cookie, so try to access a protected page
                 browser.GoTo(BuildUrl("Card", "Index"));
 
-                Assert.That(browser.ContainsText("Access Denied"), Is.True, "Access Denied title is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("Access Denied"), Is.True,
+                            "Access Denied title is not present. The html is: {0}", browser.Html);
             }
         }
     }

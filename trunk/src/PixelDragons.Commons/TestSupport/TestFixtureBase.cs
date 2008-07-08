@@ -4,15 +4,15 @@ namespace PixelDragons.Commons.TestSupport
 {
     public abstract class TestFixtureBase
     {
-        protected string Server { get; set; }
-        protected string Port { get; set; }
-        protected string Extension { get; set; }
+        protected string server;
+        protected string port;
+        protected string extension;
 
-        public TestFixtureBase()
+        protected TestFixtureBase()
         {
-            this.Server = ConfigurationManager.AppSettings["server"] ?? "localhost";
-            this.Port = ConfigurationManager.AppSettings["port"] ?? "80";
-            this.Extension = ConfigurationManager.AppSettings["extension"] ?? "rails";
+            server = ConfigurationManager.AppSettings["server"] ?? "localhost";
+            port = ConfigurationManager.AppSettings["port"] ?? "80";
+            extension = ConfigurationManager.AppSettings["extension"] ?? "rails";
         }
     }
 }

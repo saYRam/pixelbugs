@@ -11,16 +11,12 @@ namespace PixelDragons.PixelBugs.Web.Controllers
     [Resource("strings", "PixelDragons.PixelBugs.Web.Resources.Controllers.SecurityController")]
     public class SecurityController : ARSmartDispatcherController
     {
-        #region Properties
-        private ISecurityService _securityService;
-        #endregion
+        private readonly ISecurityService securityService;
 
-        #region Constructors
         public SecurityController(ISecurityService securityService)
         {
-            _securityService = securityService;
+            this.securityService = securityService;
         }
-        #endregion
 
         public void Index()
         {
@@ -31,13 +27,13 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         {
             try
             {
-                string token = _securityService.Authenticate(userName, password);
+                string token = securityService.Authenticate(userName, password);
 
                 StoreTokenCookie(token);
 
                 Redirect("Card", "Index");
             }
-            catch(SecurityException)
+            catch (SecurityException)
             {
                 Flash["error"] = "InvalidCredentials";
 
@@ -55,7 +51,6 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             RenderView("AccessDenied");
         }
 
-        #region Helper Methods
         private void ClearTokenCookieAndRedirect()
         {
             Response.RemoveCookie("token");
@@ -64,11 +59,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
         private void StoreTokenCookie(string token)
         {
-            HttpCookie tokenCookie = new HttpCookie("token", token);
-            tokenCookie.Expires = DateTime.Now.AddYears(1);
+            HttpCookie tokenCookie = new HttpCookie("token", token) { Expires = DateTime.Now.AddYears(1) };
 
             Response.CreateCookie(tokenCookie);
         }
-        #endregion
     }
 }

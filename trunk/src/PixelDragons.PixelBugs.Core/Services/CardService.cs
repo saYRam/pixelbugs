@@ -1,26 +1,23 @@
 ﻿using System;
-using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.Commons.Repositories;
 using NHibernate.Criterion;
+using PixelDragons.Commons.Repositories;
+using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Queries;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {
     public class CardService : ICardService
     {
-        #region Properties
-        private IRepository<User> _userRepository;
-        private IRepository<Card> _cardRepository;
-        private IRepository<CardType> _cardTypeRepository;
-        private IRepository<CardStatus> _cardStatusRepository;
-        private IRepository<CardPriority> _cardPriorityRepository;
-        private ICardStatusQueries _cardStatusQueries;
-        private ICardPriorityQueries _cardPriorityQueries;
-        #endregion
+        private readonly IRepository<User> userRepository;
+        private readonly IRepository<Card> cardRepository;
+        private readonly IRepository<CardType> cardTypeRepository;
+        private readonly IRepository<CardStatus> cardStatusRepository;
+        private readonly IRepository<CardPriority> cardPriorityRepository;
+        private readonly ICardStatusQueries cardStatusQueries;
+        private readonly ICardPriorityQueries cardPriorityQueries;
 
-        #region Constructors
         public CardService(
-            IRepository<User> userRepository, 
+            IRepository<User> userRepository,
             IRepository<Card> cardRepository,
             IRepository<CardType> cardTypeRepository,
             IRepository<CardStatus> cardStatusRepository,
@@ -28,24 +25,23 @@ namespace PixelDragons.PixelBugs.Core.Services
             ICardStatusQueries cardStatusQueries,
             ICardPriorityQueries cardPriorityQueries)
         {
-            _userRepository = userRepository;
-            _cardRepository = cardRepository;
-            _cardTypeRepository = cardTypeRepository;
-            _cardStatusRepository = cardStatusRepository;
-            _cardPriorityRepository = cardPriorityRepository;
-            _cardStatusQueries = cardStatusQueries;
-            _cardPriorityQueries = cardPriorityQueries;
+            this.userRepository = userRepository;
+            this.cardRepository = cardRepository;
+            this.cardTypeRepository = cardTypeRepository;
+            this.cardStatusRepository = cardStatusRepository;
+            this.cardPriorityRepository = cardPriorityRepository;
+            this.cardStatusQueries = cardStatusQueries;
+            this.cardPriorityQueries = cardPriorityQueries;
         }
-        #endregion
 
         public Card[] GetCards()
         {
-            return _cardRepository.FindAll();
+            return cardRepository.FindAll();
         }
 
         public User[] GetUsersThatCanOwnCards()
         {
-            return _userRepository.FindAll();
+            return userRepository.FindAll();
         }
 
         public Card SaveCard(Card card, User currentUser)
@@ -56,39 +52,39 @@ namespace PixelDragons.PixelBugs.Core.Services
                 card.CreatedBy = currentUser;
             }
 
-            return _cardRepository.Save(card);
+            return cardRepository.Save(card);
         }
 
         public CardType[] GetCardTypes()
         {
-            return _cardTypeRepository.FindAll();
+            return cardTypeRepository.FindAll();
         }
 
         public CardStatus[] GetCardStatuses()
         {
-            DetachedCriteria criteria = _cardStatusQueries.BuildListQuery();
-            
-            return _cardStatusRepository.FindAll(criteria);
+            DetachedCriteria criteria = cardStatusQueries.BuildListQuery();
+
+            return cardStatusRepository.FindAll(criteria);
         }
 
         public CardPriority[] GetCardPriorities()
         {
-            DetachedCriteria criteria = _cardPriorityQueries.BuildListQuery();
+            DetachedCriteria criteria = cardPriorityQueries.BuildListQuery();
 
-            return _cardPriorityRepository.FindAll(criteria);
+            return cardPriorityRepository.FindAll(criteria);
         }
 
         public Card GetCard(Guid id)
         {
-            return _cardRepository.FindById(id);
+            return cardRepository.FindById(id);
         }
 
         public Card ChangeCardStatus(Guid cardId, Guid statusId, User user)
         {
-            Card card = _cardRepository.FindById(cardId);
-            card.Status = _cardStatusRepository.FindById(statusId);
-            
-            _cardRepository.Save(card);
+            Card card = cardRepository.FindById(cardId);
+            card.Status = cardStatusRepository.FindById(statusId);
+
+            cardRepository.Save(card);
 
             return card;
         }

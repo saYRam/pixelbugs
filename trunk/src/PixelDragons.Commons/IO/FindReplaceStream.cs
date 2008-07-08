@@ -3,38 +3,38 @@ using System.IO;
 using System.Text;
 
 //http://www.codeproject.com/aspnet/RemovingWhiteSpacesAspNet.asp
+
 namespace PixelDragons.Commons.IO
 {
     public class FindReplaceStream : Stream
     {
-        private Stream _stream;
-        private StreamWriter _writer;
-        private string _find;
-        private string _replace;
-        private Encoding _encoding;
+        private readonly Stream stream;
+        private readonly StreamWriter writer;
+        private readonly string find;
+        private readonly string replace;
+        private readonly Encoding encoding;
 
         public FindReplaceStream(Stream stream, Encoding encoding, string find, string replace)
         {
-            _stream = stream;
-            _encoding = encoding;
-            _writer = new StreamWriter(_stream, _encoding);
-            _find = find;
-            _replace = replace;
+            this.stream = stream;
+            this.encoding = encoding;
+            writer = new StreamWriter(this.stream, this.encoding);
+            this.find = find;
+            this.replace = replace;
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
             MemoryStream ms = new MemoryStream(buffer, offset, count, false);
-            StreamReader sr = new StreamReader(ms, _encoding);
+            StreamReader sr = new StreamReader(ms, encoding);
 
             string html = sr.ReadToEnd();
-            html = html.Replace(_find, _replace);
+            html = html.Replace(find, replace);
 
-            _writer.Write(html);
-            _writer.Flush();            
+            writer.Write(html);
+            writer.Flush();
         }
 
-        #region Overrides
         //This stream is write-only
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -42,23 +42,23 @@ namespace PixelDragons.Commons.IO
         }
 
         public override bool CanRead
-        { 
-            get { return false; } 
+        {
+            get { return false; }
         }
 
         public override bool CanSeek
-        { 
-            get { return false; } 
+        {
+            get { return false; }
         }
 
         public override bool CanWrite
-        { 
-            get { return true; } 
+        {
+            get { return true; }
         }
 
         public override long Length
-        { 
-            get { throw new NotSupportedException(); } 
+        {
+            get { throw new NotSupportedException(); }
         }
 
         public override long Position
@@ -69,7 +69,7 @@ namespace PixelDragons.Commons.IO
 
         public override void Flush()
         {
-            _stream.Flush();
+            stream.Flush();
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -81,7 +81,5 @@ namespace PixelDragons.Commons.IO
         {
             throw new NotSupportedException();
         }
-
-        #endregion
     }
 }

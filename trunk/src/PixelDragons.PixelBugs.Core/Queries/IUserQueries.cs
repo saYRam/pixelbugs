@@ -1,5 +1,4 @@
-﻿using System;
-using NHibernate.Criterion;
+﻿using NHibernate.Criterion;
 
 namespace PixelDragons.PixelBugs.Core.Queries
 {

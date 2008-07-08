@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Moq;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
@@ -11,7 +12,7 @@ using System;
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 {
     [TestFixture]
-    public class AuthorizationFilterFixture : FilterUnitTestBase
+    public class When_calling_an_action_that_requires_authorization : FilterUnitTestBase
     {
         [SetUp]
         public void TestSetup()
@@ -25,51 +26,45 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         }
 
         [Test]
-        public void Perform_NoPrinciple()
+        public void Should_redirect_to_the_access_denied_view_if_there_is_no_principle()
         {
-            Assert.IsFalse(ExecuteFilter());
-            Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
+            Assert.That(ExecuteFilter(), Is.False);
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"), "The filter did not redirect correctly");
         }
 
         [Test]
-        public void Perform_PrincipleDoesNotHavePermission()
+        public void Should_redirect_to_the_access_denied_view_if_the_principle_does_not_have_the_correct_permission()
         {
             _controller.Context.CurrentUser = new User();
 
-            Assert.IsFalse(ExecuteFilter());
-            Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
+            Assert.That(ExecuteFilter(), Is.False);
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"), "The filter did not redirect correctly");
         }
 
         [Test]
-        public void Perform_PrincipleHasPermission()
+        public void Should_allow_execution_to_continue_if_the_principle_has_the_correct_permissions()
         {
-            User user = new User();
-            user.FirstName = "Andy";
-            user.LastName = "Pike";
-
-            user.Roles = new List<Role>();
-            user.Roles.Add(new Role());
-            user.Roles[0].Permissions = new List<Permission>();
-            user.Roles[0].Permissions.Add(Permission.CreateCards);
+            User user = new User {FirstName = "Andy", LastName = "Pike", Roles = new List<Role> {new Role()}};
+            user.Roles[0].Permissions = new List<Permission> {Permission.CreateCards};
 
             _controller.Context.CurrentUser = user;
 
-            Assert.IsTrue(ExecuteFilter(), "The filter did not allow execution to continue");
+            Assert.That(ExecuteFilter(), Is.True, "The filter did not allow execution to continue");
         }
 
         [Test]
-        public void Perform_ActionHasNoPermissionRequirements_AndNoPrinciple()
+        public void Should_allow_execution_to_continue_if_the_action_has_no_permission_requirements()
         {
             Mock<ISecurityService> securityService = new Mock<ISecurityService>();
             _controller = new SecurityController(securityService.Object);
             PrepareController(_controller, "Security", "Index");
 
-            Assert.IsTrue(ExecuteFilter(), "The filter did not allow execution to continue");
+            Assert.That(ExecuteFilter(), Is.True, "The filter did not allow execution to continue");
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Perform_NoActionInformation()
+        public void Should_throw_an_exception_if_the_action_information_cannot_be_retrieved()
         {
             Mock<ISecurityService> securityService = new Mock<ISecurityService>();
             _controller = new SecurityController(securityService.Object);

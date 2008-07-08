@@ -1,6 +1,7 @@
 ﻿using System.Web;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Moq;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
@@ -10,12 +11,13 @@ using PixelDragons.PixelBugs.Web.Filters;
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 {
     [TestFixture]
-    public class AuthenticationFilterFixture : FilterUnitTestBase
+    public class When_calling_an_action_that_requires_authentication : FilterUnitTestBase
     {
         Mock<ISecurityService> _securityService;
+        private const string token = "ABC123";
 
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
             Mock<ICardService> cardService = new Mock<ICardService>();
             _securityService = new Mock<ISecurityService>();
@@ -27,25 +29,24 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         }
 
         [Test]
-        public void Perform_Success()
+        public void Should_allow_execution_to_continue_if_a_valid_security_token_is_read_from_a_cookie()
         {
-            string token = "ABC123";
             User user = new User();
 
             _securityService.Expect(s => s.GetAuthenticatedUserFromToken(token)).Returns(user);
             
             Cookies.Add("token", new HttpCookie("token", token));
-                        
-            Assert.IsTrue(ExecuteFilter(), "The filter returned false");
-            Assert.AreEqual(user, Context.CurrentUser, "The current user wasn't stored in the context");
-            Assert.AreEqual(user, _controller.PropertyBag["currentUser"], "The property bag doesn't contain the current user");
+
+            Assert.That(ExecuteFilter(), Is.True, "The filter returned false");
+            Assert.That(Context.CurrentUser, Is.EqualTo(user), "The current user wasn't stored in the context");
+            Assert.That(_controller.PropertyBag["currentUser"], Is.EqualTo(user), "The property bag doesn't contain the current user");
         }
 
         [Test]
-        public void Perform_EmptyCookie()
+        public void Should_redirect_to_the_access_denied_view_if_there_is_no_valid_security_token_cookie()
         {
-            Assert.IsFalse(ExecuteFilter(), "The filter returned true");
-            Assert.AreEqual(@"/Security/AccessDenied.ashx", Response.RedirectedTo, "The filter did not redirect correctly");
+            Assert.That(ExecuteFilter(), Is.False, "The filter returned true");
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"), "The filter did not redirect correctly");
         }
     }
 }

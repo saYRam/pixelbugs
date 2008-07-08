@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Configuration;
-using System.Threading;
-using MbUnit.Framework;
+using NUnit.Framework;
 
 namespace PixelDragons.Commons.TestSupport
 {
-    [TestFixture(ApartmentState = ApartmentState.STA)]
+    [TestFixture]
     public abstract class AcceptanceTestBase : TestFixtureBase
     {
         protected string BuildUrl(string controller, string action)

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Security;
-using MbUnit.Framework;
+using NUnit.Framework;
 using Moq;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 using NHibernate.Criterion;
@@ -11,7 +12,7 @@ using PixelDragons.PixelBugs.Core.Queries;
 namespace PixelDragons.PixelBugs.Tests.Unit.Services
 {
     [TestFixture]
-    public class SimpleSecurityServiceFixture
+    public class When_authenticating_a_user
     {
         SimpleSecurityService _service;
         Mock<IRepository<User>> _userRepositoty;
@@ -26,9 +27,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         }
 
         [Test]
-        public void Authenticate_Success()
+        public void Should_create_a_security_token_if_user_credentials_are_valid()
         {
-            User[] users = new User[] { new User() };
+            User[] users = new[] { new User() };
             users[0].Id = Guid.NewGuid();
 
             DetachedCriteria criterion = DetachedCriteria.For<User>();
@@ -38,7 +39,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             string token = _service.Authenticate("userName", "password");
 
-            Assert.AreEqual(users[0].Id.ToString(), token);
+            Assert.That(token, Is.EqualTo(users[0].Id.ToString()));
 
             _userQueries.VerifyAll();
             _userRepositoty.VerifyAll();
@@ -46,7 +47,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
         [Test]
         [ExpectedException(typeof(SecurityException))]
-        public void Authenticate_InvalidCredentials()
+        public void Should_throw_an_exception_if_user_credentials_are_invalid()
         {
             DetachedCriteria criterion = DetachedCriteria.For<User>();
 
@@ -57,24 +58,23 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         }
 
         [Test]
-        public void GetAuthenticatedUserFromToken_Success()
+        public void Should_retrieve_a_user_from_a_valid_security_token()
         {
-            User user = new User();
-            user.Id = Guid.NewGuid();
+            User user = new User {Id = Guid.NewGuid()};
 
             _userRepositoty.Expect(r => r.FindById(user.Id)).Returns(user);
 
             User authenticatedUser = _service.GetAuthenticatedUserFromToken(user.Id.ToString());
 
-            Assert.AreEqual(user, authenticatedUser);
+            Assert.That(authenticatedUser, Is.EqualTo(user));
         }
 
         [Test]
-        public void GetAuthenticatedUserFromToken_InvalidToken()
+        public void Should_return_null_for_an_invalid_security_token()
         {
             User authenticatedUser = _service.GetAuthenticatedUserFromToken("invalid token");
 
-            Assert.IsNull(authenticatedUser);
+            Assert.That(authenticatedUser, Is.Null);
         }
     }
 }

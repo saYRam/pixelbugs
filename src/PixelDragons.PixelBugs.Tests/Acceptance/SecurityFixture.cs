@@ -1,11 +1,20 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using WatiN.Core;
 using PixelDragons.Commons.TestSupport;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
-    public class SecurityFixture : AcceptanceTestBase
+    public class When_trying_to_access_the_application : AcceptanceTestBase
     {
+        private AcceptanceHelper helper;
+
+        [SetUp]
+        public void Setup()
+        {
+            helper = new AcceptanceHelper();
+        }
+        
         [Test]
         public void Should_display_access_denied_view_when_accessing_page_without_correct_permissions()
         {
@@ -18,11 +27,11 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("signIn")).Click();
 
-                Assert.IsFalse(browser.ContainsText("New Card"), "The new card link was not hidden. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("New Card"), Is.False, "The new card link was not hidden. The html is: {0}", browser.Html);
 
-                browser.GoTo(BuildUrl("Card", "New")); 
-                
-                Assert.IsTrue(browser.ContainsText("Access Denied"), "Access Denied title is not present. The html is: {0}", browser.Html);
+                browser.GoTo(BuildUrl("Card", "New"));
+
+                Assert.That(browser.ContainsText("Access Denied"), Is.True, "Access Denied title is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -30,9 +39,9 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         public void Should_sign_in_successfully_with_correct_credentials()
         {
             //Go to the sign in page a sign in with correct username and password. Confirm that we are on the card wall page.
-            using (IE browser = SignIn())
+            using (IE browser = helper.SignIn())
             {
-                Assert.IsTrue(browser.ContainsText("Card Wall"), "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("Card Wall"), Is.True, "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -47,7 +56,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("signIn")).Click();
 
-                Assert.IsTrue(browser.ContainsText("You entered an invalid user name or password"), "Invalid credentials error message is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("You entered an invalid user name or password"), Is.True, "Invalid credentials error message is not present. The html is: {0}", browser.Html);
             }
         }
 
@@ -59,25 +68,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 //Navigating to the sign out page should clear out token cookie, so try to access a protected page
                 browser.GoTo(BuildUrl("Card", "Index"));
 
-                Assert.IsTrue(browser.ContainsText("Access Denied"), "Access Denied title is not present. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText("Access Denied"), Is.True, "Access Denied title is not present. The html is: {0}", browser.Html);
             }
-        }
-
-        public IE SignIn()
-        {
-            IE browser = new IE(BuildUrl("Security", "Index"));
-
-            browser.TextField(Find.ByName("userName")).TypeText("test.admin");
-            browser.TextField(Find.ByName("password")).TypeText("password");
-
-            browser.Button(Find.ById("signIn")).Click();
-
-            return browser;
-        }
-
-        public void SignOut(IE browser)
-        {
-            browser.GoTo(BuildUrl("Security", "SignOut"));
         }
     }
 }

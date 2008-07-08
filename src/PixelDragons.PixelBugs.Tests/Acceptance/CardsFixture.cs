@@ -1,18 +1,25 @@
 ﻿using System;
-using MbUnit.Framework;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using WatiN.Core;
 using PixelDragons.Commons.TestSupport;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
-    public class CardsFixture : AcceptanceTestBase
+    public class When_creating_a_new_card : AcceptanceTestBase
     {
+        private AcceptanceHelper helper;
+
+        [SetUp]
+        public void Setup()
+        {
+            helper = new AcceptanceHelper();
+        }
+
         [Test]
         public void Should_complete_the_new_card_form_without_selecting_an_owner()
         {
-            SecurityFixture security = new SecurityFixture();
-            
-            using (IE browser = security.SignIn())
+            using (IE browser = helper.SignIn())
             {
                 browser.GoTo(BuildUrl("Card", "New"));
 
@@ -24,18 +31,16 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.IsTrue(browser.ContainsText(title), "Unable to find the title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(title), Is.True, "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
-                security.SignOut(browser);
+                helper.SignOut(browser);
             }
         }
 
         [Test]
         public void Should_complete_the_new_card_form_including_selecting_an_owner()
         {
-            SecurityFixture security = new SecurityFixture();
-
-            using (IE browser = security.SignIn())
+            using (IE browser = helper.SignIn())
             {
                 browser.GoTo(BuildUrl("Card", "New"));
 
@@ -45,35 +50,34 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 browser.TextField(Find.ByName("card.title")).TypeText(title);
                 Option owner = browser.SelectList(Find.ByName("card.owner.id")).Option(Find.ByIndex(1));
 
-                Assert.AreEqual(1, owner.Index, "There are no users in this database (can't select the owner");
+                Assert.That(1, Is.EqualTo(owner.Index), "There are no users in this database (can't select the owner");
 
                 owner.Select();
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.IsTrue(browser.ContainsText(title), "Unable to find the title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(title), Is.True, "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
-                security.SignOut(browser);
+                helper.SignOut(browser);
             }
         }
 
-        [Test]
-        public void Should_click_the_first_card_on_the_wall_and_then_display_its_show_view()
-        {
-            SecurityFixture security = new SecurityFixture();
+    }
 
-            using (IE browser = security.SignIn())
-            {
-                GoToCardWallAndClickFirstCard(browser);
-            }
+    public class When_editing_a_new_card : AcceptanceTestBase
+    {
+        private AcceptanceHelper helper;
+
+        [SetUp]
+        public void Setup()
+        {
+            helper = new AcceptanceHelper();
         }
 
         [Test]
         public void Should_view_the_first_card_on_the_wall_then_edit_the_card_title()
         {
-            SecurityFixture security = new SecurityFixture();
-
-            using (IE browser = security.SignIn())
+            using (IE browser = helper.SignIn())
             {
                 GoToCardWallAndClickFirstCard(browser);
 
@@ -85,7 +89,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.IsTrue(browser.ContainsText(newTitle), "Unable to find the new title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(newTitle), Is.True, "Unable to find the new title text confirmation. The html is: {0}", browser.Html);
             }
         }
 
@@ -104,7 +108,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 }
             }
 
-            Assert.IsTrue(browser.ContainsText(title), "Unable to find the correct page title. The html is: {0}", browser.Html);
+            Assert.That(browser.ContainsText(title), Is.True, "Unable to find the correct page title. The html is: {0}", browser.Html);
         }
     }
 }

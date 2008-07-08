@@ -1,5 +1,6 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
 using Moq;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
@@ -9,13 +10,13 @@ using System;
 namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 {
     [TestFixture]
-    public class CardControllerFixture : ControllerUnitTestBase
+    public class When_creating_a_new_card : ControllerUnitTestBase
     {
         CardController _controller;
         Mock<ICardService> _cardService;
 
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
             _cardService = new Mock<ICardService>();
 
@@ -24,7 +25,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         }
 
         [Test]
-        public void New_Success()
+        public void Should_populate_property_bag_and_render_new_view()
         { 
             User[] users = new User[] { };
             CardType[] types = new CardType[] { };
@@ -38,17 +39,17 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.New();
 
-            Assert.AreEqual(users, _controller.PropertyBag["users"], "The property bag doesn't contain the users list");
-            Assert.AreEqual(types, _controller.PropertyBag["types"], "The property bag doesn't contain the types list");
-            Assert.AreEqual(statuses, _controller.PropertyBag["statuses"], "The property bag doesn't contain the statuses list");
-            Assert.AreEqual(priorities, _controller.PropertyBag["priorities"], "The property bag doesn't contain the priorities list");
-            Assert.AreEqual(@"Card\New", _controller.SelectedViewName, "The wrong view was rendered");
+            Assert.That(_controller.PropertyBag["users"], Is.EqualTo(users), "The property bag doesn't contain the users list");
+            Assert.That(_controller.PropertyBag["types"], Is.EqualTo(types), "The property bag doesn't contain the types list");
+            Assert.That(_controller.PropertyBag["statuses"], Is.EqualTo(statuses), "The property bag doesn't contain the statuses list");
+            Assert.That(_controller.PropertyBag["priorities"], Is.EqualTo(priorities), "The property bag doesn't contain the priorities list");
+            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Card\New"), "The wrong view was rendered");
 
             _cardService.VerifyAll();
         }
 
         [Test]
-        public void Create_Success()
+        public void Should_save_the_new_card_and_redirect_to_the_card_wall()
         {
             Card card = new Card();
             User user = new User();
@@ -59,13 +60,29 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.Create(card);
 
-            Assert.AreEqual(@"/Card/Index.ashx", Response.RedirectedTo, "The action did not redirect correctly");
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Card/Index.ashx"), "The action did not redirect correctly");
 
             _cardService.VerifyAll();
         }
+    }
+
+    [TestFixture]
+    public class When_editing_an_existing_card : ControllerUnitTestBase
+    {
+        CardController _controller;
+        Mock<ICardService> _cardService;
+
+        [SetUp]
+        public void Setup()
+        {
+            _cardService = new Mock<ICardService>();
+
+            _controller = new CardController(_cardService.Object);
+            PrepareController(_controller, "Card");
+        }
 
         [Test]
-        public void Index_Success()
+        public void Should_populate_the_property_bag_and_render_the_card_wall_view()
         {
             Card[] cards = new Card[] { };
             CardStatus[] statuses = new CardStatus[] { };
@@ -75,36 +92,32 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.Index();
 
-            Assert.AreEqual(cards, _controller.PropertyBag["cards"], "The property bag doesn't contain the cards list");
-            Assert.AreEqual(statuses, _controller.PropertyBag["statuses"], "The property bag doesn't contain the statuses");
-            Assert.AreEqual(@"Card\Index", _controller.SelectedViewName, "The wrong view was rendered");
+            Assert.That(_controller.PropertyBag["cards"], Is.EqualTo(cards), "The property bag doesn't contain the cards list");
+            Assert.That(_controller.PropertyBag["statuses"], Is.EqualTo(statuses), "The property bag doesn't contain the statuses");
+            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Card\Index"), "The wrong view was rendered");
 
             _cardService.VerifyAll();
         }
 
         [Test]
-        public void Show_Success()
+        public void Should_populate_the_property_bag_and_render_the_show_card_view()
         {
             Guid id = Guid.NewGuid();
-
-            Card card = new Card();
-            card.Id = id;
+            Card card = new Card {Id = id};
 
             _cardService.Expect(s => s.GetCard(id)).Returns(card);
 
             _controller.Show(id);
 
-            Assert.AreEqual(card, _controller.PropertyBag["card"], "The property bag doesn't contain the card");
-            Assert.AreEqual(@"Card\Show", _controller.SelectedViewName, "The wrong view was rendered");
+            Assert.That(_controller.PropertyBag["card"], Is.EqualTo(card), "The property bag doesn't contain the card");
+            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Card\Show"), "The wrong view was rendered");
         }
 
         [Test]
-        public void Edit_Success()
+        public void Should_populate_the_property_bag_and_render_the_edit_card_view()
         {
             Guid id = Guid.NewGuid();
-
-            Card card = new Card();
-            card.Id = id;
+            Card card = new Card {Id = id};
 
             User[] users = new User[] { };
             CardType[] types = new CardType[] { };
@@ -119,22 +132,20 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.Edit(id);
 
-            Assert.AreEqual(card, _controller.PropertyBag["card"], "The property bag doesn't contain the card");
-            Assert.AreEqual(users, _controller.PropertyBag["users"], "The property bag doesn't contain the users list");
-            Assert.AreEqual(types, _controller.PropertyBag["types"], "The property bag doesn't contain the types list");
-            Assert.AreEqual(statuses, _controller.PropertyBag["statuses"], "The property bag doesn't contain the statuses list");
-            Assert.AreEqual(priorities, _controller.PropertyBag["priorities"], "The property bag doesn't contain the priorities list");
-            Assert.AreEqual(@"Card\Edit", _controller.SelectedViewName, "The wrong view was rendered");
+            Assert.That(_controller.PropertyBag["card"], Is.EqualTo(card), "The property bag doesn't contain the card");
+            Assert.That(_controller.PropertyBag["users"], Is.EqualTo(users), "The property bag doesn't contain the users list");
+            Assert.That(_controller.PropertyBag["types"], Is.EqualTo(types), "The property bag doesn't contain the types list");
+            Assert.That(_controller.PropertyBag["statuses"], Is.EqualTo(statuses), "The property bag doesn't contain the statuses list");
+            Assert.That(_controller.PropertyBag["priorities"], Is.EqualTo(priorities), "The property bag doesn't contain the priorities list");
+            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Card\Edit"), "The wrong view was rendered");
 
             _cardService.VerifyAll();
         }
 
         [Test]
-        public void Update_Success()
+        public void Should_save_the_edited_card_and_redirect_to_the_card_wall()
         {
-            Card card = new Card();
-            card.Id = Guid.NewGuid();
-
+            Card card = new Card {Id = Guid.NewGuid()};
             User user = new User();
 
             _cardService.Expect(s => s.SaveCard(card, user)).Returns(card);
@@ -143,7 +154,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.Update(card);
 
-            Assert.AreEqual(String.Format(@"/Card/Show.ashx?Id={0}", card.Id), Response.RedirectedTo, "The action did not redirect correctly");
+            Assert.That(Response.RedirectedTo, Is.EqualTo(String.Format(@"/Card/Show.ashx?Id={0}", card.Id)), "The action did not redirect correctly");
 
             _cardService.VerifyAll();
         }
@@ -161,8 +172,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             _controller.UpdateStatus(cardId, statusId);
 
-            Assert.IsNull(_controller.LayoutName);
-            Assert.IsNull(_controller.SelectedViewName);
+            Assert.That(_controller.LayoutName, Is.Null);
+            Assert.That(_controller.SelectedViewName, Is.Null);
 
             _cardService.VerifyAll();
         }

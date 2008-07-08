@@ -1,4 +1,5 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Patterns.Strategy.FlyBehavior;
 
 namespace PixelDragons.Patterns.Strategy.Tests
@@ -17,7 +18,7 @@ namespace PixelDragons.Patterns.Strategy.Tests
 		[Test]
 		public void Should_return_flying_message()
 		{
-			Assert.AreEqual("I'm flying", flyBehavior.Fly(), "The wrong flying message was returned");
+            Assert.That(flyBehavior.Fly(), Is.EqualTo("I'm flying"));
 		}
 	}
 }

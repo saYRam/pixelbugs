@@ -1,4 +1,5 @@
-﻿using MbUnit.Framework;
+﻿using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Patterns.Strategy.QuackBehavior;
 
 namespace PixelDragons.Patterns.Strategy.Tests
@@ -17,7 +18,7 @@ namespace PixelDragons.Patterns.Strategy.Tests
         [Test]
         public void Should_return_squeak_message()
         {
-            Assert.AreEqual("Squeak", quackBehavior.Quack(), "The wrong quacking message was returned");
+            Assert.That(quackBehavior.Quack(), Is.EqualTo("Squeak"));
         }
     }
 }

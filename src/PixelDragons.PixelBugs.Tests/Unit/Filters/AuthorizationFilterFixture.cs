@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Moq;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
@@ -8,20 +7,27 @@ using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using PixelDragons.PixelBugs.Web.Filters;
 using System;
+using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 {
     [TestFixture]
     public class When_calling_an_action_that_requires_authorization : FilterUnitTestBase
     {
+        private MockRepository mockery;
+        private ICardService cardService;
+        private ISecurityService securityService;
+
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
-            Mock<ICardService> cardService = new Mock<ICardService>();
-            
+            mockery = new MockRepository();
+            cardService = mockery.DynamicMock<ICardService>();
+            securityService = mockery.DynamicMock<ISecurityService>();
+
             _filter = new AuthorizationFilter();
 
-            _controller = new CardController(cardService.Object);
+            _controller = new CardController(cardService);
             PrepareController(_controller, "Card", "New");
         }
 
@@ -29,7 +35,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Should_redirect_to_the_access_denied_view_if_there_is_no_principle()
         {
             Assert.That(ExecuteFilter(), Is.False);
-            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"), "The filter did not redirect correctly");
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
         }
 
         [Test]
@@ -38,7 +44,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             _controller.Context.CurrentUser = new User();
 
             Assert.That(ExecuteFilter(), Is.False);
-            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"), "The filter did not redirect correctly");
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
         }
 
         [Test]
@@ -49,25 +55,23 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 
             _controller.Context.CurrentUser = user;
 
-            Assert.That(ExecuteFilter(), Is.True, "The filter did not allow execution to continue");
+            Assert.That(ExecuteFilter(), Is.True);
         }
 
         [Test]
         public void Should_allow_execution_to_continue_if_the_action_has_no_permission_requirements()
         {
-            Mock<ISecurityService> securityService = new Mock<ISecurityService>();
-            _controller = new SecurityController(securityService.Object);
+            _controller = new SecurityController(securityService);
             PrepareController(_controller, "Security", "Index");
 
-            Assert.That(ExecuteFilter(), Is.True, "The filter did not allow execution to continue");
+            Assert.That(ExecuteFilter(), Is.True);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void Should_throw_an_exception_if_the_action_information_cannot_be_retrieved()
         {
-            Mock<ISecurityService> securityService = new Mock<ISecurityService>();
-            _controller = new SecurityController(securityService.Object);
+            _controller = new SecurityController(securityService);
             PrepareController(_controller, "Security");
 
             ExecuteFilter();    //This should throw an InvalidOperationException

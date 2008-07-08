@@ -1,5 +1,4 @@
 ﻿using System;
-using Moq;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
@@ -7,60 +6,76 @@ using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.Commons.Repositories;
 using NHibernate.Criterion;
 using PixelDragons.PixelBugs.Core.Queries;
+using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Services
 {
     [TestFixture]
     public class When_using_the_card_service
     {
-        CardService _service;
-
-        Mock<IRepository<User>> _userRepository;
-        Mock<IRepository<Card>> _cardRepository;
-        Mock<IRepository<CardType>> _cardTypeRepository;
-        Mock<IRepository<CardStatus>> _cardStatusRepository;
-        Mock<IRepository<CardPriority>> _cardPriorityRepository;
-        Mock<ICardStatusQueries> _cardStatusQueries;
-        Mock<ICardPriorityQueries> _cardPriorityQueries;
+        private MockRepository mockery;
+        private CardService _service;
+        private IRepository<User> _userRepository;
+        private IRepository<Card> _cardRepository;
+        private IRepository<CardType> _cardTypeRepository;
+        private IRepository<CardStatus> _cardStatusRepository;
+        private IRepository<CardPriority> _cardPriorityRepository;
+        private ICardStatusQueries _cardStatusQueries;
+        private ICardPriorityQueries _cardPriorityQueries;
 
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
-            _userRepository = new Mock<IRepository<User>>();
-            _cardRepository = new Mock<IRepository<Card>>();
-            _cardTypeRepository = new Mock<IRepository<CardType>>();
-            _cardStatusRepository = new Mock<IRepository<CardStatus>>();
-            _cardPriorityRepository = new Mock<IRepository<CardPriority>>();
-            _cardStatusQueries = new Mock<ICardStatusQueries>();
-            _cardPriorityQueries = new Mock<ICardPriorityQueries>();
+            mockery = new MockRepository();
 
-            _service = new CardService(
-                _userRepository.Object, 
-                _cardRepository.Object,
-                _cardTypeRepository.Object,
-                _cardStatusRepository.Object,
-                _cardPriorityRepository.Object,
-                _cardStatusQueries.Object,
-                _cardPriorityQueries.Object
-            );
+            _userRepository = mockery.DynamicMock<IRepository<User>>();
+            _cardRepository = mockery.DynamicMock<IRepository<Card>>();
+            _cardTypeRepository = mockery.DynamicMock<IRepository<CardType>>();
+            _cardStatusRepository = mockery.DynamicMock<IRepository<CardStatus>>();
+            _cardPriorityRepository = mockery.DynamicMock<IRepository<CardPriority>>();
+            _cardStatusQueries = mockery.DynamicMock<ICardStatusQueries>();
+            _cardPriorityQueries = mockery.DynamicMock<ICardPriorityQueries>();
+
+            _service = new CardService(_userRepository, _cardRepository, _cardTypeRepository, _cardStatusRepository,
+                                       _cardPriorityRepository, _cardStatusQueries, _cardPriorityQueries);
         }
 
         [Test]
         public void Should_be_able_to_retrieve_all_cards()
         {
             Card[] cards = new Card[] { };
-            _cardRepository.Expect(r => r.FindAll()).Returns(cards);
+            Card[] results;
 
-            Assert.That(_service.GetCards(), Is.EqualTo(cards));
+            using (mockery.Record())
+            {
+                Expect.Call(_cardRepository.FindAll()).Return(cards);
+            }
+
+            using (mockery.Playback())
+            {
+                results = _service.GetCards();
+            }
+
+            Assert.That(results, Is.EqualTo(cards));
         }
 
         [Test]
         public void Should_be_able_to_retrieve_users_that_can_own_cards()
         {
             User[] users = new User[] { };
-            _userRepository.Expect(r => r.FindAll()).Returns(users);
+            User[] results;
 
-            Assert.That(_service.GetUsersThatCanOwnCards(), Is.EqualTo(users));
+            using (mockery.Record())
+            {
+                Expect.Call(_userRepository.FindAll()).Return(users);
+            }
+
+            using (mockery.Playback())
+            {
+                results = _service.GetUsersThatCanOwnCards();
+            }
+
+            Assert.That(results, Is.EqualTo(users));
         }
 
         [Test]
@@ -69,69 +84,99 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             Card card = new Card();
             User user = new User();
 
-            _cardRepository.Expect(r => r.Save(card)).Returns(card);
+            using (mockery.Record())
+            {
+                Expect.Call(_cardRepository.Save(card)).Return(card);
+            }
 
-            _service.SaveCard(card, user);
-
+            using (mockery.Playback())
+            {
+                _service.SaveCard(card, user);
+            }
+            
             Assert.That(card.CreatedBy, Is.EqualTo(user));
             Assert.That(card.CreatedDate.Date, Is.EqualTo(DateTime.Now.Date));
-
-            _cardRepository.VerifyAll();
         }
 
         [Test]
         public void Should_be_able_to_retrieve_all_card_types()
         {
             CardType[] types = new CardType[] { };
-            _cardTypeRepository.Expect(r => r.FindAll()).Returns(types);
+            CardType[] results;
 
-            Assert.That(_service.GetCardTypes(), Is.EqualTo(types));
+            using (mockery.Record())
+            {
+                Expect.Call(_cardTypeRepository.FindAll()).Return(types);
+            }
 
-            _cardTypeRepository.VerifyAll();
+            using (mockery.Playback())
+            {
+                results = _service.GetCardTypes();
+            }
+
+            Assert.That(results, Is.EqualTo(types));
         }
 
         [Test]
         public void Should_be_able_to_retrieve_all_card_statuses()
         {
             CardStatus[] statuses = new CardStatus[] { };
+            CardStatus[] results;
             DetachedCriteria criteria = DetachedCriteria.For<CardStatus>();
+            
+            using (mockery.Record())
+            {
+                Expect.Call(_cardStatusQueries.BuildListQuery()).Return(criteria);
+                Expect.Call(_cardStatusRepository.FindAll(criteria)).Return(statuses);
+            }
 
-            _cardStatusQueries.Expect(q => q.BuildListQuery()).Returns(criteria);
-            _cardStatusRepository.Expect(r => r.FindAll(criteria)).Returns(statuses);
+            using (mockery.Playback())
+            {
+                results = _service.GetCardStatuses();
+            }
 
-            Assert.That(_service.GetCardStatuses(), Is.EqualTo(statuses));
-
-            _cardStatusRepository.VerifyAll();
-            _cardStatusQueries.VerifyAll();
+            Assert.That(results, Is.EqualTo(statuses));
         }
 
         [Test]
         public void Should_be_able_to_retrieve_all_card_priorities()
         {
             CardPriority[] priorities = new CardPriority[] { };
+            CardPriority[] results;
             DetachedCriteria criteria = DetachedCriteria.For<CardPriority>();
 
-            _cardPriorityQueries.Expect(q => q.BuildListQuery()).Returns(criteria);
-            _cardPriorityRepository.Expect(r => r.FindAll(criteria)).Returns(priorities);
+            using (mockery.Record())
+            {
+                Expect.Call(_cardPriorityQueries.BuildListQuery()).Return(criteria);
+                Expect.Call(_cardPriorityRepository.FindAll(criteria)).Return(priorities);
+            }
 
-            Assert.That(_service.GetCardPriorities(), Is.EqualTo(priorities));
+            using (mockery.Playback())
+            {
+                results = _service.GetCardPriorities();
+            }
 
-            _cardPriorityRepository.VerifyAll();
-            _cardPriorityQueries.VerifyAll();
+            Assert.That(results, Is.EqualTo(priorities));
         }
 
         [Test]
         public void Should_be_able_to_retrieve_a_card_from_its_id()
         {
             Guid id = Guid.NewGuid();
-            
             Card card = new Card {Id = id};
+            Card result;
 
-            _cardRepository.Expect(r => r.FindById(id)).Returns(card);
+            using (mockery.Record())
+            {
+                Expect.Call(_cardRepository.FindById(id)).Return(card);
+            }
 
-            Assert.That(_service.GetCard(id), Is.EqualTo(card));
+            using (mockery.Playback())
+            {
+                result = _service.GetCard(id);
+            }
 
-            _cardRepository.VerifyAll();
+            Assert.That(result, Is.EqualTo(card));
         }
 
         [Test]
@@ -142,15 +187,21 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             User user = new User();
             Card card = new Card();
             CardStatus status = new CardStatus();
+            Card result;
 
-            _cardRepository.Expect(r => r.FindById(cardId)).Returns(card);
-            _cardStatusRepository.Expect(r => r.FindById(statusId)).Returns(status);
-            _cardRepository.Expect(r => r.Save(card)).Returns(card);
+            using (mockery.Record())
+            {
+                Expect.Call(_cardRepository.FindById(cardId)).Return(card);
+                Expect.Call(_cardStatusRepository.FindById(statusId)).Return(status);
+                Expect.Call(_cardRepository.Save(card)).Return(card);
+            }
 
-            _service.ChangeCardStatus(cardId, statusId, user);
-
-            _cardStatusRepository.VerifyAll();
-            _cardRepository.VerifyAll();
+            using (mockery.Playback())
+            {
+                result = _service.ChangeCardStatus(cardId, statusId, user);
+            }
+            
+            Assert.That(result.Status, Is.EqualTo(status));
         }
     }
 }

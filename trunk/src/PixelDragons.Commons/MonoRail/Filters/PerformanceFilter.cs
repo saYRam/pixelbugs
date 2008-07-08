@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
-
 using Castle.MonoRail.Framework;
-
 using PixelDragons.Commons.IO;
 
 namespace PixelDragons.Commons.MonoRail.Filters

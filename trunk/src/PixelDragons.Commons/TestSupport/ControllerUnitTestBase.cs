@@ -1,8 +1,6 @@
-﻿using Castle.MonoRail.TestSupport;
+﻿using System.Configuration;
 using Castle.MonoRail.Framework;
-using System.Configuration;
-using System.IO;
-using Castle.MonoRail.Framework.Test;
+using Castle.MonoRail.TestSupport;
 
 namespace PixelDragons.Commons.TestSupport
 {

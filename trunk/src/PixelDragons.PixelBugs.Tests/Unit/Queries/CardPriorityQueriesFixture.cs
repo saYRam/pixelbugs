@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MbUnit.Framework;
+﻿using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Queries;
 using NHibernate.Criterion;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Queries
 {
     [TestFixture]
-    public class CardPriorityQueriesFixture
+    public class When_querying_card_priorities
     {
         [Test]
-        public void BuildListQuery_Success()
+        public void Should_build_a_valid_list_query()
         {
             ICardPriorityQueries queries = new CardPriorityQueries();
 
             DetachedCriteria criteria = queries.BuildListQuery();
 
-            Assert.IsNotNull(criteria);
+            Assert.That(criteria, Is.Not.Null);
         }
     }
 }

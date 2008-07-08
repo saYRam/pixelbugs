@@ -1,12 +1,13 @@
 ﻿using System;
-using MbUnit.Framework;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Web.Helpers;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
 {
     [TestFixture]
-    public class UIHelperFixture
+    public class When_formatting_a_user_name
     {
         UIHelper _helper;
 
@@ -17,33 +18,43 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
         }
 
         [Test]
-        public void FormatUser_PassedNull()
+        public void Should_return_default_message_if_a_null_user_is_passed()
         {
             string text = _helper.FormatUser(null, "No Owner");
 
-            Assert.AreEqual("No Owner", text);
+            Assert.That(text, Is.EqualTo("No Owner"));
         }
 
         [Test]
-        public void FormatUser_PassedUser()
+        public void Should_return_the_users_full_name_if_a_valid_user_is_passed()
         {
-            User user = new User();
-            user.FirstName = "Andy";
-            user.LastName = "Pike";
+            User user = new User {FirstName = "Andy", LastName = "Pike"};
 
             string text = _helper.FormatUser(user, "No Owner");
 
-            Assert.AreEqual("Andy Pike", text);
+            Assert.That(text, Is.EqualTo("Andy Pike"));
         }
 
+    }
+
+    [TestFixture]
+    public class When_formatting_a_date
+    {
+        UIHelper _helper;
+
+        [SetUp]
+        public void TestSetup()
+        {
+            _helper = new UIHelper();
+        }
         [Test]
-        public void FormatDate_Success()
+        public void Should_return_the_date_in_non_locale_specific_format()
         {
             DateTime date = DateTime.Now;
 
-            string text = _helper.FormatDate(date);
+            string formattedDate = _helper.FormatDate(date);
 
-            Assert.AreEqual(date.ToString("d MMM yyyy"), text);
+            Assert.That(formattedDate, Is.EqualTo(date.ToString("d MMM yyyy")));
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using Castle.ActiveRecord;
-using NHibernate;
-using System.Collections.Generic;
-using Castle.Services.Transaction;
 using Castle.MonoRail.Framework.Helpers;
+using Castle.Services.Transaction;
 using NHibernate.Criterion;
 
 namespace PixelDragons.Commons.Repositories

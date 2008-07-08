@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
@@ -6,7 +7,6 @@ using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using PixelDragons.PixelBugs.Web.Filters;
-using System;
 using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Filters
@@ -25,10 +25,10 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             cardService = mockery.DynamicMock<ICardService>();
             securityService = mockery.DynamicMock<ISecurityService>();
 
-            _filter = new AuthorizationFilter();
+            filter = new AuthorizationFilter();
 
-            _controller = new CardController(cardService);
-            PrepareController(_controller, "Card", "New");
+            controller = new CardController(cardService);
+            PrepareController(controller, "Card", "New");
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [Test]
         public void Should_redirect_to_the_access_denied_view_if_the_principle_does_not_have_the_correct_permission()
         {
-            _controller.Context.CurrentUser = new User();
+            controller.Context.CurrentUser = new User();
 
             Assert.That(ExecuteFilter(), Is.False);
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
@@ -53,7 +53,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             User user = new User {FirstName = "Andy", LastName = "Pike", Roles = new List<Role> {new Role()}};
             user.Roles[0].Permissions = new List<Permission> {Permission.CreateCards};
 
-            _controller.Context.CurrentUser = user;
+            controller.Context.CurrentUser = user;
 
             Assert.That(ExecuteFilter(), Is.True);
         }
@@ -61,20 +61,20 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [Test]
         public void Should_allow_execution_to_continue_if_the_action_has_no_permission_requirements()
         {
-            _controller = new SecurityController(securityService);
-            PrepareController(_controller, "Security", "Index");
+            controller = new SecurityController(securityService);
+            PrepareController(controller, "Security", "Index");
 
             Assert.That(ExecuteFilter(), Is.True);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof (InvalidOperationException))]
         public void Should_throw_an_exception_if_the_action_information_cannot_be_retrieved()
         {
-            _controller = new SecurityController(securityService);
-            PrepareController(_controller, "Security");
+            controller = new SecurityController(securityService);
+            PrepareController(controller, "Security");
 
-            ExecuteFilter();    //This should throw an InvalidOperationException
+            ExecuteFilter(); //This should throw an InvalidOperationException
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using PixelDragons.PixelBugs.Core.Domain;
+﻿using PixelDragons.PixelBugs.Core.Domain;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {

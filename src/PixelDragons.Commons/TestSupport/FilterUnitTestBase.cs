@@ -4,12 +4,12 @@ namespace PixelDragons.Commons.TestSupport
 {
     public class FilterUnitTestBase : ControllerUnitTestBase
     {
-        protected Controller _controller;
-        protected IFilter _filter;
+        protected Controller controller;
+        protected IFilter filter;
 
         protected bool ExecuteFilter()
         {
-            return _filter.Perform(ExecuteWhen.BeforeAction, _controller.Context, _controller, _controller.ControllerContext);
+            return filter.Perform(ExecuteWhen.BeforeAction, controller.Context, controller, controller.ControllerContext);
         }
     }
 }

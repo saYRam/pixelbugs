@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Security;
+using NHibernate.Criterion;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Services;
-using NHibernate.Criterion;
 using PixelDragons.Commons.Repositories;
+using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Queries;
+using PixelDragons.PixelBugs.Core.Services;
 using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Services
@@ -15,25 +15,25 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
     public class When_authenticating_a_user
     {
         private MockRepository mockery;
-        private SimpleSecurityService _service;
-        private IRepository<User> _userRepositoty;
-        private IUserQueries _userQueries;
+        private SimpleSecurityService service;
+        private IRepository<User> userRepositoty;
+        private IUserQueries userQueries;
 
         [SetUp]
         public void TestSetup()
         {
             mockery = new MockRepository();
 
-            _userRepositoty = mockery.DynamicMock<IRepository<User>>();
-            _userQueries = mockery.DynamicMock<IUserQueries>();
+            userRepositoty = mockery.DynamicMock<IRepository<User>>();
+            userQueries = mockery.DynamicMock<IUserQueries>();
 
-            _service = new SimpleSecurityService(_userRepositoty, _userQueries);
+            service = new SimpleSecurityService(userRepositoty, userQueries);
         }
 
         [Test]
         public void Should_create_a_security_token_if_user_credentials_are_valid()
         {
-            User[] users = new[] { new User() };
+            User[] users = new[] {new User()};
             users[0].Id = Guid.NewGuid();
             string token;
 
@@ -41,33 +41,33 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Record())
             {
-                Expect.Call(_userQueries.BuildAuthenticationQuery("userName", "password")).Return(criterion);
-                Expect.Call(_userRepositoty.FindAll(criterion)).Return(users);
+                Expect.Call(userQueries.BuildAuthenticationQuery("userName", "password")).Return(criterion);
+                Expect.Call(userRepositoty.FindAll(criterion)).Return(users);
             }
 
             using (mockery.Playback())
             {
-                token = _service.Authenticate("userName", "password");
+                token = service.Authenticate("userName", "password");
             }
 
             Assert.That(token, Is.EqualTo(users[0].Id.ToString()));
         }
 
         [Test]
-        [ExpectedException(typeof(SecurityException))]
+        [ExpectedException(typeof (SecurityException))]
         public void Should_throw_an_exception_if_user_credentials_are_invalid()
         {
             DetachedCriteria criterion = DetachedCriteria.For<User>();
 
             using (mockery.Record())
             {
-                Expect.Call(_userQueries.BuildAuthenticationQuery("invalid", "credentials")).Return(criterion);
-                Expect.Call(_userRepositoty.FindAll(criterion)).Return(new User[] { });
+                Expect.Call(userQueries.BuildAuthenticationQuery("invalid", "credentials")).Return(criterion);
+                Expect.Call(userRepositoty.FindAll(criterion)).Return(new User[] {});
             }
 
             using (mockery.Playback())
             {
-                _service.Authenticate("invalid", "credentials");
+                service.Authenticate("invalid", "credentials");
             }
         }
 
@@ -79,21 +79,21 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Record())
             {
-                Expect.Call(_userRepositoty.FindById(user.Id)).Return(user);
+                Expect.Call(userRepositoty.FindById(user.Id)).Return(user);
             }
 
             using (mockery.Playback())
             {
-                authenticatedUser = _service.GetAuthenticatedUserFromToken(user.Id.ToString());
+                authenticatedUser = service.GetAuthenticatedUserFromToken(user.Id.ToString());
             }
-            
+
             Assert.That(authenticatedUser, Is.EqualTo(user));
         }
 
         [Test]
         public void Should_return_null_for_an_invalid_security_token()
         {
-            User authenticatedUser = _service.GetAuthenticatedUserFromToken("invalid token");
+            User authenticatedUser = service.GetAuthenticatedUserFromToken("invalid token");
 
             Assert.That(authenticatedUser, Is.Null);
         }

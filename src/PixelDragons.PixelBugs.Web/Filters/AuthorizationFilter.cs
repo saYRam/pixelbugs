@@ -1,6 +1,6 @@
 ﻿using System;
-using Castle.MonoRail.Framework;
 using System.Reflection;
+using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
 
@@ -16,38 +16,34 @@ namespace PixelDragons.PixelBugs.Web.Filters
                 throw new InvalidOperationException("The method info for the currently executing action could not be retrieved.");
             }
 
-            object[] attributes = action.GetCustomAttributes(typeof(PermissionRequiredAttribute), true);
+            object[] attributes = action.GetCustomAttributes(typeof (PermissionRequiredAttribute), true);
 
             if (attributes.Length == 0)
             {
                 //There are no permission requirements for this action so continue
                 return true;
             }
-            else
-            { 
-                //There are permission requirements so get the current user and check their permissions
-                User user = context.CurrentUser as User;
+            
+            //There are permission requirements so get the current user and check their permissions
+            User user = context.CurrentUser as User;
 
-                if (user != null)
+            if (user != null)
+            {
+                foreach (PermissionRequiredAttribute attribute in attributes)
                 {
-                    foreach (PermissionRequiredAttribute attribute in attributes)
+                    if (!user.HasPermission(attribute.Permission))
                     {
-                        if (!user.HasPermission(attribute.Permission))
-                        {
-                            context.Response.Redirect("Security", "AccessDenied");
-                            return false;
-                        }
+                        context.Response.Redirect("Security", "AccessDenied");
+                        return false;
                     }
+                }
 
-                    return true;
-                }
-                else
-                {
-                    //There is no user so we can't authorize this action
-                    context.Response.Redirect("Security", "AccessDenied");
-                    return false;
-                }
+                return true;
             }
+            
+            //There is no user so we can't authorize this action
+            context.Response.Redirect("Security", "AccessDenied");
+            return false;
         }
     }
 }

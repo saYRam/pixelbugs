@@ -1,33 +1,28 @@
 ﻿using System;
-using PixelDragons.PixelBugs.Core.Domain;
 using System.Security;
-using System.Web.Security;
-using PixelDragons.Commons.Repositories;
 using NHibernate.Criterion;
+using PixelDragons.Commons.Repositories;
+using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Queries;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {
     public class SimpleSecurityService : ISecurityService
     {
-        #region Fields
-        private IRepository<User> _userRepository;
-        private IUserQueries _userQueries;
-        #endregion
+        private readonly IRepository<User> userRepository;
+        private readonly IUserQueries userQueries;
 
-        #region Constructors
         public SimpleSecurityService(IRepository<User> userRepository, IUserQueries userQueries)
         {
-            _userRepository = userRepository;
-            _userQueries = userQueries;
+            this.userRepository = userRepository;
+            this.userQueries = userQueries;
         }
-        #endregion
 
         public string Authenticate(string userName, string password)
         {
-            DetachedCriteria criteria = _userQueries.BuildAuthenticationQuery(userName, password);
+            DetachedCriteria criteria = userQueries.BuildAuthenticationQuery(userName, password);
 
-            User[] users = _userRepository.FindAll(criteria);
+            User[] users = userRepository.FindAll(criteria);
 
             if (users.Length == 0)
             {
@@ -41,7 +36,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         {
             try
             {
-                return _userRepository.FindById(new Guid(token));
+                return userRepository.FindById(new Guid(token));
             }
             catch (Exception)
             {

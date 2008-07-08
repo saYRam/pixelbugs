@@ -6,16 +6,11 @@ namespace PixelDragons.PixelBugs.Core.Attributes
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true), Serializable]
     public class PermissionRequiredAttribute : Attribute
     {
-        private Permission _permission;
-
         public PermissionRequiredAttribute(Permission permission)
         {
-            _permission = permission;
+            Permission = permission;
         }
 
-        public Permission Permission
-        {
-            get { return _permission; }
-        }
+        public Permission Permission { get; private set; }
     }
 }

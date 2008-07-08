@@ -1,9 +1,9 @@
 ﻿using System.Security;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
-using PixelDragons.Commons.TestSupport;
 using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
@@ -12,26 +12,26 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
     public class When_trying_to_access_the_application_with_valid_credentials : ControllerUnitTestBase
     {
         private MockRepository mockery;
-        private SecurityController _controller;
-        private ISecurityService _securityService;
+        private SecurityController controller;
+        private ISecurityService securityService;
         private const string token = "ABC123";
 
         [SetUp]
         public void Setup()
         {
             mockery = new MockRepository();
-            _securityService = mockery.DynamicMock<ISecurityService>();
+            securityService = mockery.DynamicMock<ISecurityService>();
 
-            _controller = new SecurityController(_securityService);
-            PrepareController(_controller, "Security");
+            controller = new SecurityController(securityService);
+            PrepareController(controller, "Security");
         }
 
         [Test]
         public void Should_render_the_sign_in_view()
         {
-            _controller.Index();
+            controller.Index();
 
-            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Security\Index"));
+            Assert.That(controller.SelectedViewName, Is.EqualTo(@"Security\Index"));
         }
 
         [Test]
@@ -39,70 +39,73 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         {
             using (mockery.Record())
             {
-                Expect.Call(_securityService.Authenticate("test.user", "test123")).Return(token);
+                Expect.Call(securityService.Authenticate("test.user", "test123")).Return(token);
             }
 
             using (mockery.Playback())
             {
-                _controller.Authenticate("test.user", "test123");
+                controller.Authenticate("test.user", "test123");
             }
-            
+
             Assert.That(Cookies["token"].Value, Is.EqualTo(token));
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Card/Index.ashx"));
         }
 
         [Test]
-        public void Should_sign_out_of_the_application_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view()
+        public void
+            Should_sign_out_of_the_application_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view
+            ()
         {
-            _controller.SignOut();
+            controller.SignOut();
 
             Assert.That(Cookies.ContainsKey("token"), Is.False);
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/Index.ashx"));
         }
-
     }
 
     [TestFixture]
     public class When_trying_to_access_the_application_with_invalid_credentials : ControllerUnitTestBase
     {
         private MockRepository mockery;
-        private SecurityController _controller;
-        private ISecurityService _securityService;
+        private SecurityController controller;
+        private ISecurityService securityService;
 
         [SetUp]
         public void Setup()
         {
             mockery = new MockRepository();
-            _securityService = mockery.DynamicMock<ISecurityService>();
+            securityService = mockery.DynamicMock<ISecurityService>();
 
-            _controller = new SecurityController(_securityService);
-            PrepareController(_controller, "Security");
+            controller = new SecurityController(securityService);
+            PrepareController(controller, "Security");
         }
 
         [Test]
-        public void Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message()
+        public void
+            Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message
+            ()
         {
             using (mockery.Record())
             {
-                Expect.Call(_securityService.Authenticate("invalid", "credentials")).Throw(new SecurityException());
+                Expect.Call(securityService.Authenticate("invalid", "credentials")).Throw(new SecurityException());
             }
 
             using (mockery.Playback())
             {
-                _controller.Authenticate("invalid", "credentials");
+                controller.Authenticate("invalid", "credentials");
             }
 
             Assert.That(Cookies.ContainsKey("token"), Is.False);
-            Assert.That(_controller.Flash["error"], Is.EqualTo("InvalidCredentials"));
+            Assert.That(controller.Flash["error"], Is.EqualTo("InvalidCredentials"));
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/Index.ashx"));
         }
 
         [Test]
         public void Should_render_the_access_denied_view()
         {
-            _controller.AccessDenied();
+            controller.AccessDenied();
 
-            Assert.That(_controller.SelectedViewName, Is.EqualTo(@"Security\AccessDenied"));
+            Assert.That(controller.SelectedViewName, Is.EqualTo(@"Security\AccessDenied"));
         }
     }
 }

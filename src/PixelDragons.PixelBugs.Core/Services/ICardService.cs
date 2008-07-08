@@ -10,7 +10,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// </summary>
         /// <returns>Returns an array of cards</returns>
         Card[] GetCards();
-        
+
         /// <summary>
         /// Gets a list of users that can own cards
         /// </summary>

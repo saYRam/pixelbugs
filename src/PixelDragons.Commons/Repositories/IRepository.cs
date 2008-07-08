@@ -21,7 +21,7 @@ namespace PixelDragons.Commons.Repositories
         /// </summary>
         /// <param name="entity">The entity to delete</param>
         void Delete(T entity);
-                
+
         /// <summary>
         /// Register the entity for save in the database when the unit of work
         /// is completed. (INSERT)
@@ -95,7 +95,8 @@ namespace PixelDragons.Commons.Repositories
         /// <param name="orders">the order to load the entities</param>
         /// <param name="criteria">the criteria to look for</param>
         /// <returns>The entities that match the criteria in the slice and the total number of matching records</returns>
-        SliceAndCount<T> SlicedFindWithTotalCount(int firstResult, int maxResults, Order[] orders, params ICriterion[] criteria);
+        SliceAndCount<T> SlicedFindWithTotalCount(int firstResult, int maxResults, Order[] orders,
+                                                  params ICriterion[] criteria);
 
         /// <summary>
         /// 

@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using WatiN.Core;
 using PixelDragons.Commons.TestSupport;
+using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
@@ -31,7 +31,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.That(browser.ContainsText(title), Is.True, "Unable to find the title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(title), Is.True,
+                            "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
                 helper.SignOut(browser);
             }
@@ -56,12 +57,12 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.That(browser.ContainsText(title), Is.True, "Unable to find the title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(title), Is.True,
+                            "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
                 helper.SignOut(browser);
             }
         }
-
     }
 
     public class When_editing_a_new_card : AcceptanceTestBase
@@ -83,13 +84,14 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
 
                 browser.Link(Find.ById("EditLink")).Click();
 
-                string newTitle = "New title " + Guid.NewGuid().ToString();
+                string newTitle = "New title " + Guid.NewGuid();
                 browser.TextField(Find.ByName("card.title")).Clear();
                 browser.TextField(Find.ByName("card.title")).TypeText(newTitle);
 
                 browser.Button(Find.ById("save")).Click();
 
-                Assert.That(browser.ContainsText(newTitle), Is.True, "Unable to find the new title text confirmation. The html is: {0}", browser.Html);
+                Assert.That(browser.ContainsText(newTitle), Is.True,
+                            "Unable to find the new title text confirmation. The html is: {0}", browser.Html);
             }
         }
 

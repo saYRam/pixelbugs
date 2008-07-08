@@ -14,7 +14,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
     public class When_calling_an_action_that_requires_authentication : FilterUnitTestBase
     {
         private MockRepository mockery;
-        private ISecurityService _securityService;
+        private ISecurityService securityService;
         private ICardService cardService;
         private const string token = "ABC123";
 
@@ -22,13 +22,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Setup()
         {
             mockery = new MockRepository();
-            _securityService = mockery.DynamicMock<ISecurityService>();
+            securityService = mockery.DynamicMock<ISecurityService>();
             cardService = mockery.DynamicMock<ICardService>();
 
-            _filter = new AuthenticationFilter(_securityService);
+            filter = new AuthenticationFilter(securityService);
 
-            _controller = new CardController(cardService);
-            PrepareController(_controller, "Card", "List");
+            controller = new CardController(cardService);
+            PrepareController(controller, "Card", "List");
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 
             using (mockery.Record())
             {
-                Expect.Call(_securityService.GetAuthenticatedUserFromToken(token)).Return(user);
+                Expect.Call(securityService.GetAuthenticatedUserFromToken(token)).Return(user);
             }
 
             using (mockery.Playback())
@@ -51,7 +51,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
 
             Assert.That(continueExecution, Is.True);
             Assert.That(Context.CurrentUser, Is.EqualTo(user));
-            Assert.That(_controller.PropertyBag["currentUser"], Is.EqualTo(user));
+            Assert.That(controller.PropertyBag["currentUser"], Is.EqualTo(user));
         }
 
         [Test]

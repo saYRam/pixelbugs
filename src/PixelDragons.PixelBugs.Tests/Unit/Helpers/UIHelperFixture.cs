@@ -9,18 +9,18 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
     [TestFixture]
     public class When_formatting_a_user_name
     {
-        UIHelper _helper;
+        private UIHelper helper;
 
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
-            _helper = new UIHelper();
+            helper = new UIHelper();
         }
 
         [Test]
         public void Should_return_default_message_if_a_null_user_is_passed()
         {
-            string text = _helper.FormatUser(null, "No Owner");
+            string text = helper.FormatUser(null, "No Owner");
 
             Assert.That(text, Is.EqualTo("No Owner"));
         }
@@ -30,29 +30,29 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
         {
             User user = new User {FirstName = "Andy", LastName = "Pike"};
 
-            string text = _helper.FormatUser(user, "No Owner");
+            string text = helper.FormatUser(user, "No Owner");
 
             Assert.That(text, Is.EqualTo("Andy Pike"));
         }
-
     }
 
     [TestFixture]
     public class When_formatting_a_date
     {
-        UIHelper _helper;
+        private UIHelper helper;
 
         [SetUp]
-        public void TestSetup()
+        public void Setup()
         {
-            _helper = new UIHelper();
+            helper = new UIHelper();
         }
+
         [Test]
         public void Should_return_the_date_in_non_locale_specific_format()
         {
             DateTime date = DateTime.Now;
 
-            string formattedDate = _helper.FormatDate(date);
+            string formattedDate = helper.FormatDate(date);
 
             Assert.That(formattedDate, Is.EqualTo(date.ToString("d MMM yyyy")));
         }

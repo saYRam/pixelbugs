@@ -1,7 +1,6 @@
 ﻿using System;
-using Castle.ActiveRecord;
-using PixelDragons.PixelBugs.Core.Domain;
 using System.Collections.Generic;
+using Castle.ActiveRecord;
 
 namespace PixelDragons.PixelBugs.Core.Domain
 {
@@ -14,7 +13,8 @@ namespace PixelDragons.PixelBugs.Core.Domain
         [Property(NotNull = true)]
         public string Name { get; set; }
 
-        [Property(ColumnType = "PixelDragons.PixelBugs.Core.CustomMappings.PermissionsList, PixelDragons.PixelBugs.Core")]
+        [Property(ColumnType = "PixelDragons.PixelBugs.Core.CustomMappings.PermissionsList, PixelDragons.PixelBugs.Core"
+            )]
         public List<Permission> Permissions { get; set; }
     }
 }

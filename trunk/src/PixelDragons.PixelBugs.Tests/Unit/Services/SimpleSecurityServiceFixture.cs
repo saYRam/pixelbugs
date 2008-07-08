@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Security;
 using NUnit.Framework;
-using Moq;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 using NHibernate.Criterion;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Queries;
+using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Services
 {
     [TestFixture]
     public class When_authenticating_a_user
     {
-        SimpleSecurityService _service;
-        Mock<IRepository<User>> _userRepositoty;
-        Mock<IUserQueries> _userQueries;
+        private MockRepository mockery;
+        private SimpleSecurityService _service;
+        private IRepository<User> _userRepositoty;
+        private IUserQueries _userQueries;
 
         [SetUp]
         public void TestSetup()
         {
-            _userRepositoty = new Mock<IRepository<User>>();
-            _userQueries = new Mock<IUserQueries>();
-            _service = new SimpleSecurityService(_userRepositoty.Object, _userQueries.Object);
+            mockery = new MockRepository();
+
+            _userRepositoty = mockery.DynamicMock<IRepository<User>>();
+            _userQueries = mockery.DynamicMock<IUserQueries>();
+
+            _service = new SimpleSecurityService(_userRepositoty, _userQueries);
         }
 
         [Test]
@@ -31,18 +35,22 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         {
             User[] users = new[] { new User() };
             users[0].Id = Guid.NewGuid();
+            string token;
 
             DetachedCriteria criterion = DetachedCriteria.For<User>();
 
-            _userQueries.Expect(q => q.BuildAuthenticationQuery("userName", "password")).Returns(criterion);
-            _userRepositoty.Expect(r => r.FindAll(criterion)).Returns(users);
+            using (mockery.Record())
+            {
+                Expect.Call(_userQueries.BuildAuthenticationQuery("userName", "password")).Return(criterion);
+                Expect.Call(_userRepositoty.FindAll(criterion)).Return(users);
+            }
 
-            string token = _service.Authenticate("userName", "password");
+            using (mockery.Playback())
+            {
+                token = _service.Authenticate("userName", "password");
+            }
 
             Assert.That(token, Is.EqualTo(users[0].Id.ToString()));
-
-            _userQueries.VerifyAll();
-            _userRepositoty.VerifyAll();
         }
 
         [Test]
@@ -51,21 +59,34 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         {
             DetachedCriteria criterion = DetachedCriteria.For<User>();
 
-            _userQueries.Expect(q => q.BuildAuthenticationQuery("invalid", "credentials")).Returns(criterion);
-            _userRepositoty.Expect(r => r.FindAll(criterion)).Returns(new User[] {});
+            using (mockery.Record())
+            {
+                Expect.Call(_userQueries.BuildAuthenticationQuery("invalid", "credentials")).Return(criterion);
+                Expect.Call(_userRepositoty.FindAll(criterion)).Return(new User[] { });
+            }
 
-            _service.Authenticate("invalid", "credentials");
+            using (mockery.Playback())
+            {
+                _service.Authenticate("invalid", "credentials");
+            }
         }
 
         [Test]
         public void Should_retrieve_a_user_from_a_valid_security_token()
         {
             User user = new User {Id = Guid.NewGuid()};
+            User authenticatedUser;
 
-            _userRepositoty.Expect(r => r.FindById(user.Id)).Returns(user);
+            using (mockery.Record())
+            {
+                Expect.Call(_userRepositoty.FindById(user.Id)).Return(user);
+            }
 
-            User authenticatedUser = _service.GetAuthenticatedUserFromToken(user.Id.ToString());
-
+            using (mockery.Playback())
+            {
+                authenticatedUser = _service.GetAuthenticatedUserFromToken(user.Id.ToString());
+            }
+            
             Assert.That(authenticatedUser, Is.EqualTo(user));
         }
 

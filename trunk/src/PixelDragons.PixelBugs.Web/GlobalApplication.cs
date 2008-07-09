@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using Castle.ActiveRecord;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 

@@ -114,9 +114,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Testing\WatiN.Core.dll</HintPath>
     </Reference>
+    <Reference Include="WebDev.WebHost, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Testing\WebDev.WebHost.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Acceptance\AcceptanceHelper.cs" />
+    <Compile Include="Acceptance\AcceptanceTestBase.cs" />
     <Compile Include="Acceptance\CardsFixture.cs" />
     <Compile Include="Acceptance\SecurityFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,8 +130,11 @@
     <Compile Include="Unit\Filters\AuthorizationFilterFixture.cs" />
     <Compile Include="Unit\Filters\AuthenticationFilterFixture.cs" />
     <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
+    <Compile Include="Unit\Messages\AuthenticateUserRequestFixture.cs" />
+    <Compile Include="Unit\Queries\CardsQueriesFixture.cs" />
     <Compile Include="Unit\Queries\CardStatusQueriesFixture.cs" />
     <Compile Include="Unit\Queries\CardPriorityQueriesFixture.cs" />
+    <Compile Include="Unit\Queries\CardTypesQueriesFixture.cs" />
     <Compile Include="Unit\Queries\UserQueriesFixture.cs" />
     <Compile Include="Unit\Services\CardServiceFixture.cs" />
     <Compile Include="Unit\Services\SimpleSecurityServiceFixture.cs" />

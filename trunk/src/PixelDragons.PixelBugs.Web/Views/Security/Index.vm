@@ -8,13 +8,13 @@
 
 $Form.FormTag("%{action='Authenticate',id='form'}")
     <div>
-        $Form.LabelFor("userName", $strings.Labels_UserName)
-        $Form.TextField("userName")
+        $Form.LabelFor("request.userName", $strings.Labels_UserName)
+        $Form.TextField("request.userName")
     </div>
     
     <div>
-        $Form.LabelFor("password", $strings.Labels_Password)
-        $Form.PasswordField("password")
+        $Form.LabelFor("request.password", $strings.Labels_Password)
+        $Form.PasswordField("request.password")
     </div>
         
     <div>

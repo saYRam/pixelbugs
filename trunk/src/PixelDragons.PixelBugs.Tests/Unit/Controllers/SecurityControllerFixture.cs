@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
+using PixelDragons.PixelBugs.Core.Messages.SecurityService;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;
@@ -37,14 +38,17 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_authenticate_the_user_set_a_cookie_with_a_security_token_and_redirect_to_the_card_wall()
         {
+            AuthenticateUserRequest request = new AuthenticateUserRequest("test.user", "test123");
+            AuthenticateUserResponse response = new AuthenticateUserResponse(token);
+
             using (mockery.Record())
             {
-                Expect.Call(securityService.Authenticate("test.user", "test123")).Return(token);
+                Expect.Call(securityService.Authenticate(request)).Return(response);
             }
 
             using (mockery.Playback())
             {
-                controller.Authenticate("test.user", "test123");
+                controller.Authenticate(request);
             }
 
             Assert.That(Cookies["token"].Value, Is.EqualTo(token));
@@ -81,18 +85,18 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         }
 
         [Test]
-        public void
-            Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message
-            ()
+        public void Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message()
         {
+            AuthenticateUserRequest request = new AuthenticateUserRequest("invalid", "credentials");
+
             using (mockery.Record())
             {
-                Expect.Call(securityService.Authenticate("invalid", "credentials")).Throw(new SecurityException());
+                Expect.Call(securityService.Authenticate(request)).Throw(new SecurityException());
             }
 
             using (mockery.Playback())
             {
-                controller.Authenticate("invalid", "credentials");
+                controller.Authenticate(request);
             }
 
             Assert.That(Cookies.ContainsKey("token"), Is.False);

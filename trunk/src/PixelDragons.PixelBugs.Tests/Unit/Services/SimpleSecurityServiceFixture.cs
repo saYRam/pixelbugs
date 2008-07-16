@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Security;
-using NHibernate.Criterion;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Queries;
+using PixelDragons.PixelBugs.Core.Exceptions;
+using PixelDragons.PixelBugs.Core.Messages.SecurityService;
 using PixelDragons.PixelBugs.Core.Services;
 using Rhino.Mocks;
 
@@ -17,7 +17,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private MockRepository mockery;
         private SimpleSecurityService service;
         private IRepository<User> userRepositoty;
-        private IUserQueries userQueries;
+        private IQueryBuilder query;
 
         [SetUp]
         public void TestSetup()
@@ -25,9 +25,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             mockery = new MockRepository();
 
             userRepositoty = mockery.DynamicMock<IRepository<User>>();
-            userQueries = mockery.DynamicMock<IUserQueries>();
+            query = mockery.DynamicMock<IQueryBuilder>();
 
-            service = new SimpleSecurityService(userRepositoty, userQueries);
+            service = new SimpleSecurityService(userRepositoty);
         }
 
         [Test]
@@ -35,40 +35,43 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         {
             User[] users = new[] {new User()};
             users[0].Id = Guid.NewGuid();
-            string token;
-
-            DetachedCriteria criterion = DetachedCriteria.For<User>();
+            AuthenticateUserResponse response;
 
             using (mockery.Record())
             {
-                Expect.Call(userQueries.BuildAuthenticationQuery("userName", "password")).Return(criterion);
-                Expect.Call(userRepositoty.FindAll(criterion)).Return(users);
+                Expect.Call(userRepositoty.Find(query)).Return(users)
+                    .IgnoreArguments();
             }
 
             using (mockery.Playback())
             {
-                token = service.Authenticate("userName", "password");
+                response = service.Authenticate(new AuthenticateUserRequest("userName", "password"));
             }
 
-            Assert.That(token, Is.EqualTo(users[0].Id.ToString()));
+            Assert.That(response.Token, Is.EqualTo(users[0].Id.ToString()));
         }
 
         [Test]
         [ExpectedException(typeof (SecurityException))]
         public void Should_throw_an_exception_if_user_credentials_are_invalid()
         {
-            DetachedCriteria criterion = DetachedCriteria.For<User>();
-
             using (mockery.Record())
             {
-                Expect.Call(userQueries.BuildAuthenticationQuery("invalid", "credentials")).Return(criterion);
-                Expect.Call(userRepositoty.FindAll(criterion)).Return(new User[] {});
+                Expect.Call(userRepositoty.Find(query)).Return(new User[] {})
+                    .IgnoreArguments();
             }
 
             using (mockery.Playback())
             {
-                service.Authenticate("invalid", "credentials");
+                service.Authenticate(new AuthenticateUserRequest("invalid", "credentials"));
             }
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidRequestException))]
+        public void Should_throw_an_exception_if_request_data_is_invalid()
+        {
+            service.Authenticate(new AuthenticateUserRequest(null, null));
         }
 
         [Test]

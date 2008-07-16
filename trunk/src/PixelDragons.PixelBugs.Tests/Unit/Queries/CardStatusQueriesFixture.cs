@@ -1,7 +1,8 @@
 ﻿using NHibernate.Criterion;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using PixelDragons.PixelBugs.Core.Queries;
+using PixelDragons.Commons.Repositories;
+using PixelDragons.PixelBugs.Core.Queries.CardStatuses;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Queries
 {
@@ -11,9 +12,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Queries
         [Test]
         public void Should_build_a_valid_list_query()
         {
-            ICardStatusQueries queries = new CardStatusQueries();
+            IQueryBuilder query = new RetrieveCardStatusesQuery();
 
-            DetachedCriteria criteria = queries.BuildListQuery();
+            DetachedCriteria criteria = query.BuildQuery();
 
             Assert.That(criteria, Is.Not.Null);
         }

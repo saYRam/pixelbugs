@@ -58,9 +58,8 @@ namespace PixelDragons.Commons.CustomMappings
                 for (int x = 0; x < enums.Count; x++)
                 {
                     if (x != 0)
-                    {
                         enumsAsString += ",";
-                    }
+
                     enumsAsString += enums[x].ToString();
                 }
             }
@@ -70,10 +69,7 @@ namespace PixelDragons.Commons.CustomMappings
 
         public object DeepCopy(object value)
         {
-            if (value == null)
-            {
-                return null;
-            }
+            if (value == null) return null;
             
             List<T> enums = ((List<T>) value);
 
@@ -98,9 +94,7 @@ namespace PixelDragons.Commons.CustomMappings
                     foreach (T e in list1)
                     {
                         if (!list2.Contains(e))
-                        {
                             return false;
-                        }
                     }
 
                     return true;

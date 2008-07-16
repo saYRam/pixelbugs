@@ -9,12 +9,10 @@ namespace PixelDragons.PixelBugs.Web.Filters
     public class AuthorizationFilter : IFilter
     {
         public bool Perform(ExecuteWhen exec, IEngineContext context, IController controller, IControllerContext controllerContext)
-        {
+        {  
             MethodInfo action = controllerContext.ControllerDescriptor.Actions[controllerContext.Action] as MethodInfo;
             if (action == null)
-            {
                 throw new InvalidOperationException("The method info for the currently executing action could not be retrieved.");
-            }
 
             object[] attributes = action.GetCustomAttributes(typeof (PermissionRequiredAttribute), true);
 

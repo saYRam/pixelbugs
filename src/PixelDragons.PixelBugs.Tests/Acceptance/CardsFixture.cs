@@ -1,25 +1,16 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using PixelDragons.Commons.TestSupport;
 using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
     public class When_creating_a_new_card : AcceptanceTestBase
     {
-        private AcceptanceHelper helper;
-
-        [SetUp]
-        public void Setup()
-        {
-            helper = new AcceptanceHelper();
-        }
-
         [Test]
         public void Should_complete_the_new_card_form_without_selecting_an_owner()
         {
-            using (IE browser = helper.SignIn())
+            using (IE browser = SignIn())
             {
                 browser.GoTo(BuildUrl("Card", "New"));
 
@@ -34,14 +25,14 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 Assert.That(browser.ContainsText(title), Is.True,
                             "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
-                helper.SignOut(browser);
+                SignOut(browser);
             }
         }
 
         [Test]
         public void Should_complete_the_new_card_form_including_selecting_an_owner()
         {
-            using (IE browser = helper.SignIn())
+            using (IE browser = SignIn())
             {
                 browser.GoTo(BuildUrl("Card", "New"));
 
@@ -60,25 +51,17 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
                 Assert.That(browser.ContainsText(title), Is.True,
                             "Unable to find the title text confirmation. The html is: {0}", browser.Html);
 
-                helper.SignOut(browser);
+                SignOut(browser);
             }
         }
     }
 
     public class When_editing_a_new_card : AcceptanceTestBase
     {
-        private AcceptanceHelper helper;
-
-        [SetUp]
-        public void Setup()
-        {
-            helper = new AcceptanceHelper();
-        }
-
         [Test]
         public void Should_view_the_first_card_on_the_wall_then_edit_the_card_title()
         {
-            using (IE browser = helper.SignIn())
+            using (IE browser = SignIn())
             {
                 GoToCardWallAndClickFirstCard(browser);
 

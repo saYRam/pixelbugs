@@ -1,20 +1,11 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using PixelDragons.Commons.TestSupport;
 using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Acceptance
 {
     public class When_trying_to_access_the_application : AcceptanceTestBase
     {
-        private AcceptanceHelper helper;
-
-        [SetUp]
-        public void Setup()
-        {
-            helper = new AcceptanceHelper();
-        }
-
         [Test]
         public void Should_display_access_denied_view_when_accessing_page_without_correct_permissions()
         {
@@ -22,8 +13,8 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             //we are redirected to the access denied page.
             using (IE browser = new IE(BuildUrl("Security", "Index")))
             {
-                browser.TextField(Find.ByName("userName")).TypeText("test.viewonly");
-                browser.TextField(Find.ByName("password")).TypeText("password");
+                browser.TextField(Find.ByName("request.userName")).TypeText("test.viewonly");
+                browser.TextField(Find.ByName("request.password")).TypeText("password");
 
                 browser.Button(Find.ById("signIn")).Click();
 
@@ -41,7 +32,7 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
         public void Should_sign_in_successfully_with_correct_credentials()
         {
             //Go to the sign in page a sign in with correct username and password. Confirm that we are on the card wall page.
-            using (IE browser = helper.SignIn())
+            using (IE browser = SignIn())
             {
                 Assert.That(browser.ContainsText("Card Wall"), Is.True,
                             "Sign in failed as card board title is not present. The html is: {0}", browser.Html);
@@ -54,8 +45,24 @@ namespace PixelDragons.PixelBugs.Tests.Acceptance
             //Go to the sign in page and sign in with wrong username and password. Confirm that we are redirected back to sign in page with message.
             using (IE browser = new IE(BuildUrl("Security", "Index")))
             {
-                browser.TextField(Find.ByName("userName")).TypeText("invalid");
-                browser.TextField(Find.ByName("password")).TypeText("credentials");
+                browser.TextField(Find.ByName("request.userName")).TypeText("invalid");
+                browser.TextField(Find.ByName("request.password")).TypeText("credentials");
+
+                browser.Button(Find.ById("signIn")).Click();
+
+                Assert.That(browser.ContainsText("You entered an invalid user name or password"), Is.True,
+                            "Invalid credentials error message is not present. The html is: {0}", browser.Html);
+            }
+        }
+
+        [Test]
+        public void Should_not_allow_sign_in_when_no_credentials_are_supplied()
+        {
+            //Go to the sign in page and sign in without entering a user name or password. Confirm that we are redirected back to sign in page with message.
+            using (IE browser = new IE(BuildUrl("Security", "Index")))
+            {
+                browser.TextField(Find.ByName("request.userName")).TypeText("");
+                browser.TextField(Find.ByName("request.password")).TypeText("");
 
                 browser.Button(Find.ById("signIn")).Click();
 

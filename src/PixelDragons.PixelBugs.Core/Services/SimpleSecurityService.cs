@@ -1,35 +1,33 @@
 ﻿using System;
 using System.Security;
-using NHibernate.Criterion;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Queries;
+using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Queries.Users;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {
     public class SimpleSecurityService : ISecurityService
     {
         private readonly IRepository<User> userRepository;
-        private readonly IUserQueries userQueries;
 
-        public SimpleSecurityService(IRepository<User> userRepository, IUserQueries userQueries)
+        public SimpleSecurityService(IRepository<User> userRepository)
         {
             this.userRepository = userRepository;
-            this.userQueries = userQueries;
         }
 
-        public string Authenticate(string userName, string password)
+        public AuthenticateUserResponse Authenticate(AuthenticateUserRequest request)
         {
-            DetachedCriteria criteria = userQueries.BuildAuthenticationQuery(userName, password);
+            request.Validate();
+            
+            UserAuthenticationQuery query = new UserAuthenticationQuery(request);
 
-            User[] users = userRepository.FindAll(criteria);
+            User[] users = userRepository.Find(query);
 
             if (users.Length == 0)
-            {
                 throw (new SecurityException("Invalid user name or password"));
-            }
 
-            return users[0].Id.ToString();
+            return new AuthenticateUserResponse(users[0].Id.ToString());
         }
 
         public User GetAuthenticatedUserFromToken(string token)

@@ -59,9 +59,7 @@ namespace PixelDragons.PixelBugs.Core.Domain
                 foreach (Role role in Roles)
                 {
                     if (role.Permissions != null && role.Permissions.Contains(permission))
-                    {
                         return true;
-                    }
                 }
             }
 

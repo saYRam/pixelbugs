@@ -5,14 +5,21 @@ namespace PixelDragons.Commons.TestSupport
     public abstract class TestFixtureBase
     {
         protected string server;
-        protected string port;
+        protected int port;
         protected string extension;
+        protected string physicalPath;
 
         protected TestFixtureBase()
         {
             server = ConfigurationManager.AppSettings["server"] ?? "localhost";
-            port = ConfigurationManager.AppSettings["port"] ?? "80";
             extension = ConfigurationManager.AppSettings["extension"] ?? "rails";
+            physicalPath = ConfigurationManager.AppSettings["physicalPath"] ?? "";
+            port = 80;
+            
+            if(ConfigurationManager.AppSettings["port"] != null)
+            {
+                port = int.Parse(ConfigurationManager.AppSettings["port"]);
+            }
         }
     }
 }

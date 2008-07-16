@@ -50,10 +50,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\Castle.MonoRail.TestSupport.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Services.Transaction, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Castle\Castle.Services.Transaction.dll</HintPath>
-    </Reference>
     <Reference Include="NHibernate, Version=1.2.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\NHibernate.dll</HintPath>
@@ -75,9 +71,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\FindReplaceStream.cs" />
     <Compile Include="Repositories\ARRepository.cs" />
+    <Compile Include="Repositories\IQueryBuilder.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\SliceAndCount.cs" />
-    <Compile Include="TestSupport\AcceptanceTestBase.cs" />
     <Compile Include="TestSupport\ControllerUnitTestBase.cs" />
     <Compile Include="TestSupport\FilterUnitTestBase.cs" />
     <Compile Include="TestSupport\TestFixtureBase.cs" />

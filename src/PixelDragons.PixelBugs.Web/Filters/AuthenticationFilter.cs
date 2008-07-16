@@ -1,4 +1,5 @@
-﻿using Castle.MonoRail.Framework;
+﻿using System;
+using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Services;
 
@@ -13,8 +14,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
             this.securityService = securityService;
         }
 
-        public bool Perform(ExecuteWhen exec, IEngineContext context, IController controller,
-                            IControllerContext controllerContext)
+        public bool Perform(ExecuteWhen exec, IEngineContext context, IController controller, IControllerContext controllerContext)
         {
             string token = context.Request.ReadCookie("token");
 

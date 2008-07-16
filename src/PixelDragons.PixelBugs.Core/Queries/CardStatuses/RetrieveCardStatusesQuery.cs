@@ -1,11 +1,12 @@
-﻿using NHibernate.Criterion;
+using NHibernate.Criterion;
+using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 
-namespace PixelDragons.PixelBugs.Core.Queries
+namespace PixelDragons.PixelBugs.Core.Queries.CardStatuses
 {
-    public class CardStatusQueries : ICardStatusQueries
+    public class RetrieveCardStatusesQuery : IQueryBuilder
     {
-        public DetachedCriteria BuildListQuery()
+        public DetachedCriteria BuildQuery()
         {
             DetachedCriteria criteria = DetachedCriteria.For<CardStatus>()
                 .AddOrder(new Order("Ordinal", true));

@@ -1,15 +1,15 @@
 using NHibernate.Criterion;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Core.Queries.Users
 {
     public class UserAuthenticationQuery : IQueryBuilder
     {
-        private readonly AuthenticateUserRequest request;
+        private readonly AuthenticateRequest request;
 
-        public UserAuthenticationQuery(AuthenticateUserRequest request)
+        public UserAuthenticationQuery(AuthenticateRequest request)
         {
             this.request = request;
         }

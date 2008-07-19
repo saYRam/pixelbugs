@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
-using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 using Rhino.Mocks;
 
@@ -22,7 +22,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Queries
         [Test]
         public void Should_build_a_valid_authentication_query()
         {
-            AuthenticateUserRequest request = mockery.DynamicMock<AuthenticateUserRequest>();
+            AuthenticateRequest request = mockery.DynamicMock<AuthenticateRequest>();
 
             DetachedCriteria criteria;
             IQueryBuilder query = new UserAuthenticationQuery(request);

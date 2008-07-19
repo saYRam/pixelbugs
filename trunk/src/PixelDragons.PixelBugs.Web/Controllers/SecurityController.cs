@@ -3,7 +3,7 @@ using System.Security;
 using System.Web;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 
 namespace PixelDragons.PixelBugs.Web.Controllers
@@ -24,13 +24,13 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             RenderView("Index");
         }
 
-        public void Authenticate([DataBind("request")]AuthenticateUserRequest request)
+        public void Authenticate([DataBind("request")]AuthenticateRequest request)
         {
             try
             {
-                AuthenticateUserResponse response = securityService.Authenticate(request);
+                AuthenticateResponse response = securityService.Authenticate(request);
 
-                StoreTokenCookie(response.Token);
+                StoreIdCookie(response.Id);
 
                 Redirect("Card", "Index");
             }
@@ -62,9 +62,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             RedirectToAction("Index");
         }
 
-        private void StoreTokenCookie(string token)
+        private void StoreIdCookie(Guid id)
         {
-            HttpCookie tokenCookie = new HttpCookie("token", token) { Expires = DateTime.Now.AddYears(1) };
+            HttpCookie tokenCookie = new HttpCookie("token", id.ToString()) { Expires = DateTime.Now.AddYears(1) };
 
             Response.CreateCookie(tokenCookie);
         }

@@ -1,8 +1,9 @@
-﻿using System.Security;
+﻿using System;
+using System.Security;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
-using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;
@@ -15,13 +16,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         private MockRepository mockery;
         private SecurityController controller;
         private ISecurityService securityService;
-        private const string token = "ABC123";
+        private Guid id;
 
         [SetUp]
         public void Setup()
         {
             mockery = new MockRepository();
             securityService = mockery.DynamicMock<ISecurityService>();
+            id = new Guid();    
 
             controller = new SecurityController(securityService);
             PrepareController(controller, "Security");
@@ -38,8 +40,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_authenticate_the_user_set_a_cookie_with_a_security_token_and_redirect_to_the_card_wall()
         {
-            AuthenticateUserRequest request = new AuthenticateUserRequest("test.user", "test123");
-            AuthenticateUserResponse response = new AuthenticateUserResponse(token);
+            AuthenticateRequest request = new AuthenticateRequest("test.user", "test123");
+            AuthenticateResponse response = new AuthenticateResponse(id);
 
             using (mockery.Record())
             {
@@ -51,14 +53,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
                 controller.Authenticate(request);
             }
 
-            Assert.That(Cookies["token"].Value, Is.EqualTo(token));
+            Assert.That(Cookies["token"].Value, Is.EqualTo(id.ToString()));
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Card/Index.ashx"));
         }
 
         [Test]
-        public void
-            Should_sign_out_of_the_application_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view
-            ()
+        public void Should_sign_out_of_the_application_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view()
         {
             controller.SignOut();
 
@@ -87,7 +87,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message()
         {
-            AuthenticateUserRequest request = new AuthenticateUserRequest("invalid", "credentials");
+            AuthenticateRequest request = new AuthenticateRequest("invalid", "credentials");
 
             using (mockery.Record())
             {

@@ -158,21 +158,24 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         [Test]
         public void Should_be_able_to_save_a_card()
         {
+            Guid userId = Guid.NewGuid();
             Card card = new Card();
             User user = new User();
+            user.Id = userId;            
 
             using (mockery.Record())
             {
                 Expect.Call(cardRepository.Save(card)).Return(card);
+                Expect.Call(userRepository.FindById(userId)).Return(user);
             }
 
             using (mockery.Playback())
             {
-                service.SaveCard(card, user);
+                service.SaveCard(card, userId);
             }
 
-            Assert.That(card.CreatedBy, Is.EqualTo(user));
             Assert.That(card.CreatedDate.Date, Is.EqualTo(DateTime.Now.Date));
+            Assert.That(card.CreatedBy.Id, Is.EqualTo(userId));
         }
 
         [Test]
@@ -180,7 +183,6 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         {
             Guid cardId = Guid.NewGuid();
             Guid statusId = Guid.NewGuid();
-            User user = new User();
             Card card = new Card();
             CardStatus status = new CardStatus();
             Card result;
@@ -194,7 +196,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Playback())
             {
-                result = service.ChangeCardStatus(cardId, statusId, user);
+                result = service.ChangeCardStatus(cardId, statusId);
             }
 
             Assert.That(result.Status, Is.EqualTo(status));

@@ -2,7 +2,7 @@
 using System.Reflection;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Attributes;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Web.Filters
 {
@@ -23,7 +23,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
             }
             
             //There are permission requirements so get the current user and check their permissions
-            User user = context.CurrentUser as User;
+            IRetrievedUser user = context.CurrentUser as IRetrievedUser;
 
             if (user != null)
             {

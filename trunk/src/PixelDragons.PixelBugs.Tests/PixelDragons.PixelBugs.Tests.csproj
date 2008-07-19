@@ -120,9 +120,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Acceptance\AcceptanceTestBase.cs" />
-    <Compile Include="Acceptance\CardsFixture.cs" />
-    <Compile Include="Acceptance\SecurityFixture.cs" />
+    <Compile Include="Integration\IntegrationTestBase.cs" />
+    <Compile Include="Integration\CardsFixture.cs" />
+    <Compile Include="Integration\SecurityFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Controllers\CardControllerFixture.cs" />
     <Compile Include="Unit\Controllers\SecurityControllerFixture.cs" />
@@ -131,6 +131,8 @@
     <Compile Include="Unit\Filters\AuthenticationFilterFixture.cs" />
     <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
     <Compile Include="Unit\Messages\AuthenticateUserRequestFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveUserRequestFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveUserResponseFixture.cs" />
     <Compile Include="Unit\Queries\CardsQueriesFixture.cs" />
     <Compile Include="Unit\Queries\CardStatusQueriesFixture.cs" />
     <Compile Include="Unit\Queries\CardPriorityQueriesFixture.cs" />
@@ -138,6 +140,7 @@
     <Compile Include="Unit\Queries\UserQueriesFixture.cs" />
     <Compile Include="Unit\Services\CardServiceFixture.cs" />
     <Compile Include="Unit\Services\SimpleSecurityServiceFixture.cs" />
+    <Compile Include="Unit\ViewComponents\SecurityBlockFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PixelDragons.Commons\PixelDragons.Commons.csproj">

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;
@@ -58,13 +59,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         public void Should_save_the_new_card_and_redirect_to_the_card_wall()
         {
             Card card = new Card();
-            User user = new User();
 
+            RetrieveUserResponse user = new RetrieveUserResponse(Guid.NewGuid(), null, "");
             Context.CurrentUser = user;
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.SaveCard(card, user)).Return(card);
+                Expect.Call(cardService.SaveCard(card, user.Id)).Return(card);
             }
 
             using (mockery.Playback())
@@ -172,13 +173,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         public void Should_save_the_edited_card_and_redirect_to_the_card_wall()
         {
             Card card = new Card {Id = Guid.NewGuid()};
-            User user = new User();
 
+            RetrieveUserResponse user = new RetrieveUserResponse(Guid.NewGuid(), null, "");
             Context.CurrentUser = user;
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.SaveCard(card, user)).Return(card);
+                Expect.Call(cardService.SaveCard(card, user.Id)).Return(card);
             }
 
             using (mockery.Playback())
@@ -194,13 +195,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         {
             Guid cardId = Guid.NewGuid();
             Guid statusId = Guid.NewGuid();
-            User user = new User();
 
-            Context.CurrentUser = user;
+            Context.CurrentUser = new RetrieveUserResponse(Guid.Empty, null, "");
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.ChangeCardStatus(cardId, statusId, user)).Return(new Card());
+                Expect.Call(cardService.ChangeCardStatus(cardId, statusId)).Return(new Card());
             }
 
             using (mockery.Playback())

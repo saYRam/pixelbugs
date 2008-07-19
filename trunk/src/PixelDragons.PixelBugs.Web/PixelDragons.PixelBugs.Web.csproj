@@ -163,6 +163,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurityController.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewComponents\SecurityBlockComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Facilities.config" />
@@ -183,6 +184,7 @@
     <Content Include="Content\Js\ui.core.js" />
     <Content Include="Content\Js\ui.draggable.js" />
     <Content Include="Content\Js\ui.droppable.js" />
+    <Content Include="Config\Components.config" />
     <None Include="Views\Card\Edit.vm" />
     <None Include="Views\Card\Index.vm" />
     <None Include="Views\Card\New.vm" />

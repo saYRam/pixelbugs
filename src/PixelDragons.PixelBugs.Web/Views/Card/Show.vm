@@ -3,14 +3,12 @@
 #end
 
 <div>$Url.Link($strings.Links_BackToCardWall, "%{action='Index'}")</div>
-#if($currentUser.HasPermission("EditCards"))
+#blockcomponent(security with "permission=EditCards")
 <div>$Url.Link($strings.Links_EditCard, "%{action='Edit', querystring='id=$card.id'}", "%{id='EditLink'}")</div>
 #end
 
 <div class="main">
     <div>$card.Body</div>
-
-    
 </div>
 
 <div class="sideBar">

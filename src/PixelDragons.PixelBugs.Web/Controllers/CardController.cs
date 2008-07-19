@@ -3,6 +3,7 @@ using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Filters;
 using PixelDragons.PixelBugs.Web.Helpers;
@@ -38,7 +39,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.CreateCards)]
         public void Create([ARDataBind("card", AutoLoad = AutoLoadBehavior.OnlyNested)] Card card)
         {
-            cardService.SaveCard(card, (User) Context.CurrentUser);
+            IRetrievedUser user = (IRetrievedUser)Context.CurrentUser;
+            
+            cardService.SaveCard(card, user.Id);
 
             RedirectToAction("Index");
         }
@@ -76,7 +79,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Card card)
         {
-            cardService.SaveCard(card, (User) Context.CurrentUser);
+            IRetrievedUser user = (IRetrievedUser)Context.CurrentUser;
+
+            cardService.SaveCard(card, user.Id);
 
             RedirectToAction("Show", new {Id = card.Id});
         }
@@ -86,7 +91,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void UpdateStatus(Guid cardId, Guid statusId)
         {
-            cardService.ChangeCardStatus(cardId, statusId, (User) Context.CurrentUser);
+            cardService.ChangeCardStatus(cardId, statusId);
 
             CancelLayout();
             CancelView();

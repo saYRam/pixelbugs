@@ -1,7 +1,8 @@
 ﻿using System;
 using Castle.MonoRail.Framework;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
+using PixelDragons.PixelBugs.Core.Exceptions;
 
 namespace PixelDragons.PixelBugs.Web.Filters
 {
@@ -18,14 +19,22 @@ namespace PixelDragons.PixelBugs.Web.Filters
         {
             string token = context.Request.ReadCookie("token");
 
-            User user = securityService.GetAuthenticatedUserFromToken(token);
-
-            if (user != null)
+            if (!string.IsNullOrEmpty(token))
             {
-                context.CurrentUser = user;
-                controllerContext.PropertyBag["currentUser"] = user;
+                try
+                {
+                    RetrieveUserResponse response = securityService.RetrieveUser(new RetrieveUserRequest(new Guid(token)));
 
-                return true;
+                    context.CurrentUser = response;
+                    controllerContext.PropertyBag["currentUser"] = response;
+
+                    return true;
+                }
+                catch(InvalidRequestException)
+                {
+                    context.CurrentUser = null;
+                    context.Response.Redirect("Security", "AccessDenied");
+                }
             }
 
             context.CurrentUser = null;

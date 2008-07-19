@@ -1,17 +1,17 @@
 using PixelDragons.PixelBugs.Core.Exceptions;
 
-namespace PixelDragons.PixelBugs.Core.Messages.SecurityService
+namespace PixelDragons.PixelBugs.Core.Messages
 {
-    public class AuthenticateUserRequest : IRequest
+    public class AuthenticateRequest : IRequest
     {
         private string userName;
         private string password;
         
-        public AuthenticateUserRequest()
+        public AuthenticateRequest()
         {
         }
 
-        public AuthenticateUserRequest(string userName, string password)
+        public AuthenticateRequest(string userName, string password)
         {
             this.userName = userName;
             this.password = password;

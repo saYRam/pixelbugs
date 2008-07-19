@@ -18,8 +18,6 @@
                 location.href = 'Show.ashx?id=' + this.id;
             });
         
-    #if($currentUser.HasPermission("EditCards"))
-        //Only allow status editing if the user can edit cards
         $("div.card").draggable({
             helper: 'clone',
             ghosting: true,
@@ -60,12 +58,11 @@
                 });
             }
         });
-    #end
     
     });
 #end
 
-#if($currentUser.HasPermission("CreateCards"))
+#blockcomponent(security with "permission=CreateCards")
 <div>$Url.Link($strings.Links_NewCard, "%{action='New'}")</div>
 #end
 
@@ -84,7 +81,9 @@
 
 #foreach($card in $cards)
 <div id="$card.Id" status="$card.Status.Id" class="card" style="background:$card.Type.Colour">
-    #if($currentUser.HasPermission("EditCards"))<div class="handle">Drag Me</div>#end
+    #blockcomponent(security with "permission=EditCards")
+    <div class="handle">Drag Me</div>
+    #end
     <div>#$card.Number $card.Title</div>
     <div style="background:$card.Priority.Colour">$card.Priority.Name</div>
     <div>$card.Points pt</div>

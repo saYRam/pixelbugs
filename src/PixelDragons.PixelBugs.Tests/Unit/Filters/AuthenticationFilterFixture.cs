@@ -1,8 +1,9 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using PixelDragons.PixelBugs.Web.Filters;
@@ -16,7 +17,6 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         private MockRepository mockery;
         private ISecurityService securityService;
         private ICardService cardService;
-        private const string token = "ABC123";
 
         [SetUp]
         public void Setup()
@@ -34,14 +34,16 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [Test]
         public void Should_allow_execution_to_continue_if_a_valid_security_token_is_read_from_a_cookie()
         {
-            User user = new User();
+            Guid id = Guid.NewGuid();
+            RetrieveUserResponse response = new RetrieveUserResponse(id, null, "");
             bool continueExecution;
 
-            Cookies.Add("token", new HttpCookie("token", token));
+            Cookies.Add("token", new HttpCookie("token", id.ToString()));
 
             using (mockery.Record())
             {
-                Expect.Call(securityService.GetAuthenticatedUserFromToken(token)).Return(user);
+                Expect.Call(securityService.RetrieveUser(null)).Return(response)
+                    .IgnoreArguments();
             }
 
             using (mockery.Playback())
@@ -50,8 +52,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             }
 
             Assert.That(continueExecution, Is.True);
-            Assert.That(Context.CurrentUser, Is.EqualTo(user));
-            Assert.That(controller.PropertyBag["currentUser"], Is.EqualTo(user));
+            Assert.That(Context.CurrentUser, Is.InstanceOfType(typeof(IRetrievedUser)));
+            Assert.That(controller.PropertyBag["currentUser"], Is.EqualTo(Context.CurrentUser));
         }
 
         [Test]

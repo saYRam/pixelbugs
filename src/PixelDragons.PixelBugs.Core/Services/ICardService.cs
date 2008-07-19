@@ -21,9 +21,9 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// Saves an card and records the user that saved it
         /// </summary>
         /// <param name="card">The card to save</param>
-        /// <param name="currentUser">The current user that is saving the card</param>
+        /// <param name="userId">The id of the user that is saving this card</param>
         /// <returns>Returns the saved card</returns>
-        Card SaveCard(Card card, User currentUser);
+        Card SaveCard(Card card, Guid userId);
 
         /// <summary>
         /// Gets all the card types available
@@ -51,12 +51,11 @@ namespace PixelDragons.PixelBugs.Core.Services
         Card GetCard(Guid id);
 
         /// <summary>
-        /// 
+        /// Changes the status of the supplied card
         /// </summary>
-        /// <param name="cardId"></param>
-        /// <param name="statusId"></param>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        Card ChangeCardStatus(Guid cardId, Guid statusId, User user);
+        /// <param name="cardId">The id of the card to update</param>
+        /// <param name="statusId">The id of the new status to apply to the card</param>
+        /// <returns>Returns the updated card</returns>
+        Card ChangeCardStatus(Guid cardId, Guid statusId);
     }
 }

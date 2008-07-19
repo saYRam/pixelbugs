@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Messages.SecurityService;
+using PixelDragons.PixelBugs.Core.Exceptions;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 
 namespace PixelDragons.PixelBugs.Core.Services
@@ -16,7 +18,7 @@ namespace PixelDragons.PixelBugs.Core.Services
             this.userRepository = userRepository;
         }
 
-        public AuthenticateUserResponse Authenticate(AuthenticateUserRequest request)
+        public AuthenticateResponse Authenticate(AuthenticateRequest request)
         {
             request.Validate();
             
@@ -27,19 +29,32 @@ namespace PixelDragons.PixelBugs.Core.Services
             if (users.Length == 0)
                 throw (new SecurityException("Invalid user name or password"));
 
-            return new AuthenticateUserResponse(users[0].Id.ToString());
+            return new AuthenticateResponse(users[0].Id);
         }
 
-        public User GetAuthenticatedUserFromToken(string token)
+        public RetrieveUserResponse RetrieveUser(RetrieveUserRequest request)
         {
+            request.Validate();
+
             try
             {
-                return userRepository.FindById(new Guid(token));
+                User user = userRepository.FindById(request.Id);
+
+                List<Permission> permissions = new List<Permission>();
+
+                if (user.Roles != null)
+                {
+                    foreach (Role role in user.Roles)
+                    {
+                        permissions.AddRange(role.Permissions);
+                    }
+                }
+
+                return new RetrieveUserResponse(user.Id, permissions, user.FullName);
             }
-            catch (Exception)
+            catch(Exception)
             {
-                //Token was either null or invalid
-                return null;
+                throw new InvalidRequestException( string.Format("Unable to find a user with the supplied id of '{0}'", request.Id));
             }
         }
     }

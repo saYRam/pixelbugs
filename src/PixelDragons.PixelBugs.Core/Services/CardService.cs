@@ -2,6 +2,7 @@
 using Castle.Services.Transaction;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.CardPriorities;
 using PixelDragons.PixelBugs.Core.Queries.Cards;
 using PixelDragons.PixelBugs.Core.Queries.CardStatuses;
@@ -74,19 +75,19 @@ namespace PixelDragons.PixelBugs.Core.Services
         }
 
         [Transaction(TransactionMode.RequiresNew)]
-        public Card SaveCard(Card card, User currentUser)
+        public Card SaveCard(Card card, Guid userId)
         {
             if (card.Id == Guid.Empty)
             {
                 card.CreatedDate = DateTime.Now;
-                card.CreatedBy = currentUser;
+                card.CreatedBy = userRepository.FindById(userId);
             }
 
             return cardRepository.Save(card);
         }
 
         [Transaction(TransactionMode.RequiresNew)]
-        public Card ChangeCardStatus(Guid cardId, Guid statusId, User user)
+        public Card ChangeCardStatus(Guid cardId, Guid statusId)
         {
             Card card = cardRepository.FindById(cardId);
             card.Status = cardStatusRepository.FindById(statusId);

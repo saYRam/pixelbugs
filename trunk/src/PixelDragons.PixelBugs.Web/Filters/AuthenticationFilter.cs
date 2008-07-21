@@ -34,6 +34,8 @@ namespace PixelDragons.PixelBugs.Web.Filters
                 {
                     context.CurrentUser = null;
                     context.Response.Redirect("Security", "AccessDenied");
+
+                    return false;
                 }
             }
 

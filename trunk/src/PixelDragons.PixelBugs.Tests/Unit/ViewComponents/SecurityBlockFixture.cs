@@ -17,8 +17,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.ViewComponents
         [SetUp]
         public void SetUp()
         {
-            component = new SecurityBlockComponent();
-            component.Permission = "CreateCards";
+            component = new SecurityBlockComponent {Permission = "CreateCards"};
             PrepareViewComponent(component);
         }
 
@@ -31,7 +30,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.ViewComponents
         [Test]
         public void Should_render_the_surrounded_block_if_the_current_user_has_the_required_permission()
         {
-            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, new List<Permission>() { Permission.CreateCards });
+            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, new List<Permission> { Permission.CreateCards });
 
             component.Render();
             
@@ -56,6 +55,18 @@ namespace PixelDragons.PixelBugs.Tests.Unit.ViewComponents
             component.Render();
 
             Assert.That(component.Rendered, Is.False);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Should_throw_an_exception_if_an_invalid_permission_string_is_set()
+        {
+            component = new SecurityBlockComponent { Permission = "AN INVALID PERMISSION" };
+            PrepareViewComponent(component);
+
+            Context.CurrentUser = null;
+
+            component.Render();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
+using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
@@ -60,6 +61,28 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Should_redirect_to_the_access_denied_view_if_there_is_no_valid_security_token_cookie()
         {
             Assert.That(ExecuteFilter(), Is.False);
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
+        }
+
+        [Test]
+        public void Should_redirect_to_the_access_denied_view_if_there_is_an_invalid_security_token_cookie()
+        {
+            bool continueExecution;
+
+            Cookies.Add("token", new HttpCookie("token", Guid.Empty.ToString()));
+
+            using (mockery.Record())
+            {
+                Expect.Call(securityService.RetrieveUserPermissions(null)).Throw(new InvalidRequestException("Invalid id"))
+                    .IgnoreArguments();
+            }
+
+            using (mockery.Playback())
+            {
+                continueExecution = ExecuteFilter();
+            }
+
+            Assert.That(continueExecution, Is.False);
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
         }
     }

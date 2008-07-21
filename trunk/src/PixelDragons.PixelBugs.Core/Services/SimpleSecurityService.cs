@@ -4,6 +4,7 @@ using System.Security;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Exceptions;
+using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 
@@ -12,10 +13,12 @@ namespace PixelDragons.PixelBugs.Core.Services
     public class SimpleSecurityService : ISecurityService
     {
         private readonly IRepository<User> userRepository;
+        private readonly IRetrievedUserPermissionsMapper userPermissionsMapper;
 
-        public SimpleSecurityService(IRepository<User> userRepository)
+        public SimpleSecurityService(IRepository<User> userRepository, IRetrievedUserPermissionsMapper userPermissionsMapper)
         {
             this.userRepository = userRepository;
+            this.userPermissionsMapper = userPermissionsMapper;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest request)
@@ -32,29 +35,18 @@ namespace PixelDragons.PixelBugs.Core.Services
             return new AuthenticateResponse(users[0].Id);
         }
 
-        public RetrieveUserResponse RetrieveUser(RetrieveUserRequest request)
+        public RetrieveUserPermissionsResponse RetrieveUserPermissions(RetrieveUserPermissionsRequest permissionsRequest)
         {
-            request.Validate();
+            permissionsRequest.Validate();
 
             try
             {
-                User user = userRepository.FindById(request.Id);
-
-                List<Permission> permissions = new List<Permission>();
-
-                if (user.Roles != null)
-                {
-                    foreach (Role role in user.Roles)
-                    {
-                        permissions.AddRange(role.Permissions);
-                    }
-                }
-
-                return new RetrieveUserResponse(user.Id, permissions, user.FullName);
+                User user = userRepository.FindById(permissionsRequest.Id);
+                return userPermissionsMapper.MapFrom(user);
             }
             catch(Exception)
             {
-                throw new InvalidRequestException( string.Format("Unable to find a user with the supplied id of '{0}'", request.Id));
+                throw new InvalidRequestException( string.Format("Unable to find a user with the supplied id of '{0}'", permissionsRequest.Id));
             }
         }
     }

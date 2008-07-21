@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
@@ -30,7 +31,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_populate_property_bag_and_render_new_view()
         {
-            User[] users = new User[] {};
+            IEnumerable<RetrieveUserResponse> users = new List<RetrieveUserResponse>();
             CardType[] types = new CardType[] {};
             CardStatus[] statuses = new CardStatus[] {};
             CardPriority[] priorities = new CardPriority[] {};
@@ -59,13 +60,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         public void Should_save_the_new_card_and_redirect_to_the_card_wall()
         {
             Card card = new Card();
+            Guid id = Guid.NewGuid();
 
-            RetrieveUserResponse user = new RetrieveUserResponse(Guid.NewGuid(), null, "");
+            RetrieveUserPermissionsResponse user = new RetrieveUserPermissionsResponse(id, null);
             Context.CurrentUser = user;
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.SaveCard(card, user.Id)).Return(card);
+                Expect.Call(cardService.SaveCard(card, id)).Return(card);
             }
 
             using (mockery.Playback())
@@ -142,7 +144,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Guid id = Guid.NewGuid();
             Card card = new Card {Id = id};
 
-            User[] users = new User[] {};
+            IEnumerable<RetrieveUserResponse> users = new List<RetrieveUserResponse>();
             CardType[] types = new CardType[] {};
             CardStatus[] statuses = new CardStatus[] {};
             CardPriority[] priorities = new CardPriority[] {};
@@ -172,14 +174,15 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_save_the_edited_card_and_redirect_to_the_card_wall()
         {
+            Guid id = Guid.NewGuid();
             Card card = new Card {Id = Guid.NewGuid()};
-
-            RetrieveUserResponse user = new RetrieveUserResponse(Guid.NewGuid(), null, "");
+            
+            RetrieveUserPermissionsResponse user = new RetrieveUserPermissionsResponse(id, null);
             Context.CurrentUser = user;
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.SaveCard(card, user.Id)).Return(card);
+                Expect.Call(cardService.SaveCard(card, id)).Return(card);
             }
 
             using (mockery.Playback())
@@ -196,7 +199,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Guid cardId = Guid.NewGuid();
             Guid statusId = Guid.NewGuid();
 
-            Context.CurrentUser = new RetrieveUserResponse(Guid.Empty, null, "");
+            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, null);
 
             using (mockery.Record())
             {

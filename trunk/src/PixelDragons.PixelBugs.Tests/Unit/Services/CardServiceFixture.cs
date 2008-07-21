@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Mappers;
+using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using Rhino.Mocks;
 
@@ -19,6 +22,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private IRepository<CardStatus> cardStatusRepository;
         private IRepository<CardPriority> cardPriorityRepository;
         private IQueryBuilder query;
+        private IRetrievedUserMapper retrievedUserMapper;
 
         [SetUp]
         public void Setup()
@@ -31,8 +35,10 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             cardStatusRepository = mockery.DynamicMock<IRepository<CardStatus>>();
             cardPriorityRepository = mockery.DynamicMock<IRepository<CardPriority>>();
             query = mockery.DynamicMock<IQueryBuilder>();
+            retrievedUserMapper = mockery.DynamicMock<IRetrievedUserMapper>();
 
-            service = new CardService(userRepository, cardRepository, cardTypeRepository, cardStatusRepository, cardPriorityRepository);
+            service = new CardService(userRepository, cardRepository, cardTypeRepository,
+                                        cardStatusRepository, cardPriorityRepository, retrievedUserMapper);
         }
 
         [Test]
@@ -59,12 +65,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         public void Should_be_able_to_retrieve_users_that_can_own_cards()
         {
             User[] users = new User[] {};
-            User[] results;
+            IEnumerable<RetrieveUserResponse> results;
+            IEnumerable<RetrieveUserResponse> mappedUsers = new List<RetrieveUserResponse>();
 
             using (mockery.Record())
             {
                 Expect.Call(userRepository.Find(query)).Return(users)
                     .IgnoreArguments();
+                Expect.Call(retrievedUserMapper.MapCollection(users)).Return(mappedUsers);
             }
 
             using (mockery.Playback())
@@ -72,7 +80,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
                 results = service.GetUsersThatCanOwnCards();
             }
 
-            Assert.That(results, Is.EqualTo(users));
+            Assert.That(results, Is.EqualTo(mappedUsers));
         }
 
         [Test]
@@ -160,8 +168,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         {
             Guid userId = Guid.NewGuid();
             Card card = new Card();
-            User user = new User();
-            user.Id = userId;            
+            User user = new User {Id = userId};
 
             using (mockery.Record())
             {

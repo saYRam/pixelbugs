@@ -130,8 +130,12 @@
     <Compile Include="Unit\Filters\AuthorizationFilterFixture.cs" />
     <Compile Include="Unit\Filters\AuthenticationFilterFixture.cs" />
     <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
-    <Compile Include="Unit\Messages\AuthenticateUserRequestFixture.cs" />
-    <Compile Include="Unit\Messages\RetrieveUserRequestFixture.cs" />
+    <Compile Include="Unit\Mappers\RetrievedUserMapperFixture.cs" />
+    <Compile Include="Unit\Mappers\RetrieveUserPermissionsMapperFixture.cs" />
+    <Compile Include="Unit\Messages\AuthenticateRequestFixture.cs" />
+    <Compile Include="Unit\Messages\AuthenticateResponseFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveUserPermissionsRequestFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveUserPermissionsResponseFixture.cs" />
     <Compile Include="Unit\Messages\RetrieveUserResponseFixture.cs" />
     <Compile Include="Unit\Queries\CardsQueriesFixture.cs" />
     <Compile Include="Unit\Queries\CardStatusQueriesFixture.cs" />

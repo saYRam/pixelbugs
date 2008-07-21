@@ -35,14 +35,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Should_allow_execution_to_continue_if_a_valid_security_token_is_read_from_a_cookie()
         {
             Guid id = Guid.NewGuid();
-            RetrieveUserResponse response = new RetrieveUserResponse(id, null, "");
+            RetrieveUserPermissionsResponse response = new RetrieveUserPermissionsResponse(id, null);
             bool continueExecution;
 
             Cookies.Add("token", new HttpCookie("token", id.ToString()));
 
             using (mockery.Record())
             {
-                Expect.Call(securityService.RetrieveUser(null)).Return(response)
+                Expect.Call(securityService.RetrieveUserPermissions(null)).Return(response)
                     .IgnoreArguments();
             }
 
@@ -52,7 +52,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
             }
 
             Assert.That(continueExecution, Is.True);
-            Assert.That(Context.CurrentUser, Is.InstanceOfType(typeof(IRetrievedUser)));
+            Assert.That(Context.CurrentUser, Is.InstanceOfType(typeof(IPrincipalWithPermissions)));
             Assert.That(controller.PropertyBag["currentUser"], Is.EqualTo(Context.CurrentUser));
         }
 

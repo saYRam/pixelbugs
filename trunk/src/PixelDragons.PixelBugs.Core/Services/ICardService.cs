@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {
@@ -15,7 +17,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// Gets a list of users that can own cards
         /// </summary>
         /// <returns>Returns an array of users</returns>
-        User[] GetUsersThatCanOwnCards();
+        IEnumerable<RetrieveUserResponse> GetUsersThatCanOwnCards();
 
         /// <summary>
         /// Saves an card and records the user that saved it

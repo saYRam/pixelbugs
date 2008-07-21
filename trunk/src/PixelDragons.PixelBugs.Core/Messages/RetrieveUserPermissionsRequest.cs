@@ -4,11 +4,11 @@ using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Core.Messages
 {
-    public class RetrieveUserRequest : IRequest
+    public class RetrieveUserPermissionsRequest : IRequest
     {
         public Guid Id { get; set; }
 
-        public RetrieveUserRequest(Guid id)
+        public RetrieveUserPermissionsRequest(Guid id)
         {
             Id = id;
         }

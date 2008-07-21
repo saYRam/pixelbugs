@@ -1,5 +1,4 @@
 ﻿using System.Security;
-using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 
@@ -16,11 +15,11 @@ namespace PixelDragons.PixelBugs.Core.Services
         AuthenticateResponse Authenticate(AuthenticateRequest request);
 
         /// <summary>
-        /// Gets user information from its id
+        /// Gets a user's permissions from its id
         /// </summary>
         /// <param name="request">The request that contains the id</param>
-        /// <returns>Returns a response object that contains the user information</returns>
+        /// <returns>Returns a response object that contains the users permissions</returns>
         /// <exception>An <see cref="InvalidRequestException"/> is thrown if the id is invalid</exception>
-        RetrieveUserResponse RetrieveUser(RetrieveUserRequest request);
+        RetrieveUserPermissionsResponse RetrieveUserPermissions(RetrieveUserPermissionsRequest request);
     }
 }

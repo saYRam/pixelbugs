@@ -9,35 +9,35 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Messages
     [TestFixture]
     public class When_the_retrieve_user_request_is_created
     {
-        private RetrieveUserRequest request;
+        private RetrieveUserPermissionsRequest permissionsRequest;
         private Guid id;
 
         [SetUp]
         public void SetUp()
         {
             id = Guid.NewGuid();
-            request = new RetrieveUserRequest(id);
+            permissionsRequest = new RetrieveUserPermissionsRequest(id);
         }
 
         [Test]
         public void Should_include_the_id()
         {
-            Assert.That(request.Id, Is.EqualTo(id));
+            Assert.That(permissionsRequest.Id, Is.EqualTo(id));
         }
 
         [Test]
         public void Should_pass_validation_with_correct_data()
         {
             //No exception should be thrown
-            request.Validate();
+            permissionsRequest.Validate();
         }
 
         [Test]
         [ExpectedException(typeof(InvalidRequestException))]
         public void Should_throw_an_exception_with_invalid_data_during_validation()
         {
-            RetrieveUserRequest invalidRequest = new RetrieveUserRequest(Guid.Empty);
-            invalidRequest.Validate();
+            RetrieveUserPermissionsRequest invalidPermissionsRequest = new RetrieveUserPermissionsRequest(Guid.Empty);
+            invalidPermissionsRequest.Validate();
         }
     }   
 }

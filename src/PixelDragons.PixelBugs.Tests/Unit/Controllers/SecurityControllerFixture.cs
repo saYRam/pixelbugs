@@ -3,6 +3,7 @@ using System.Security;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
+using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
@@ -85,7 +86,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         }
 
         [Test]
-        public void Should_not_authenticate_the_user_clear_the_security_token_cookie_and_should_redirect_back_to_the_sign_in_view_with_an_error_message()
+        public void Should_clear_the_security_cookie_and_redirect_to_the_sign_in_view_with_an_error_message()
         {
             AuthenticateRequest request = new AuthenticateRequest("invalid", "credentials");
 
@@ -110,6 +111,26 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             controller.AccessDenied();
 
             Assert.That(controller.SelectedViewName, Is.EqualTo(@"Security\AccessDenied"));
+        }
+
+        [Test]
+        public void Should_clear_the_security_cookie_and_redirect_to_the_sign_in_view_with_an_error_message_when_credentials_are_blank()
+        {
+            AuthenticateRequest request = new AuthenticateRequest("", "");
+
+            using (mockery.Record())
+            {
+                Expect.Call(securityService.Authenticate(request)).Throw(new InvalidRequestException("Missing credentials"));
+            }
+
+            using (mockery.Playback())
+            {
+                controller.Authenticate(request);
+            }
+
+            Assert.That(Cookies.ContainsKey("token"), Is.False);
+            Assert.That(controller.Flash["error"], Is.EqualTo("InvalidCredentials"));
+            Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/Index.ashx"));
         }
     }
 }

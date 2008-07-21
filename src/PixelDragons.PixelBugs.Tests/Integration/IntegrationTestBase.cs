@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.VisualStudio.WebHost;
 using NUnit.Framework;
 using PixelDragons.Commons.TestSupport;
@@ -14,14 +15,20 @@ namespace PixelDragons.PixelBugs.Tests.Integration
         [TestFixtureSetUp]
         public void FixtureSetUp()    
         {
-            webServer = new Server(port, "/", physicalPath);
-            webServer.Start();
+            bool startWebServer = bool.Parse(ConfigurationManager.AppSettings["startWebServer"]);
+
+            if (startWebServer)
+            {
+                webServer = new Server(port, "/", physicalPath);
+                webServer.Start();
+            }
         }
 
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {
-            webServer.Stop();
+            if(webServer != null)
+                webServer.Stop();
         }
 
         protected string BuildUrl(string controller, string action)

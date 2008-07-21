@@ -24,6 +24,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
             RenderView("Index");
         }
 
+        [AccessibleThrough(Verb.Post)]
         public void Authenticate([DataBind("request")]AuthenticateRequest request)
         {
             try

@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.Exceptions;
+using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using Rhino.Mocks;
@@ -18,6 +19,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private SimpleSecurityService service;
         private IRepository<User> userRepositoty;
         private IQueryBuilder query;
+        private IRetrievedUserPermissionsMapper userPermissionsMapper;
 
         [SetUp]
         public void TestSetup()
@@ -26,12 +28,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             userRepositoty = mockery.DynamicMock<IRepository<User>>();
             query = mockery.DynamicMock<IQueryBuilder>();
+            userPermissionsMapper = mockery.DynamicMock<IRetrievedUserPermissionsMapper>();
 
-            service = new SimpleSecurityService(userRepositoty);
+            service = new SimpleSecurityService(userRepositoty, userPermissionsMapper);
         }
 
         [Test]
-        public void Should_return_information_about_the_user_if_user_credentials_are_valid()
+        public void Should_return_the_users_id_if_user_credentials_are_valid()
         {
             User[] users = new[] {new User()};
             users[0].Id = Guid.NewGuid();
@@ -74,41 +77,64 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             service.Authenticate(new AuthenticateRequest(null, null));
         }
 
+    }
+
+    [TestFixture]
+    public class When_retrieving_permissions_for_a_user
+    {
+        private MockRepository mockery;
+        private SimpleSecurityService service;
+        private IRepository<User> userRepositoty;
+        private IRetrievedUserPermissionsMapper userPermissionsMapper;
+
+        [SetUp]
+        public void SetUp()
+        {
+            mockery = new MockRepository();
+
+            userRepositoty = mockery.DynamicMock<IRepository<User>>();
+            userPermissionsMapper = mockery.DynamicMock<IRetrievedUserPermissionsMapper>();
+
+            service = new SimpleSecurityService(userRepositoty, userPermissionsMapper);
+        }
+
         [Test]
-        public void Should_retrieve_a_user_from_a_valid_id()
+        public void Should_retrieve_a_users_permissions_from_a_valid_id()
         {
             Guid id = Guid.NewGuid();
             User user = new User {Id = id};
-            RetrieveUserRequest request = new RetrieveUserRequest(id);
-            RetrieveUserResponse response;
+            RetrieveUserPermissionsRequest permissionsRequest = new RetrieveUserPermissionsRequest(id);
+            RetrieveUserPermissionsResponse mappedUser = new RetrieveUserPermissionsResponse(id, null);
+            RetrieveUserPermissionsResponse response;
 
             using (mockery.Record())
             {
-                Expect.Call(userRepositoty.FindById(request.Id)).Return(user);
+                Expect.Call(userRepositoty.FindById(permissionsRequest.Id)).Return(user);
+                Expect.Call(userPermissionsMapper.MapFrom(user)).Return(mappedUser);
             }
 
             using (mockery.Playback())
             {
-                response = service.RetrieveUser(request);
+                response = service.RetrieveUserPermissions(permissionsRequest);
             }
 
-            Assert.That(response.Id, Is.EqualTo(request.Id));
+            Assert.That(response, Is.EqualTo(mappedUser));
         }
 
         [Test]
         [ExpectedException(typeof(InvalidRequestException))]
         public void Should_throw_an_exception_for_an_invalid_id()
         {
-            RetrieveUserRequest request = new RetrieveUserRequest(Guid.NewGuid());
+            RetrieveUserPermissionsRequest permissionsRequest = new RetrieveUserPermissionsRequest(Guid.NewGuid());
 
             using (mockery.Record())
             {
-                Expect.Call(userRepositoty.FindById(request.Id)).Throw(new Exception());
+                Expect.Call(userRepositoty.FindById(permissionsRequest.Id)).Throw(new Exception());
             }
 
             using (mockery.Playback())
             {
-                service.RetrieveUser(request);
+                service.RetrieveUserPermissions(permissionsRequest);
             }
         }
     }

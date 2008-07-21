@@ -23,13 +23,13 @@ namespace PixelDragons.PixelBugs.Web.Filters
             }
             
             //There are permission requirements so get the current user and check their permissions
-            IRetrievedUser user = context.CurrentUser as IRetrievedUser;
+            IPrincipalWithPermissions principalWithPermissions = context.CurrentUser as IPrincipalWithPermissions;
 
-            if (user != null)
+            if (principalWithPermissions != null)
             {
                 foreach (PermissionRequiredAttribute attribute in attributes)
                 {
-                    if (!user.HasPermission(attribute.Permission))
+                    if (!principalWithPermissions.HasPermission(attribute.Permission))
                     {
                         context.Response.Redirect("Security", "AccessDenied");
                         return false;

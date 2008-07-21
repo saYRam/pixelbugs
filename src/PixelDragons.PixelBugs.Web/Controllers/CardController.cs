@@ -39,9 +39,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.CreateCards)]
         public void Create([ARDataBind("card", AutoLoad = AutoLoadBehavior.OnlyNested)] Card card)
         {
-            IRetrievedUser user = (IRetrievedUser)Context.CurrentUser;
+            IPrincipalWithPermissions principalWithPermissions = (IPrincipalWithPermissions)Context.CurrentUser;
             
-            cardService.SaveCard(card, user.Id);
+            cardService.SaveCard(card, principalWithPermissions.Id);
 
             RedirectToAction("Index");
         }
@@ -79,9 +79,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Card card)
         {
-            IRetrievedUser user = (IRetrievedUser)Context.CurrentUser;
+            IPrincipalWithPermissions principalWithPermissions = (IPrincipalWithPermissions)Context.CurrentUser;
 
-            cardService.SaveCard(card, user.Id);
+            cardService.SaveCard(card, principalWithPermissions.Id);
 
             RedirectToAction("Show", new {Id = card.Id});
         }

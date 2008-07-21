@@ -43,7 +43,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         [Test]
         public void Should_redirect_to_the_access_denied_view_if_the_principle_does_not_have_the_correct_permission()
         {
-            controller.Context.CurrentUser = new RetrieveUserResponse(Guid.Empty, null, "");
+            controller.Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, null);
 
             Assert.That(ExecuteFilter(), Is.False);
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Security/AccessDenied.ashx"));
@@ -53,7 +53,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Should_allow_execution_to_continue_if_the_principle_has_the_correct_permissions()
         {
             List<Permission> permissions = new List<Permission> { Permission.CreateCards };
-            IPrincipal user = new RetrieveUserResponse(Guid.NewGuid(), permissions, "");
+            IPrincipal user = new RetrieveUserPermissionsResponse(Guid.NewGuid(), permissions);
 
             controller.Context.CurrentUser = user;
 

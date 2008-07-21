@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Castle.Services.Transaction;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.CardPriorities;
 using PixelDragons.PixelBugs.Core.Queries.Cards;
@@ -19,19 +21,22 @@ namespace PixelDragons.PixelBugs.Core.Services
         private readonly IRepository<CardType> cardTypeRepository;
         private readonly IRepository<CardStatus> cardStatusRepository;
         private readonly IRepository<CardPriority> cardPriorityRepository;
-        
+        private readonly IRetrievedUserMapper retrievedUserMapper;
+
         public CardService(
             IRepository<User> userRepository,
             IRepository<Card> cardRepository,
             IRepository<CardType> cardTypeRepository,
             IRepository<CardStatus> cardStatusRepository,
-            IRepository<CardPriority> cardPriorityRepository)
+            IRepository<CardPriority> cardPriorityRepository,
+            IRetrievedUserMapper retrievedUserMapper)
         {
             this.userRepository = userRepository;
             this.cardRepository = cardRepository;
             this.cardTypeRepository = cardTypeRepository;
             this.cardStatusRepository = cardStatusRepository;
             this.cardPriorityRepository = cardPriorityRepository;
+            this.retrievedUserMapper = retrievedUserMapper;
         }
 
         public Card[] GetCards()
@@ -41,11 +46,12 @@ namespace PixelDragons.PixelBugs.Core.Services
             return cardRepository.Find(query);
         }
 
-        public User[] GetUsersThatCanOwnCards()
+        public IEnumerable<RetrieveUserResponse> GetUsersThatCanOwnCards()
         {
             IQueryBuilder query = new RetrieveUsersQuery();
-
-            return userRepository.Find(query);
+            User[] users = userRepository.Find(query);
+            
+            return retrievedUserMapper.MapCollection(users);
         }
 
         public CardType[] GetCardTypes()

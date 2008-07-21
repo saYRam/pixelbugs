@@ -23,7 +23,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
             {
                 try
                 {
-                    RetrieveUserResponse response = securityService.RetrieveUser(new RetrieveUserRequest(new Guid(token)));
+                    RetrieveUserPermissionsResponse response = securityService.RetrieveUserPermissions(new RetrieveUserPermissionsRequest(new Guid(token)));
 
                     context.CurrentUser = response;
                     controllerContext.PropertyBag["currentUser"] = response;

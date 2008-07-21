@@ -31,7 +31,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.ViewComponents
         [Test]
         public void Should_render_the_surrounded_block_if_the_current_user_has_the_required_permission()
         {
-            Context.CurrentUser = new RetrieveUserResponse(Guid.Empty, new List<Permission>() { Permission.CreateCards }, "");
+            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, new List<Permission>() { Permission.CreateCards });
 
             component.Render();
             
@@ -41,7 +41,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.ViewComponents
         [Test]
         public void Should_not_render_the_surrounded_block_if_the_current_user_does_not_have_the_required_permission()
         {
-            Context.CurrentUser = new RetrieveUserResponse(Guid.Empty, new List<Permission>(), "");
+            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, new List<Permission>());
 
             component.Render();
 

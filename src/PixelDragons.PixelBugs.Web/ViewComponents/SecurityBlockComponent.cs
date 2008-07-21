@@ -25,8 +25,8 @@ namespace PixelDragons.PixelBugs.Web.ViewComponents
             {
                 Permission permission = (Permission)Enum.Parse(typeof(Permission), Permission, true);
 
-                IRetrievedUser user = EngineContext.CurrentUser as IRetrievedUser;
-                if (user != null && user.HasPermission(permission))
+                IPrincipalWithPermissions principalWithPermissions = EngineContext.CurrentUser as IPrincipalWithPermissions;
+                if (principalWithPermissions != null && principalWithPermissions.HasPermission(permission))
                 {
                     Context.RenderBody();
                     Rendered = true;

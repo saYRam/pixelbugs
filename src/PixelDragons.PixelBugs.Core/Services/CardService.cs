@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Castle.Services.Transaction;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Queries.CardPriorities;
@@ -21,7 +22,11 @@ namespace PixelDragons.PixelBugs.Core.Services
         private readonly IRepository<CardType> cardTypeRepository;
         private readonly IRepository<CardStatus> cardStatusRepository;
         private readonly IRepository<CardPriority> cardPriorityRepository;
-        private readonly IRetrievedUserMapper retrievedUserMapper;
+        private readonly IUserDTOMapper userDTOMapper;
+        private readonly ICardTypeDTOMapper cardTypeDTOMapper;
+        private readonly ICardStatusDTOMapper cardStatusDTOMapper;
+        private readonly ICardPriorityDTOMapper cardPriorityDTOMapper;
+        private readonly ICardDTOMapper cardDTOMapper;
 
         public CardService(
             IRepository<User> userRepository,
@@ -29,51 +34,94 @@ namespace PixelDragons.PixelBugs.Core.Services
             IRepository<CardType> cardTypeRepository,
             IRepository<CardStatus> cardStatusRepository,
             IRepository<CardPriority> cardPriorityRepository,
-            IRetrievedUserMapper retrievedUserMapper)
+            IUserDTOMapper userDTOMapper,
+            ICardTypeDTOMapper cardTypeDTOMapper,
+            ICardStatusDTOMapper cardStatusDTOMapper,
+            ICardPriorityDTOMapper cardPriorityDTOMapper,
+            ICardDTOMapper cardDTOMapper)
         {
+            //TODO: There are too many parameters for this service, consider injecting a service locator
             this.userRepository = userRepository;
             this.cardRepository = cardRepository;
             this.cardTypeRepository = cardTypeRepository;
             this.cardStatusRepository = cardStatusRepository;
             this.cardPriorityRepository = cardPriorityRepository;
-            this.retrievedUserMapper = retrievedUserMapper;
+            this.userDTOMapper = userDTOMapper;
+            this.cardTypeDTOMapper = cardTypeDTOMapper;
+            this.cardStatusDTOMapper = cardStatusDTOMapper;
+            this.cardPriorityDTOMapper = cardPriorityDTOMapper;
+            this.cardDTOMapper = cardDTOMapper;
         }
 
-        public Card[] GetCards()
+        /// <summary>
+        /// Gets all the available options required when creating a new card
+        /// </summary>
+        /// <returns>Returns a response containing the options</returns>
+        public RetrieveCardOptionsResponse RetrieveCardOptions()
         {
-            IQueryBuilder query = new RetrieveCardsQuery();
+            RetrieveCardOptionsResponse response = new RetrieveCardOptionsResponse();
 
-            return cardRepository.Find(query);
+            response.Owners = GetPossibleCardOwners();
+            response.CardTypes = GetCardTypes();
+            response.CardStatuses = GetCardStatuses();
+            response.CardPriorities = GetCardPriorities();
+
+            return response;
         }
 
-        public IEnumerable<RetrieveUserResponse> GetUsersThatCanOwnCards()
+        public RetrieveWallResponse RetrieveWall()
+        {
+            RetrieveWallResponse response = new RetrieveWallResponse();
+
+            response.Cards = GetCardsForWall();
+            response.CardStatuses = GetCardStatuses();
+
+            return response;
+        }
+
+        private IEnumerable<UserDTO> GetPossibleCardOwners()
         {
             IQueryBuilder query = new RetrieveUsersQuery();
             User[] users = userRepository.Find(query);
             
-            return retrievedUserMapper.MapCollection(users);
+            return userDTOMapper.MapCollection(users);
         }
 
-        public CardType[] GetCardTypes()
+        private IEnumerable<CardTypeDTO> GetCardTypes()
         {
             IQueryBuilder query = new RetrieveCardTypesQuery();
+            CardType[] cardTypes = cardTypeRepository.Find(query);
 
-            return cardTypeRepository.Find(query);
+            return cardTypeDTOMapper.MapCollection(cardTypes);
         }
 
-        public CardStatus[] GetCardStatuses()
+        private IEnumerable<CardStatusDTO> GetCardStatuses()
         {
             IQueryBuilder query = new RetrieveCardStatusesQuery();
+            CardStatus[] cardStatuses = cardStatusRepository.Find(query);
 
-            return cardStatusRepository.Find(query);
+            return cardStatusDTOMapper.MapCollection(cardStatuses);
         }
 
-        public CardPriority[] GetCardPriorities()
+        private IEnumerable<CardPriorityDTO> GetCardPriorities()
         {
             IQueryBuilder query = new RetrieveCardPrioritiesQuery();
+            CardPriority[] cardPriorities = cardPriorityRepository.Find(query);
 
-            return cardPriorityRepository.Find(query);
+            return cardPriorityDTOMapper.MapCollection(cardPriorities);
         }
+
+        private IEnumerable<CardDTO> GetCardsForWall()
+        {
+            IQueryBuilder query = new RetrieveCardsQuery();
+            Card[] cards = cardRepository.Find(query);
+
+            return cardDTOMapper.MapCollection(cards);
+        }
+
+
+
+
 
         public Card GetCard(Guid id)
         {

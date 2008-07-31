@@ -27,10 +27,12 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.CreateCards)]
         public void New()
         {
-            PropertyBag["users"] = cardService.GetUsersThatCanOwnCards();
-            PropertyBag["types"] = cardService.GetCardTypes();
-            PropertyBag["statuses"] = cardService.GetCardStatuses();
-            PropertyBag["priorities"] = cardService.GetCardPriorities();
+            RetrieveCardOptionsResponse response = cardService.RetrieveCardOptions();
+
+            PropertyBag["owners"] = response.Owners;
+            PropertyBag["types"] = response.CardTypes;
+            PropertyBag["statuses"] = response.CardStatuses;
+            PropertyBag["priorities"] = response.CardPriorities;
 
             RenderView("New");
         }
@@ -49,8 +51,10 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.ViewCards)]
         public void Index()
         {
-            PropertyBag["cards"] = cardService.GetCards();
-            PropertyBag["statuses"] = cardService.GetCardStatuses();
+            RetrieveWallResponse response = cardService.RetrieveWall();
+
+            PropertyBag["cards"] = response.Cards;
+            PropertyBag["statuses"] = response.CardStatuses;
 
             RenderView("Index");
         }
@@ -66,11 +70,13 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void Edit(Guid id)
         {
+            RetrieveCardOptionsResponse response = cardService.RetrieveCardOptions();
+
             PropertyBag["card"] = cardService.GetCard(id);
-            PropertyBag["users"] = cardService.GetUsersThatCanOwnCards();
-            PropertyBag["types"] = cardService.GetCardTypes();
-            PropertyBag["statuses"] = cardService.GetCardStatuses();
-            PropertyBag["priorities"] = cardService.GetCardPriorities();
+            PropertyBag["owners"] = response.Owners;
+            PropertyBag["types"] = response.CardTypes;
+            PropertyBag["statuses"] = response.CardStatuses;
+            PropertyBag["priorities"] = response.CardPriorities;
 
             RenderView("Edit");
         }

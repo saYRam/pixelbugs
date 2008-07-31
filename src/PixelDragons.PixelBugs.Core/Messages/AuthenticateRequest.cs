@@ -4,37 +4,25 @@ namespace PixelDragons.PixelBugs.Core.Messages
 {
     public class AuthenticateRequest : IRequest
     {
-        private string userName;
-        private string password;
-        
+        public string Password { get; set; }
+        public string UserName { get; set; }
+
         public AuthenticateRequest()
         {
         }
 
         public AuthenticateRequest(string userName, string password)
         {
-            this.userName = userName;
-            this.password = password;
-        }
-
-        public virtual string Password
-        {
-            get { return password; }
-            set { password = value; }
-        }
-
-        public virtual string UserName
-        {
-            get { return userName; }
-            set { userName = value; }
+            UserName = userName;
+            Password = password;
         }
 
         public void Validate()
         {
-            if(string.IsNullOrEmpty(userName))
+            if(string.IsNullOrEmpty(UserName))
                 throw new InvalidRequestException("This is an invalid request as no user name was supplied");
 
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(Password))
                 throw new InvalidRequestException("This is an invalid request as no password was supplied");
         }
     }

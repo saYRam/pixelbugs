@@ -1,13 +1,13 @@
 using System;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.DTOs
 {
-    public class RetrieveUserResponse
+    public class UserDTO
     {
         private readonly Guid id;
-        private string fullName;
+        private readonly string fullName;
 
-        public RetrieveUserResponse(Guid id, string fullName)
+        public UserDTO(Guid id, string fullName)
         {
             this.id = id;
             this.fullName = fullName;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace PixelDragons.PixelBugs.Core.Mappers
+namespace PixelDragons.Commons.Mappers
 {
     /// <summary>
     /// Defines the role of a mapper. When implemented, will map from the source to the destination, 

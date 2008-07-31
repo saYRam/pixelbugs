@@ -32,9 +32,17 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Messages
 
         [Test]
         [ExpectedException(typeof(InvalidRequestException))]
-        public void Should_throw_an_exception_with_invalid_data_during_validation()
+        public void Should_throw_an_exception_with_invalid_user_name_during_validation()
         {
-            AuthenticateRequest invalidRequest = new AuthenticateRequest(null, "");
+            AuthenticateRequest invalidRequest = new AuthenticateRequest(null, "password");
+            invalidRequest.Validate();
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidRequestException))]
+        public void Should_throw_an_exception_with_invalid_password_during_validation()
+        {
+            AuthenticateRequest invalidRequest = new AuthenticateRequest("username", null);
             invalidRequest.Validate();
         }
     }

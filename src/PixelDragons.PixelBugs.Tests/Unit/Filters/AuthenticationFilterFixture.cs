@@ -3,6 +3,7 @@ using System.Web;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
@@ -36,7 +37,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Filters
         public void Should_allow_execution_to_continue_if_a_valid_security_token_is_read_from_a_cookie()
         {
             Guid id = Guid.NewGuid();
-            RetrieveUserPermissionsResponse response = new RetrieveUserPermissionsResponse(id, null);
+            RetrieveUserPermissionsResponse response = new RetrieveUserPermissionsResponse(new UserPermissionsDTO(id, null));
             bool continueExecution;
 
             Cookies.Add("token", new HttpCookie("token", id.ToString()));

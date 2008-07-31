@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
-using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Core.Mappers
 {
-    public class RetrievedUserPermissionsMapper : IRetrievedUserPermissionsMapper
+    public class UserPermissionsDTOMapper : IUserPermissionsDTOMapper
     {
-        public RetrieveUserPermissionsResponse MapFrom(User user)
+        public UserPermissionsDTO MapFrom(User user)
         {
             List<Permission> permissions = new List<Permission>();
 
@@ -19,10 +19,10 @@ namespace PixelDragons.PixelBugs.Core.Mappers
                 }
             }
 
-            return new RetrieveUserPermissionsResponse(user.Id, permissions);
+            return new UserPermissionsDTO(user.Id, permissions);
         }
 
-        public IEnumerable<RetrieveUserPermissionsResponse> MapCollection(User[] users)
+        public IEnumerable<UserPermissionsDTO> MapCollection(User[] users)
         {
             foreach (User user in users)
             {

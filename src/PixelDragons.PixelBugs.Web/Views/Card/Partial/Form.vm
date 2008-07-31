@@ -31,7 +31,7 @@
 
 <div class="control">
     $Form.LabelFor("card.owner.id", $strings.Labels_OwnedBy)
-    $Form.Select("card.owner.id", $users, "%{value='Id', text='FullName', firstoption='$strings.Options_NoOwner', firstoptionvalue=''}")
+    $Form.Select("card.owner.id", $owners, "%{value='Id', text='FullName', firstoption='$strings.Options_NoOwner', firstoptionvalue=''}")
 </div>
 
 <div class="control">

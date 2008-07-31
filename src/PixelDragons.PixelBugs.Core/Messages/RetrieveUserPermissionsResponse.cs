@@ -1,43 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 
 namespace PixelDragons.PixelBugs.Core.Messages
 {
-    public class RetrieveUserPermissionsResponse : IPrincipalWithPermissions
+    public class RetrieveUserPermissionsResponse
     {
-        private Guid id;
-        private List<Permission> permissions;
+        private readonly UserPermissionsDTO user;
 
-        public RetrieveUserPermissionsResponse(Guid id, List<Permission> permissions)
+        public RetrieveUserPermissionsResponse(UserPermissionsDTO user)
         {
-            this.id = id;
-            this.permissions = permissions;
+            this.user = user;
         }
 
-        public bool IsInRole(string role)
+        public UserPermissionsDTO User
         {
-            //We are not using this method to control authorization, see HasPermission
-            return false;
-        }
-
-        public IIdentity Identity
-        {
-            get { return new GenericIdentity(Id.ToString(), "PixelBugs Authentication"); }
-        }
-
-        public Guid Id
-        {
-            get { return id; }
-        }
-
-        public bool HasPermission(Permission permission)
-        {
-            if (permissions != null)
-                return permissions.Contains(permission);
-
-            return false;
+            get { return user; }
         }
     }
 }

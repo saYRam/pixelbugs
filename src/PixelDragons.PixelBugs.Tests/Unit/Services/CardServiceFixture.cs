@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
@@ -22,7 +23,11 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private IRepository<CardStatus> cardStatusRepository;
         private IRepository<CardPriority> cardPriorityRepository;
         private IQueryBuilder query;
-        private IRetrievedUserMapper retrievedUserMapper;
+        private IUserDTOMapper userDTOMapper;
+        private ICardTypeDTOMapper cardTypeDTOMapper;
+        private ICardStatusDTOMapper cardStatusDTOMapper;
+        private ICardPriorityDTOMapper cardPriorityDTOMapper;
+        private ICardDTOMapper cardDTOMapper;
 
         [SetUp]
         public void Setup()
@@ -35,112 +40,84 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             cardStatusRepository = mockery.DynamicMock<IRepository<CardStatus>>();
             cardPriorityRepository = mockery.DynamicMock<IRepository<CardPriority>>();
             query = mockery.DynamicMock<IQueryBuilder>();
-            retrievedUserMapper = mockery.DynamicMock<IRetrievedUserMapper>();
+            userDTOMapper = mockery.DynamicMock<IUserDTOMapper>();
+            cardTypeDTOMapper = mockery.DynamicMock<ICardTypeDTOMapper>();
+            cardStatusDTOMapper = mockery.DynamicMock<ICardStatusDTOMapper>();
+            cardPriorityDTOMapper = mockery.DynamicMock<ICardPriorityDTOMapper>();
+            cardDTOMapper = mockery.DynamicMock<ICardDTOMapper>();
 
             service = new CardService(userRepository, cardRepository, cardTypeRepository,
-                                        cardStatusRepository, cardPriorityRepository, retrievedUserMapper);
+                                        cardStatusRepository, cardPriorityRepository, 
+                                        userDTOMapper, cardTypeDTOMapper, cardStatusDTOMapper, cardPriorityDTOMapper, cardDTOMapper);
         }
 
         [Test]
-        public void Should_be_able_to_retrieve_all_cards()
+        public void Should_be_able_to_retrieve_all_cards_and_statuses_for_a_wall()
         {
             Card[] cards = new Card[] {};
-            Card[] results;
+            CardStatus[] cardStatuses = new CardStatus[] { };
+
+            IEnumerable<CardDTO> cardDTOs = new List<CardDTO>();
+            IEnumerable<CardStatusDTO> cardStatusDTOs = new List<CardStatusDTO>();
+
+            RetrieveWallResponse response;
 
             using (mockery.Record())
             {
-                Expect.Call(cardRepository.Find(query)).Return(cards)
-                    .IgnoreArguments();
+                Expect.Call(cardRepository.Find(query)).Return(cards).IgnoreArguments();
+                Expect.Call(cardStatusRepository.Find(query)).Return(cardStatuses).IgnoreArguments();
+
+                Expect.Call(cardDTOMapper.MapCollection(cards)).Return(cardDTOs);
+                Expect.Call(cardStatusDTOMapper.MapCollection(cardStatuses)).Return(cardStatusDTOs);
             }
 
             using (mockery.Playback())
             {
-                results = service.GetCards();
+                response = service.RetrieveWall();
             }
 
-            Assert.That(results, Is.EqualTo(cards));
+            Assert.That(response.Cards, Is.EqualTo(cardDTOs));
+            Assert.That(response.CardStatuses, Is.EqualTo(cardStatusDTOs));
         }
 
         [Test]
-        public void Should_be_able_to_retrieve_users_that_can_own_cards()
+        public void Should_be_able_to_retrieve_options_when_creating_a_new_card()
         {
-            User[] users = new User[] {};
-            IEnumerable<RetrieveUserResponse> results;
-            IEnumerable<RetrieveUserResponse> mappedUsers = new List<RetrieveUserResponse>();
+            //TODO: This test is too large which is a sure sign that the method is doing too much, should refactor this
+            User[] users = new User[] { };
+            CardType[] cardTypes = new CardType[] { };
+            CardStatus[] cardStatuses = new CardStatus[] { };
+            CardPriority[] cardPriorities = new CardPriority[] { };
+
+            IEnumerable<UserDTO> userDTOs = new List<UserDTO>();
+            IEnumerable<CardTypeDTO> cardTypeDTOs = new List<CardTypeDTO>();
+            IEnumerable<CardStatusDTO> cardStatusDTOs = new List<CardStatusDTO>();
+            IEnumerable<CardPriorityDTO> cardPriorityDTOs = new List<CardPriorityDTO>();
+
+            RetrieveCardOptionsResponse response;
 
             using (mockery.Record())
             {
-                Expect.Call(userRepository.Find(query)).Return(users)
-                    .IgnoreArguments();
-                Expect.Call(retrievedUserMapper.MapCollection(users)).Return(mappedUsers);
+                Expect.Call(userRepository.Find(query)).Return(users).IgnoreArguments();
+                Expect.Call(cardTypeRepository.Find(query)).Return(cardTypes).IgnoreArguments();
+                Expect.Call(cardStatusRepository.Find(query)).Return(cardStatuses).IgnoreArguments();
+                Expect.Call(cardPriorityRepository.Find(query)).Return(cardPriorities).IgnoreArguments();
+
+                Expect.Call(userDTOMapper.MapCollection(users)).Return(userDTOs);
+                Expect.Call(cardTypeDTOMapper.MapCollection(cardTypes)).Return(cardTypeDTOs);
+                Expect.Call(cardStatusDTOMapper.MapCollection(cardStatuses)).Return(cardStatusDTOs);
+                Expect.Call(cardPriorityDTOMapper.MapCollection(cardPriorities)).Return(cardPriorityDTOs);
             }
 
             using (mockery.Playback())
             {
-                results = service.GetUsersThatCanOwnCards();
+                response = service.RetrieveCardOptions();
             }
 
-            Assert.That(results, Is.EqualTo(mappedUsers));
-        }
-
-        [Test]
-        public void Should_be_able_to_retrieve_all_card_types()
-        {
-            CardType[] types = new CardType[] { };
-            CardType[] results;
-
-            using (mockery.Record())
-            {
-                Expect.Call(cardTypeRepository.Find(query)).Return(types)
-                    .IgnoreArguments();
-            }
-
-            using (mockery.Playback())
-            {
-                results = service.GetCardTypes();
-            }
-
-            Assert.That(results, Is.EqualTo(types));
-        }
-
-        [Test]
-        public void Should_be_able_to_retrieve_all_card_statuses()
-        {
-            CardStatus[] statuses = new CardStatus[] {};
-            CardStatus[] results;
-
-            using (mockery.Record())
-            {
-                Expect.Call(cardStatusRepository.Find(query)).Return(statuses)
-                    .IgnoreArguments();
-            }
-
-            using (mockery.Playback())
-            {
-                results = service.GetCardStatuses();
-            }
-
-            Assert.That(results, Is.EqualTo(statuses));
-        }
-
-        [Test]
-        public void Should_be_able_to_retrieve_all_card_priorities()
-        {
-            CardPriority[] priorities = new CardPriority[] {};
-            CardPriority[] results;
-
-            using (mockery.Record())
-            {
-                Expect.Call(cardPriorityRepository.Find(query)).Return(priorities)
-                    .IgnoreArguments();
-            }
-
-            using (mockery.Playback())
-            {
-                results = service.GetCardPriorities();
-            }
-
-            Assert.That(results, Is.EqualTo(priorities));
+            Assert.That(response.Owners, Is.EqualTo(userDTOs));
+            Assert.That(response.CardTypes, Is.EqualTo(cardTypeDTOs));
+            Assert.That(response.CardStatuses, Is.EqualTo(cardStatusDTOs));
+            Assert.That(response.CardPriorities, Is.EqualTo(cardPriorityDTOs));
         }
 
         [Test]

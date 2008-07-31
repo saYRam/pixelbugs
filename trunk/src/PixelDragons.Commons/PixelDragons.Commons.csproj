@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomMappings\EnumList.cs" />
+    <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="MonoRail\Filters\PerformanceFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IO\FindReplaceStream.cs" />

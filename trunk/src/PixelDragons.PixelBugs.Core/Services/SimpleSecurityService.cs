@@ -2,6 +2,7 @@
 using System.Security;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
@@ -12,12 +13,12 @@ namespace PixelDragons.PixelBugs.Core.Services
     public class SimpleSecurityService : ISecurityService
     {
         private readonly IRepository<User> userRepository;
-        private readonly IRetrievedUserPermissionsMapper userPermissionsMapper;
+        private readonly IUserPermissionsDTOMapper userPermissionsDTOMapper;
 
-        public SimpleSecurityService(IRepository<User> userRepository, IRetrievedUserPermissionsMapper userPermissionsMapper)
+        public SimpleSecurityService(IRepository<User> userRepository, IUserPermissionsDTOMapper userPermissionsDTOMapper)
         {
             this.userRepository = userRepository;
-            this.userPermissionsMapper = userPermissionsMapper;
+            this.userPermissionsDTOMapper = userPermissionsDTOMapper;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest request)
@@ -41,7 +42,8 @@ namespace PixelDragons.PixelBugs.Core.Services
             try
             {
                 User user = userRepository.FindById(permissionsRequest.Id);
-                return userPermissionsMapper.MapFrom(user);
+                UserPermissionsDTO dto = userPermissionsDTOMapper.MapFrom(user);
+                return new RetrieveUserPermissionsResponse(dto);
             }
             catch(Exception)
             {

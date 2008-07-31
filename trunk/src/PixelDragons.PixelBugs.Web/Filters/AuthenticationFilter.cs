@@ -1,5 +1,6 @@
 ﻿using System;
 using Castle.MonoRail.Framework;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Core.Exceptions;
@@ -25,8 +26,8 @@ namespace PixelDragons.PixelBugs.Web.Filters
                 {
                     RetrieveUserPermissionsResponse response = securityService.RetrieveUserPermissions(new RetrieveUserPermissionsRequest(new Guid(token)));
 
-                    context.CurrentUser = response;
-                    controllerContext.PropertyBag["currentUser"] = response;
+                    context.CurrentUser = response.User;
+                    controllerContext.PropertyBag["currentUser"] = response.User;
 
                     return true;
                 }

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
@@ -31,17 +32,15 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_populate_property_bag_and_render_new_view()
         {
-            IEnumerable<RetrieveUserResponse> users = new List<RetrieveUserResponse>();
-            CardType[] types = new CardType[] {};
-            CardStatus[] statuses = new CardStatus[] {};
-            CardPriority[] priorities = new CardPriority[] {};
+            RetrieveCardOptionsResponse response = new RetrieveCardOptionsResponse();
+            response.Owners = new List<UserDTO>();
+            response.CardTypes = new List<CardTypeDTO>();
+            response.CardStatuses = new List<CardStatusDTO>();
+            response.CardPriorities = new List<CardPriorityDTO>();
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.GetUsersThatCanOwnCards()).Return(users);
-                Expect.Call(cardService.GetCardTypes()).Return(types);
-                Expect.Call(cardService.GetCardStatuses()).Return(statuses);
-                Expect.Call(cardService.GetCardPriorities()).Return(priorities);
+                Expect.Call(cardService.RetrieveCardOptions()).Return(response);
             }
 
             using (mockery.Playback())
@@ -49,10 +48,10 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
                 controller.New();
             }
 
-            Assert.That(controller.PropertyBag["users"], Is.EqualTo(users));
-            Assert.That(controller.PropertyBag["types"], Is.EqualTo(types));
-            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(statuses));
-            Assert.That(controller.PropertyBag["priorities"], Is.EqualTo(priorities));
+            Assert.That(controller.PropertyBag["owners"], Is.EqualTo(response.Owners));
+            Assert.That(controller.PropertyBag["types"], Is.EqualTo(response.CardTypes));
+            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(response.CardStatuses));
+            Assert.That(controller.PropertyBag["priorities"], Is.EqualTo(response.CardPriorities));
             Assert.That(controller.SelectedViewName, Is.EqualTo(@"Card\New"));
         }
 
@@ -62,7 +61,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Card card = new Card();
             Guid id = Guid.NewGuid();
 
-            RetrieveUserPermissionsResponse user = new RetrieveUserPermissionsResponse(id, null);
+            UserPermissionsDTO user = new UserPermissionsDTO(id, null);
             Context.CurrentUser = user;
 
             using (mockery.Record())
@@ -99,13 +98,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_populate_the_property_bag_and_render_the_card_wall_view()
         {
-            Card[] cards = new Card[] {};
-            CardStatus[] statuses = new CardStatus[] {};
+            RetrieveWallResponse response = new RetrieveWallResponse();
+            response.Cards = new List<CardDTO>();
+            response.CardStatuses = new List<CardStatusDTO>();
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.GetCards()).Return(cards);
-                Expect.Call(cardService.GetCardStatuses()).Return(statuses);
+                Expect.Call(cardService.RetrieveWall()).Return(response);
             }
 
             using (mockery.Playback())
@@ -113,8 +112,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
                 controller.Index();
             }
 
-            Assert.That(controller.PropertyBag["cards"], Is.EqualTo(cards));
-            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(statuses));
+            Assert.That(controller.PropertyBag["cards"], Is.EqualTo(response.Cards));
+            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(response.CardStatuses));
             Assert.That(controller.SelectedViewName, Is.EqualTo(@"Card\Index"));
         }
 
@@ -144,17 +143,15 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Guid id = Guid.NewGuid();
             Card card = new Card {Id = id};
 
-            IEnumerable<RetrieveUserResponse> users = new List<RetrieveUserResponse>();
-            CardType[] types = new CardType[] {};
-            CardStatus[] statuses = new CardStatus[] {};
-            CardPriority[] priorities = new CardPriority[] {};
+            RetrieveCardOptionsResponse response = new RetrieveCardOptionsResponse();
+            response.Owners = new List<UserDTO>();
+            response.CardTypes = new List<CardTypeDTO>();
+            response.CardStatuses = new List<CardStatusDTO>();
+            response.CardPriorities = new List<CardPriorityDTO>();
 
             using (mockery.Record())
             {
-                Expect.Call(cardService.GetUsersThatCanOwnCards()).Return(users);
-                Expect.Call(cardService.GetCardTypes()).Return(types);
-                Expect.Call(cardService.GetCardStatuses()).Return(statuses);
-                Expect.Call(cardService.GetCardPriorities()).Return(priorities);
+                Expect.Call(cardService.RetrieveCardOptions()).Return(response);
                 Expect.Call(cardService.GetCard(id)).Return(card);
             }
 
@@ -164,10 +161,10 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             }
 
             Assert.That(controller.PropertyBag["card"], Is.EqualTo(card));
-            Assert.That(controller.PropertyBag["users"], Is.EqualTo(users));
-            Assert.That(controller.PropertyBag["types"], Is.EqualTo(types));
-            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(statuses));
-            Assert.That(controller.PropertyBag["priorities"], Is.EqualTo(priorities));
+            Assert.That(controller.PropertyBag["owners"], Is.EqualTo(response.Owners));
+            Assert.That(controller.PropertyBag["types"], Is.EqualTo(response.CardTypes));
+            Assert.That(controller.PropertyBag["statuses"], Is.EqualTo(response.CardStatuses));
+            Assert.That(controller.PropertyBag["priorities"], Is.EqualTo(response.CardPriorities));
             Assert.That(controller.SelectedViewName, Is.EqualTo(@"Card\Edit"));
         }
 
@@ -177,7 +174,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Guid id = Guid.NewGuid();
             Card card = new Card {Id = Guid.NewGuid()};
             
-            RetrieveUserPermissionsResponse user = new RetrieveUserPermissionsResponse(id, null);
+            UserPermissionsDTO user = new UserPermissionsDTO(id, null);
             Context.CurrentUser = user;
 
             using (mockery.Record())
@@ -199,7 +196,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
             Guid cardId = Guid.NewGuid();
             Guid statusId = Guid.NewGuid();
 
-            Context.CurrentUser = new RetrieveUserPermissionsResponse(Guid.Empty, null);
+            Context.CurrentUser = new UserPermissionsDTO(Guid.Empty, null);
 
             using (mockery.Record())
             {

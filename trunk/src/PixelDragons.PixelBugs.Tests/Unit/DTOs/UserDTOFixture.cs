@@ -1,14 +1,14 @@
 using System;
 using NUnit.Framework;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.DTOs;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace PixelDragons.PixelBugs.Tests.Unit.Messages
+namespace PixelDragons.PixelBugs.Tests.Unit.DTOs
 {
     [TestFixture]
-    public class When_accessing_a_retrieved_user
+    public class When_accessing_a_user_dto
     {
-        private RetrieveUserResponse response;
+        private UserDTO dto;
         private Guid id;
 
         [SetUp]
@@ -16,19 +16,19 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Messages
         {
             id = Guid.NewGuid();
 
-            response = new RetrieveUserResponse(id, "Andy Pike");
+            dto = new UserDTO(id, "Andy Pike");
         }
 
         [Test]
         public void Should_return_the_users_id()
         {
-            Assert.That(response.Id, Is.EqualTo(id));
+            Assert.That(dto.Id, Is.EqualTo(id));
         }
 
         [Test]
         public void Should_return_the_users_full_name()
         {
-            Assert.That(response.FullName, Is.EqualTo("Andy Pike"));
+            Assert.That(dto.FullName, Is.EqualTo("Andy Pike"));
         }
     }
 }

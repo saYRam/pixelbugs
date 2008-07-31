@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
-using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
 {
     [TestFixture]
-    public class When_mapping_from_a_user_to_a_retrieved_user
+    public class When_mapping_from_a_domain_user_to_a_dto_user
     {
-        private IRetrievedUserMapper mapper;
+        private IUserDTOMapper mapper;
         private Guid id;
 
         [SetUp]
         public void Setup()
         {
             id = Guid.NewGuid();
-            mapper = new RetrievedUserMapper();
+            mapper = new UserDTOMapper();
         }
 
         [Test]
@@ -26,9 +26,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
         {
             User user = new User {Id = id, FirstName = "Andy", LastName = "Pike"};
 
-            RetrieveUserResponse mappedUser = mapper.MapFrom(user);
+            UserDTO dto = mapper.MapFrom(user);
 
-            Assert.That(mappedUser.Id, Is.EqualTo(id));
+            Assert.That(dto.Id, Is.EqualTo(id));
         }
 
         [Test]
@@ -40,12 +40,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
                                    new User {Id = id, FirstName = "Andy", LastName = "Pike"}
                                };
 
-            IEnumerable<RetrieveUserResponse> mappedUsers = mapper.MapCollection(users);
+            IEnumerable<UserDTO> dtos = mapper.MapCollection(users);
 
-            foreach (RetrieveUserResponse mappedUser in mappedUsers)
+            foreach (UserDTO dto in dtos)
             {
-                Assert.That(mappedUser.Id, Is.EqualTo(id));
-                Assert.That(mappedUser.FullName, Is.EqualTo("Andy Pike"));
+                Assert.That(dto.Id, Is.EqualTo(id));
+                Assert.That(dto.FullName, Is.EqualTo("Andy Pike"));
             }
         }
     }

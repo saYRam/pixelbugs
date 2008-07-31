@@ -29,7 +29,7 @@ namespace PixelDragons.PixelBugs.Web.Filters
             {
                 foreach (PermissionRequiredAttribute attribute in attributes)
                 {
-                    if (!principalWithPermissions.HasPermission(attribute.Permission))
+                    if (!principalWithPermissions.Permissions.Contains(attribute.Permission))
                     {
                         context.Response.Redirect("Security", "AccessDenied");
                         return false;

@@ -11,32 +11,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Queries
     [TestFixture]
     public class When_querying_users
     {
-        private MockRepository mockery;
-
-        [SetUp]
-        public void SetUp()
-        {
-            mockery = new MockRepository();
-        }
-
         [Test]
         public void Should_build_a_valid_authentication_query()
         {
-            AuthenticateRequest request = mockery.DynamicMock<AuthenticateRequest>();
+            AuthenticateRequest request = new AuthenticateRequest("andy.pike", "password");
 
-            DetachedCriteria criteria;
             IQueryBuilder query = new UserAuthenticationQuery(request);
             
-            using (mockery.Record())
-            {
-                Expect.Call(request.UserName).Return("andy.pike");
-                Expect.Call(request.Password).Return("password");
-            }
-
-            using (mockery.Playback())
-            {
-                criteria = query.BuildQuery();    
-            }
+            DetachedCriteria criteria = query.BuildQuery();    
             
             Assert.That(criteria, Is.Not.Null);
         }

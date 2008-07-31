@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
@@ -19,7 +20,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private SimpleSecurityService service;
         private IRepository<User> userRepositoty;
         private IQueryBuilder query;
-        private IRetrievedUserPermissionsMapper userPermissionsMapper;
+        private IUserPermissionsDTOMapper userPermissionsDTOMapper;
 
         [SetUp]
         public void TestSetup()
@@ -28,9 +29,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             userRepositoty = mockery.DynamicMock<IRepository<User>>();
             query = mockery.DynamicMock<IQueryBuilder>();
-            userPermissionsMapper = mockery.DynamicMock<IRetrievedUserPermissionsMapper>();
+            userPermissionsDTOMapper = mockery.DynamicMock<IUserPermissionsDTOMapper>();
 
-            service = new SimpleSecurityService(userRepositoty, userPermissionsMapper);
+            service = new SimpleSecurityService(userRepositoty, userPermissionsDTOMapper);
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private MockRepository mockery;
         private SimpleSecurityService service;
         private IRepository<User> userRepositoty;
-        private IRetrievedUserPermissionsMapper userPermissionsMapper;
+        private IUserPermissionsDTOMapper userPermissionsDTOMapper;
 
         [SetUp]
         public void SetUp()
@@ -93,9 +94,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             mockery = new MockRepository();
 
             userRepositoty = mockery.DynamicMock<IRepository<User>>();
-            userPermissionsMapper = mockery.DynamicMock<IRetrievedUserPermissionsMapper>();
+            userPermissionsDTOMapper = mockery.DynamicMock<IUserPermissionsDTOMapper>();
 
-            service = new SimpleSecurityService(userRepositoty, userPermissionsMapper);
+            service = new SimpleSecurityService(userRepositoty, userPermissionsDTOMapper);
         }
 
         [Test]
@@ -104,13 +105,13 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             Guid id = Guid.NewGuid();
             User user = new User {Id = id};
             RetrieveUserPermissionsRequest permissionsRequest = new RetrieveUserPermissionsRequest(id);
-            RetrieveUserPermissionsResponse mappedUser = new RetrieveUserPermissionsResponse(id, null);
+            UserPermissionsDTO dto = new UserPermissionsDTO(id, null);
             RetrieveUserPermissionsResponse response;
 
             using (mockery.Record())
             {
                 Expect.Call(userRepositoty.FindById(permissionsRequest.Id)).Return(user);
-                Expect.Call(userPermissionsMapper.MapFrom(user)).Return(mappedUser);
+                Expect.Call(userPermissionsDTOMapper.MapFrom(user)).Return(dto);
             }
 
             using (mockery.Playback())
@@ -118,7 +119,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
                 response = service.RetrieveUserPermissions(permissionsRequest);
             }
 
-            Assert.That(response, Is.EqualTo(mappedUser));
+            Assert.That(response.User, Is.EqualTo(dto));
         }
 
         [Test]

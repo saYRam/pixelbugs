@@ -9,7 +9,10 @@ namespace PixelDragons.PixelBugs.Core.Mappers
     {
         public UserDTO MapFrom(User user)
         {
-            return new UserDTO(user.Id, user.FullName);
+            if(user != null)
+                return new UserDTO(user.Id, user.FullName);
+
+            return null;
         }
 
         public IEnumerable<UserDTO> MapCollection(User[] users)

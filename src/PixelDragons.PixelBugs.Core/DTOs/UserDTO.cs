@@ -4,23 +4,17 @@ namespace PixelDragons.PixelBugs.Core.DTOs
 {
     public class UserDTO
     {
-        private readonly Guid id;
-        private readonly string fullName;
+        public UserDTO()
+        {
+        }
 
         public UserDTO(Guid id, string fullName)
         {
-            this.id = id;
-            this.fullName = fullName;
+            Id = id;
+            FullName = fullName;
         }
 
-        public Guid Id
-        {
-            get { return id; }
-        }
-
-        public string FullName
-        {
-            get { return fullName; }
-        }
+        public Guid Id { get; set; }
+        public string FullName { get; set; }
     }
 }

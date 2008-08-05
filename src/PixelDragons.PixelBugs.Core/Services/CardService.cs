@@ -27,6 +27,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         private readonly ICardStatusDTOMapper cardStatusDTOMapper;
         private readonly ICardPriorityDTOMapper cardPriorityDTOMapper;
         private readonly ICardDTOMapper cardDTOMapper;
+        private readonly ICardDetailsDTOMapper cardDetailsDTOMapper;
 
         public CardService(
             IRepository<User> userRepository,
@@ -38,7 +39,8 @@ namespace PixelDragons.PixelBugs.Core.Services
             ICardTypeDTOMapper cardTypeDTOMapper,
             ICardStatusDTOMapper cardStatusDTOMapper,
             ICardPriorityDTOMapper cardPriorityDTOMapper,
-            ICardDTOMapper cardDTOMapper)
+            ICardDTOMapper cardDTOMapper,
+            ICardDetailsDTOMapper cardDetailsDTOMapper)
         {
             //TODO: There are too many parameters for this service, consider injecting a service locator
             this.userRepository = userRepository;
@@ -51,6 +53,7 @@ namespace PixelDragons.PixelBugs.Core.Services
             this.cardStatusDTOMapper = cardStatusDTOMapper;
             this.cardPriorityDTOMapper = cardPriorityDTOMapper;
             this.cardDTOMapper = cardDTOMapper;
+            this.cardDetailsDTOMapper = cardDetailsDTOMapper;
         }
 
         /// <summary>
@@ -69,6 +72,10 @@ namespace PixelDragons.PixelBugs.Core.Services
             return response;
         }
 
+        /// <summary>
+        /// Gets all cards for the card wall together with all status lanes
+        /// </summary>
+        /// <returns>Returns a response containing the wall information</returns>
         public RetrieveWallResponse RetrieveWall()
         {
             RetrieveWallResponse response = new RetrieveWallResponse();
@@ -77,6 +84,21 @@ namespace PixelDragons.PixelBugs.Core.Services
             response.CardStatuses = GetCardStatuses();
 
             return response;
+        }
+        
+        /// <summary>
+        /// Gets a card with the given identifier
+        /// </summary>
+        /// <param name="request">The request that contains the id of the card to get</param>
+        /// <returns>Returns the matching card</returns>
+        public RetrieveCardResponse RetrieveCard(RetrieveCardRequest request)
+        {
+            request.Validate();
+
+            Card card = cardRepository.FindById(request.CardId);
+            CardDetailsDTO cardDetailsDTO = cardDetailsDTOMapper.MapFrom(card);
+
+            return new RetrieveCardResponse(cardDetailsDTO);
         }
 
         private IEnumerable<UserDTO> GetPossibleCardOwners()
@@ -121,15 +143,11 @@ namespace PixelDragons.PixelBugs.Core.Services
 
 
 
+        
 
-
-        public Card GetCard(Guid id)
-        {
-            return cardRepository.FindById(id);
-        }
-
+        
         [Transaction(TransactionMode.RequiresNew)]
-        public Card SaveCard(Card card, Guid userId)
+        public void SaveCard(Card card, Guid userId)
         {
             if (card.Id == Guid.Empty)
             {
@@ -137,18 +155,16 @@ namespace PixelDragons.PixelBugs.Core.Services
                 card.CreatedBy = userRepository.FindById(userId);
             }
 
-            return cardRepository.Save(card);
+            cardRepository.Save(card);
         }
 
         [Transaction(TransactionMode.RequiresNew)]
-        public Card ChangeCardStatus(Guid cardId, Guid statusId)
+        public void ChangeCardStatus(Guid cardId, Guid statusId)
         {
             Card card = cardRepository.FindById(cardId);
             card.Status = cardStatusRepository.FindById(statusId);
 
             cardRepository.Save(card);
-
-            return card;
         }
     }
 }

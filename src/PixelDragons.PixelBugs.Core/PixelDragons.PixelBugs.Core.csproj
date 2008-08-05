@@ -62,15 +62,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Domain\Permission.cs" />
+    <Compile Include="DTOs\CardDetailsDTO.cs" />
     <Compile Include="DTOs\CardDTO.cs" />
     <Compile Include="DTOs\CardPriorityDTO.cs" />
     <Compile Include="DTOs\CardStatusDTO.cs" />
     <Compile Include="DTOs\CardTypeDTO.cs" />
     <Compile Include="Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Mappers\CardDetailsDTOMapper.cs" />
     <Compile Include="Mappers\CardDTOMapper.cs" />
     <Compile Include="Mappers\CardPriorityDTOMapper.cs" />
     <Compile Include="Mappers\CardStatusDTOMapper.cs" />
     <Compile Include="Mappers\CardTypeDTOMapper.cs" />
+    <Compile Include="Mappers\ICardDetailsDTOMapper.cs" />
     <Compile Include="Mappers\ICardDTOMapper.cs" />
     <Compile Include="Mappers\ICardPriorityDTOMapper.cs" />
     <Compile Include="Mappers\ICardStatusDTOMapper.cs" />
@@ -84,6 +87,8 @@
     <Compile Include="Messages\AuthenticateResponse.cs" />
     <Compile Include="Messages\IPrincipalWithPermissions.cs" />
     <Compile Include="Messages\RetrieveCardOptionsResponse.cs" />
+    <Compile Include="Messages\RetrieveCardRequest.cs" />
+    <Compile Include="Messages\RetrieveCardResponse.cs" />
     <Compile Include="Messages\RetrieveUserPermissionsRequest.cs" />
     <Compile Include="DTOs\UserPermissionsDTO.cs" />
     <Compile Include="Messages\RetrieveUserPermissionsResponse.cs" />

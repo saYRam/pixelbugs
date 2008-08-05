@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Web.Helpers;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
@@ -28,7 +29,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Helpers
         [Test]
         public void Should_return_the_users_full_name_if_a_valid_user_is_passed()
         {
-            User user = new User {FirstName = "Andy", LastName = "Pike"};
+            UserDTO user = new UserDTO { FullName = "Andy Pike" };
 
             string text = helper.FormatUser(user, "No Owner");
 

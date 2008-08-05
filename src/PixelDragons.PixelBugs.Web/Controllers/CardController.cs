@@ -62,7 +62,9 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.ViewCards)]
         public void Show(Guid id)
         {
-            PropertyBag["card"] = cardService.GetCard(id);
+            RetrieveCardResponse response = cardService.RetrieveCard(new RetrieveCardRequest(id));
+
+            PropertyBag["card"] = response.Card;
 
             RenderView("Show");
         }
@@ -70,13 +72,14 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void Edit(Guid id)
         {
-            RetrieveCardOptionsResponse response = cardService.RetrieveCardOptions();
+            RetrieveCardOptionsResponse cardOptionsResponse = cardService.RetrieveCardOptions();
+            RetrieveCardResponse retrieveCardResponse = cardService.RetrieveCard(new RetrieveCardRequest(id));
 
-            PropertyBag["card"] = cardService.GetCard(id);
-            PropertyBag["owners"] = response.Owners;
-            PropertyBag["types"] = response.CardTypes;
-            PropertyBag["statuses"] = response.CardStatuses;
-            PropertyBag["priorities"] = response.CardPriorities;
+            PropertyBag["card"] = retrieveCardResponse.Card;
+            PropertyBag["owners"] = cardOptionsResponse.Owners;
+            PropertyBag["types"] = cardOptionsResponse.CardTypes;
+            PropertyBag["statuses"] = cardOptionsResponse.CardStatuses;
+            PropertyBag["priorities"] = cardOptionsResponse.CardPriorities;
 
             RenderView("Edit");
         }

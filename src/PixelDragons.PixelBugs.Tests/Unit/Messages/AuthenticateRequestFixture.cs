@@ -6,7 +6,7 @@ using PixelDragons.PixelBugs.Core.Messages;
 namespace PixelDragons.PixelBugs.Tests.Unit.Messages
 {
     [TestFixture]
-    public class When_the_request_is_created
+    public class When_the_authenticate_request_is_created
     {
         private AuthenticateRequest request;
 

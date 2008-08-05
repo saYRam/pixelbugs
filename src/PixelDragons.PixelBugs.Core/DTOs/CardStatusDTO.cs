@@ -4,23 +4,17 @@ namespace PixelDragons.PixelBugs.Core.DTOs
 {
     public class CardStatusDTO
     {
-        private readonly Guid id;
-        private readonly string name;
+        public CardStatusDTO()
+        {
+        }
 
         public CardStatusDTO(Guid id, string name)
         {
-            this.id = id;
-            this.name = name;
+            Id = id;
+            Name = name;
         }
 
-        public Guid Id
-        {
-            get { return id; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-        }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

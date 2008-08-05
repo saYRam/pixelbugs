@@ -130,6 +130,7 @@
     <Compile Include="Unit\Filters\AuthorizationFilterFixture.cs" />
     <Compile Include="Unit\Filters\AuthenticationFilterFixture.cs" />
     <Compile Include="Unit\Helpers\UIHelperFixture.cs" />
+    <Compile Include="Unit\Mappers\CardDetailsDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\CardTypeDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\CardStatusDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\CardPriorityDTOMapperFixture.cs" />
@@ -138,6 +139,8 @@
     <Compile Include="Unit\Mappers\UserPermissionsDTOMapperFixture.cs" />
     <Compile Include="Unit\Messages\AuthenticateRequestFixture.cs" />
     <Compile Include="Unit\Messages\AuthenticateResponseFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveCardResponseFixture.cs" />
+    <Compile Include="Unit\Messages\RetrieveCardRequestFixture.cs" />
     <Compile Include="Unit\Messages\RetrieveUserPermissionsRequestFixture.cs" />
     <Compile Include="Unit\DTOs\UserPermissionsDTOFixture.cs" />
     <Compile Include="Unit\DTOs\UserDTOFixture.cs" />
@@ -148,6 +151,7 @@
     <Compile Include="Unit\Queries\UserQueriesFixture.cs" />
     <Compile Include="Unit\Services\CardServiceFixture.cs" />
     <Compile Include="Unit\Services\SimpleSecurityServiceFixture.cs" />
+    <Compile Include="Unit\Stubs\StubRepository.cs" />
     <Compile Include="Unit\ViewComponents\SecurityBlockFixture.cs" />
   </ItemGroup>
   <ItemGroup>

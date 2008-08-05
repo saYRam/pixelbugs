@@ -32,6 +32,14 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
         }
 
         [Test]
+        public void Should_map_a_null_user_to_a_null_dto_user()
+        {
+            UserDTO dto = mapper.MapFrom(null);
+
+            Assert.That(dto, Is.Null);
+        }
+
+        [Test]
         public void Should_map_from_a_collection()
         {
             User[] users = new[]

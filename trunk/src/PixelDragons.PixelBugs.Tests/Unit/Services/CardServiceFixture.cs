@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
+using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
@@ -28,6 +29,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private ICardStatusDTOMapper cardStatusDTOMapper;
         private ICardPriorityDTOMapper cardPriorityDTOMapper;
         private ICardDTOMapper cardDTOMapper;
+        private ICardDetailsDTOMapper cardDetailsDTOMapper;
 
         [SetUp]
         public void Setup()
@@ -45,10 +47,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             cardStatusDTOMapper = mockery.DynamicMock<ICardStatusDTOMapper>();
             cardPriorityDTOMapper = mockery.DynamicMock<ICardPriorityDTOMapper>();
             cardDTOMapper = mockery.DynamicMock<ICardDTOMapper>();
+            cardDetailsDTOMapper = mockery.DynamicMock<ICardDetailsDTOMapper>();
 
             service = new CardService(userRepository, cardRepository, cardTypeRepository,
                                         cardStatusRepository, cardPriorityRepository, 
-                                        userDTOMapper, cardTypeDTOMapper, cardStatusDTOMapper, cardPriorityDTOMapper, cardDTOMapper);
+                                        userDTOMapper, cardTypeDTOMapper, cardStatusDTOMapper,
+                                        cardPriorityDTOMapper, cardDTOMapper, cardDetailsDTOMapper);
         }
 
         [Test]
@@ -83,7 +87,6 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         [Test]
         public void Should_be_able_to_retrieve_options_when_creating_a_new_card()
         {
-            //TODO: This test is too large which is a sure sign that the method is doing too much, should refactor this
             User[] users = new User[] { };
             CardType[] cardTypes = new CardType[] { };
             CardStatus[] cardStatuses = new CardStatus[] { };
@@ -121,23 +124,34 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         }
 
         [Test]
-        public void Should_be_able_to_retrieve_a_card_from_its_id()
+        public void Should_be_able_to_retrieve_a_card()
         {
             Guid id = Guid.NewGuid();
             Card card = new Card {Id = id};
-            Card result;
+            CardDetailsDTO cardDetailsDTO = new CardDetailsDTO { Id = id };
+            RetrieveCardRequest request = new RetrieveCardRequest(id);
+            RetrieveCardResponse response;
 
             using (mockery.Record())
             {
                 Expect.Call(cardRepository.FindById(id)).Return(card);
+                Expect.Call(cardDetailsDTOMapper.MapFrom(card)).Return(cardDetailsDTO);
             }
 
             using (mockery.Playback())
             {
-                result = service.GetCard(id);
+                response = service.RetrieveCard(request);
             }
 
-            Assert.That(result, Is.EqualTo(card));
+            Assert.That(response.Card, Is.EqualTo(cardDetailsDTO));
+        }
+
+        [Test]
+        [ExpectedException(typeof(InvalidRequestException))]
+        public void Should_throw_an_exception_when_retrieving_a_card_with_an_invalid_request()
+        {
+            RetrieveCardRequest request = new RetrieveCardRequest(Guid.Empty);
+            service.RetrieveCard(request);
         }
 
         [Test]
@@ -169,7 +183,6 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             Guid statusId = Guid.NewGuid();
             Card card = new Card();
             CardStatus status = new CardStatus();
-            Card result;
 
             using (mockery.Record())
             {
@@ -180,10 +193,10 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Playback())
             {
-                result = service.ChangeCardStatus(cardId, statusId);
+                service.ChangeCardStatus(cardId, statusId);
             }
 
-            Assert.That(result.Status, Is.EqualTo(status));
+            Assert.That(card.Status, Is.EqualTo(status));
         }
     }
 }

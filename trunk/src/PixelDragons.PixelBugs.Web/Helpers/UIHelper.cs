@@ -1,12 +1,12 @@
 ﻿using System;
 using Castle.MonoRail.Framework.Helpers;
-using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 
 namespace PixelDragons.PixelBugs.Web.Helpers
 {
     public class UIHelper : AbstractHelper
     {
-        public string FormatUser(User user, string defaultText)
+        public string FormatUser(UserDTO user, string defaultText)
         {
             if (user != null)
                 return user.FullName;

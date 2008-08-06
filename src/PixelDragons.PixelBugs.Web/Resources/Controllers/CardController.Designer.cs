@@ -88,15 +88,6 @@ namespace PixelDragons.PixelBugs.Web.Resources.Controllers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created:.
-        /// </summary>
-        internal static string Labels_Created {
-            get {
-                return ResourceManager.GetString("Labels_Created", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Owned By:.
         /// </summary>
         internal static string Labels_OwnedBy {

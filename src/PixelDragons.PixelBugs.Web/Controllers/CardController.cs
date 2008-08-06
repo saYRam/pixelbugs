@@ -1,8 +1,8 @@
 ﻿using System;
-using Castle.MonoRail.ActiveRecordSupport;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Attributes;
 using PixelDragons.PixelBugs.Core.Domain;
+using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Filters;
@@ -15,7 +15,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
     [Filter(ExecuteWhen.BeforeAction, typeof (AuthenticationFilter), ExecutionOrder = 0)]
     [Filter(ExecuteWhen.BeforeAction, typeof (AuthorizationFilter), ExecutionOrder = 1)]
     [Resource("strings", "PixelDragons.PixelBugs.Web.Resources.Controllers.CardController")]
-    public class CardController : ARSmartDispatcherController
+    public class CardController : SmartDispatcherController
     {
         private readonly ICardService cardService;
 
@@ -39,11 +39,11 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
         [AccessibleThrough(Verb.Post)]
         [PermissionRequired(Permission.CreateCards)]
-        public void Create([ARDataBind("card", AutoLoad = AutoLoadBehavior.OnlyNested)] Card card)
+        public void Create([DataBind("card")] CardDetailsDTO card)
         {
-            IPrincipalWithPermissions principalWithPermissions = (IPrincipalWithPermissions)Context.CurrentUser;
-            
-            cardService.SaveCard(card, principalWithPermissions.Id);
+            SaveCardRequest request = new SaveCardRequest(card);
+
+            cardService.SaveCard(request);
 
             RedirectToAction("Index");
         }
@@ -86,11 +86,11 @@ namespace PixelDragons.PixelBugs.Web.Controllers
 
         [AccessibleThrough(Verb.Post)]
         [PermissionRequired(Permission.EditCards)]
-        public void Update([ARDataBind("card", AutoLoad = AutoLoadBehavior.NullIfInvalidKey)] Card card)
+        public void Update([DataBind("card")] CardDetailsDTO card)
         {
-            IPrincipalWithPermissions principalWithPermissions = (IPrincipalWithPermissions)Context.CurrentUser;
+            SaveCardRequest request = new SaveCardRequest(card);
 
-            cardService.SaveCard(card, principalWithPermissions.Id);
+            cardService.SaveCard(request);
 
             RedirectToAction("Show", new {Id = card.Id});
         }
@@ -100,7 +100,7 @@ namespace PixelDragons.PixelBugs.Web.Controllers
         [PermissionRequired(Permission.EditCards)]
         public void UpdateStatus(Guid cardId, Guid statusId)
         {
-            cardService.ChangeCardStatus(cardId, statusId);
+            cardService.ChangeCardStatus(new ChangeCardStatusRequest(cardId, statusId));
 
             CancelLayout();
             CancelView();

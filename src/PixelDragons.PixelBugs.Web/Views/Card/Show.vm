@@ -31,8 +31,4 @@
     <div>
         <label>$strings.Labels_Points</label> $card.Points
     </div>
-    
-    <div>
-        <label>$strings.Labels_Created</label> $UI.FormatDate($card.CreatedDate) by $card.CreatedBy.FullName
-    </div>
 </div>

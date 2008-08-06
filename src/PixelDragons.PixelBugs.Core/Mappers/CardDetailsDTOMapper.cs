@@ -25,8 +25,6 @@ namespace PixelDragons.PixelBugs.Core.Mappers
             return new CardDetailsDTO
                        {
                            Id = card.Id,
-                           CreatedDate = card.CreatedDate,
-                           CreatedBy = userDTOMapper.MapFrom(card.CreatedBy),
                            Title = card.Title,
                            Body = card.Body,
                            Number = card.Number,

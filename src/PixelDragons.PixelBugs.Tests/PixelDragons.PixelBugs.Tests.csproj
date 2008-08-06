@@ -135,10 +135,13 @@
     <Compile Include="Unit\Mappers\CardStatusDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\CardPriorityDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\CardDTOMapperFixture.cs" />
+    <Compile Include="Unit\Mappers\CardMapperFixture.cs" />
     <Compile Include="Unit\Mappers\UserDTOMapperFixture.cs" />
     <Compile Include="Unit\Mappers\UserPermissionsDTOMapperFixture.cs" />
     <Compile Include="Unit\Messages\AuthenticateRequestFixture.cs" />
     <Compile Include="Unit\Messages\AuthenticateResponseFixture.cs" />
+    <Compile Include="Unit\Messages\ChangeCardStatusRequestFixture.cs" />
+    <Compile Include="Unit\Messages\SaveCardRequestFixture.cs" />
     <Compile Include="Unit\Messages\RetrieveCardResponseFixture.cs" />
     <Compile Include="Unit\Messages\RetrieveCardRequestFixture.cs" />
     <Compile Include="Unit\Messages\RetrieveUserPermissionsRequestFixture.cs" />

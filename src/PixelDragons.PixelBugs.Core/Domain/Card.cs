@@ -10,9 +10,6 @@ namespace PixelDragons.PixelBugs.Core.Domain
         public Guid Id { get; set; }
 
         [Property(NotNull = true)]
-        public DateTime CreatedDate { get; set; }
-
-        [Property(NotNull = true)]
         public string Title { get; set; }
 
         [Property(SqlType = "NVARCHAR(MAX)")]
@@ -23,9 +20,6 @@ namespace PixelDragons.PixelBugs.Core.Domain
 
         [Property(SqlType = "int identity(1,1)", NotNull = true, Insert = false, Update = false)]
         public int Number { get; set; }
-
-        [BelongsTo(NotNull = true)]
-        public User CreatedBy { get; set; }
 
         [BelongsTo]
         public User Owner { get; set; }

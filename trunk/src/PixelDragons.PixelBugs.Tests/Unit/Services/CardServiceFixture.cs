@@ -30,6 +30,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         private ICardPriorityDTOMapper cardPriorityDTOMapper;
         private ICardDTOMapper cardDTOMapper;
         private ICardDetailsDTOMapper cardDetailsDTOMapper;
+        private ICardMapper cardMapper;
 
         [SetUp]
         public void Setup()
@@ -48,11 +49,12 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             cardPriorityDTOMapper = mockery.DynamicMock<ICardPriorityDTOMapper>();
             cardDTOMapper = mockery.DynamicMock<ICardDTOMapper>();
             cardDetailsDTOMapper = mockery.DynamicMock<ICardDetailsDTOMapper>();
+            cardMapper = mockery.DynamicMock<ICardMapper>();
 
             service = new CardService(userRepository, cardRepository, cardTypeRepository,
                                         cardStatusRepository, cardPriorityRepository, 
                                         userDTOMapper, cardTypeDTOMapper, cardStatusDTOMapper,
-                                        cardPriorityDTOMapper, cardDTOMapper, cardDetailsDTOMapper);
+                                        cardPriorityDTOMapper, cardDTOMapper, cardDetailsDTOMapper, cardMapper);
         }
 
         [Test]
@@ -157,23 +159,20 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         [Test]
         public void Should_be_able_to_save_a_card()
         {
-            Guid userId = Guid.NewGuid();
+            CardDetailsDTO cardDetailsDTO = new CardDetailsDTO();
             Card card = new Card();
-            User user = new User {Id = userId};
-
+            SaveCardRequest request = new SaveCardRequest(cardDetailsDTO);
+            
             using (mockery.Record())
             {
-                Expect.Call(cardRepository.Save(card)).Return(card);
-                Expect.Call(userRepository.FindById(userId)).Return(user);
+                Expect.Call(cardMapper.MapFrom(cardDetailsDTO)).Return(card);
+                Expect.Call(() => cardRepository.Save(card));
             }
 
             using (mockery.Playback())
             {
-                service.SaveCard(card, userId);
+                service.SaveCard(request);
             }
-
-            Assert.That(card.CreatedDate.Date, Is.EqualTo(DateTime.Now.Date));
-            Assert.That(card.CreatedBy.Id, Is.EqualTo(userId));
         }
 
         [Test]
@@ -183,17 +182,18 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
             Guid statusId = Guid.NewGuid();
             Card card = new Card();
             CardStatus status = new CardStatus();
+            ChangeCardStatusRequest request = new ChangeCardStatusRequest(cardId, statusId);
 
             using (mockery.Record())
             {
                 Expect.Call(cardRepository.FindById(cardId)).Return(card);
                 Expect.Call(cardStatusRepository.FindById(statusId)).Return(status);
-                Expect.Call(cardRepository.Save(card)).Return(card);
+                Expect.Call(() => cardRepository.Save(card));
             }
 
             using (mockery.Playback())
             {
-                service.ChangeCardStatus(cardId, statusId);
+                service.ChangeCardStatus(request);
             }
 
             Assert.That(card.Status, Is.EqualTo(status));

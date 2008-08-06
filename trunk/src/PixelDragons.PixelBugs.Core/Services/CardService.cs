@@ -28,6 +28,7 @@ namespace PixelDragons.PixelBugs.Core.Services
         private readonly ICardPriorityDTOMapper cardPriorityDTOMapper;
         private readonly ICardDTOMapper cardDTOMapper;
         private readonly ICardDetailsDTOMapper cardDetailsDTOMapper;
+        private ICardMapper cardMapper;
 
         public CardService(
             IRepository<User> userRepository,
@@ -40,7 +41,8 @@ namespace PixelDragons.PixelBugs.Core.Services
             ICardStatusDTOMapper cardStatusDTOMapper,
             ICardPriorityDTOMapper cardPriorityDTOMapper,
             ICardDTOMapper cardDTOMapper,
-            ICardDetailsDTOMapper cardDetailsDTOMapper)
+            ICardDetailsDTOMapper cardDetailsDTOMapper,
+            ICardMapper cardMapper)
         {
             //TODO: There are too many parameters for this service, consider injecting a service locator
             this.userRepository = userRepository;
@@ -54,6 +56,7 @@ namespace PixelDragons.PixelBugs.Core.Services
             this.cardPriorityDTOMapper = cardPriorityDTOMapper;
             this.cardDTOMapper = cardDTOMapper;
             this.cardDetailsDTOMapper = cardDetailsDTOMapper;
+            this.cardMapper = cardMapper;
         }
 
         /// <summary>
@@ -140,29 +143,24 @@ namespace PixelDragons.PixelBugs.Core.Services
 
             return cardDTOMapper.MapCollection(cards);
         }
-
-
-
-        
-
         
         [Transaction(TransactionMode.RequiresNew)]
-        public void SaveCard(Card card, Guid userId)
+        public void SaveCard(SaveCardRequest request)
         {
-            if (card.Id == Guid.Empty)
-            {
-                card.CreatedDate = DateTime.Now;
-                card.CreatedBy = userRepository.FindById(userId);
-            }
+            request.Validate();
+
+            Card card = cardMapper.MapFrom(request.CardDetailsDTO);
 
             cardRepository.Save(card);
         }
 
         [Transaction(TransactionMode.RequiresNew)]
-        public void ChangeCardStatus(Guid cardId, Guid statusId)
+        public void ChangeCardStatus(ChangeCardStatusRequest request)
         {
-            Card card = cardRepository.FindById(cardId);
-            card.Status = cardStatusRepository.FindById(statusId);
+            request.Validate();
+
+            Card card = cardRepository.FindById(request.CardId);
+            card.Status = cardStatusRepository.FindById(request.StatusId);
 
             cardRepository.Save(card);
         }

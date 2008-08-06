@@ -30,8 +30,7 @@ namespace PixelDragons.Commons.Repositories
         /// is completed. (INSERT)
         /// </summary>
         /// <param name="entity">the entity to save</param>
-        /// <returns>The saved entity</returns>
-        T Save(T entity);
+        void Save(T entity);
 
         /// <summary>
         /// Loads all the entities that match the criteria

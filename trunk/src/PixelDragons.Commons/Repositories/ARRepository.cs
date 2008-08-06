@@ -26,11 +26,9 @@ namespace PixelDragons.Commons.Repositories
         /// </summary>
         /// <param name="entity">the entity to save</param>
         /// <returns>The saved entity</returns>
-        public T Save(T entity)
+        public void Save(T entity)
         {
             ActiveRecordMediator<T>.Save(entity);
-
-            return entity;
         }
 
         /// <summary>

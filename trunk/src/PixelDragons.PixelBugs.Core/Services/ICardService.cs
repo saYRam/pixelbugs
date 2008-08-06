@@ -1,6 +1,4 @@
-﻿using System;
-using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Messages;
+﻿using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {
@@ -28,15 +26,13 @@ namespace PixelDragons.PixelBugs.Core.Services
         /// <summary>
         /// Changes the status of the supplied card
         /// </summary>
-        /// <param name="cardId">The id of the card to update</param>
-        /// <param name="statusId">The id of the new status to apply to the card</param>
-        void ChangeCardStatus(Guid cardId, Guid statusId);
+        /// <param name="request">The request that contains the id of the card to update and the id of the new status</param>
+        void ChangeCardStatus(ChangeCardStatusRequest request);
 
         /// <summary>
-        /// Saves an card and records the user that saved it
+        /// Saves a card
         /// </summary>
-        /// <param name="card">The card to save</param>
-        /// <param name="userId">The id of the user that is saving this card</param>
-        void SaveCard(Card card, Guid userId);
+        /// <param name="request">The request that contains details of the card to save</param>
+        void SaveCard(SaveCardRequest request);
     }
 }

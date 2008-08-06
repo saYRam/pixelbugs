@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
-using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
+using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;
 
@@ -15,6 +15,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
     [TestFixture]
     public class When_creating_a_new_card : ControllerUnitTestBase
     {
+        private StubRepository stubery;
         private MockRepository mockery;
         private CardController controller;
         private ICardService cardService;
@@ -22,6 +23,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [SetUp]
         public void Setup()
         {
+            stubery = new StubRepository();
             mockery = new MockRepository();
             cardService = mockery.DynamicMock<ICardService>();
 
@@ -58,20 +60,16 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_save_the_new_card_and_redirect_to_the_card_wall()
         {
-            Card card = new Card();
-            Guid id = Guid.NewGuid();
-
-            UserPermissionsDTO user = new UserPermissionsDTO(id, null);
-            Context.CurrentUser = user;
+            CardDetailsDTO cardDetailsDTO = stubery.GetStub<CardDetailsDTO>();
 
             using (mockery.Record())
             {
-                Expect.Call(() => cardService.SaveCard(card, id));
+                Expect.Call(() => cardService.SaveCard(null)).IgnoreArguments();
             }
 
             using (mockery.Playback())
             {
-                controller.Create(card);
+                controller.Create(cardDetailsDTO);
             }
 
             Assert.That(Response.RedirectedTo, Is.EqualTo(@"/Card/Index.ashx"));
@@ -81,6 +79,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
     [TestFixture]
     public class When_editing_an_existing_card : ControllerUnitTestBase
     {
+        private StubRepository stubery;
         private MockRepository mockery;
         private CardController controller;
         private ICardService cardService;
@@ -88,6 +87,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [SetUp]
         public void Setup()
         {
+            stubery = new StubRepository();
             mockery = new MockRepository();
             cardService = mockery.DynamicMock<ICardService>();
 
@@ -174,23 +174,19 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_save_the_edited_card_and_redirect_to_the_card_wall()
         {
-            Guid id = Guid.NewGuid();
-            Card card = new Card {Id = Guid.NewGuid()};
+            CardDetailsDTO cardDetailsDTO = stubery.GetStub<CardDetailsDTO>();
             
-            UserPermissionsDTO user = new UserPermissionsDTO(id, null);
-            Context.CurrentUser = user;
-
             using (mockery.Record())
             {
-                Expect.Call(() => cardService.SaveCard(card, id));
+                Expect.Call(() => cardService.SaveCard(null)).IgnoreArguments();
             }
 
             using (mockery.Playback())
             {
-                controller.Update(card);
+                controller.Update(cardDetailsDTO);
             }
 
-            Assert.That(Response.RedirectedTo, Is.EqualTo(String.Format(@"/Card/Show.ashx?Id={0}", card.Id)));
+            Assert.That(Response.RedirectedTo, Is.EqualTo(String.Format(@"/Card/Show.ashx?Id={0}", cardDetailsDTO.Id)));
         }
 
         [Test]
@@ -203,7 +199,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 
             using (mockery.Record())
             {
-                Expect.Call(() => cardService.ChangeCardStatus(cardId, statusId));
+                Expect.Call(() => cardService.ChangeCardStatus(null)).IgnoreArguments();
             }
 
             using (mockery.Playback())

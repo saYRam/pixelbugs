@@ -15,7 +15,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
 
         private StubRepository stubery;
         private Card card;
-
+        
         [SetUp]
         public void Setup()
         {
@@ -48,9 +48,6 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
         private void AssertCardDetailsDTO(CardDetailsDTO dto)
         {
             Assert.That(dto.Id, Is.EqualTo(card.Id));
-            Assert.That(dto.CreatedDate, Is.EqualTo(card.CreatedDate));
-            Assert.That(dto.CreatedBy.Id, Is.EqualTo(card.CreatedBy.Id));
-            Assert.That(dto.CreatedBy.FullName, Is.EqualTo(card.CreatedBy.FullName));
             Assert.That(dto.Title, Is.EqualTo(card.Title));
             Assert.That(dto.Body, Is.EqualTo(card.Body));
             Assert.That(dto.Number, Is.EqualTo(card.Number));

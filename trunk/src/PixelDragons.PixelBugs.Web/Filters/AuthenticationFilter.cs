@@ -1,6 +1,5 @@
 ﻿using System;
 using Castle.MonoRail.Framework;
-using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Core.Exceptions;

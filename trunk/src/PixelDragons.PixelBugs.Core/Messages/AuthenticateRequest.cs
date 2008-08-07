@@ -11,11 +11,11 @@ namespace PixelDragons.PixelBugs.Core.Messages
         {
         }
 
-        public AuthenticateRequest(string userName, string password)
+        /*public AuthenticateRequest(string userName, string password)
         {
             UserName = userName;
             Password = password;
-        }
+        }*/
 
         public void Validate()
         {

@@ -6,18 +6,14 @@ namespace PixelDragons.PixelBugs.Core.Messages
 {
     public class ChangeCardStatusRequest : IRequest 
     {
-        public ChangeCardStatusRequest()
-        {
-        }
+        public Guid CardId { get; set; }
+        public Guid StatusId { get; set; }
 
         public ChangeCardStatusRequest(Guid cardId, Guid statusId)
         {
             CardId = cardId;
             StatusId = statusId;
         }
-
-        public Guid CardId { get; set; }
-        public Guid StatusId { get; set; }
 
         public void Validate()
         {

@@ -8,12 +8,14 @@ using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;
+using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
 {
     [TestFixture]
     public class When_trying_to_access_the_application_with_valid_credentials : ControllerUnitTestBase
     {
+        private StubRepository stubery;
         private MockRepository mockery;
         private SecurityController controller;
         private ISecurityService securityService;
@@ -22,6 +24,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [SetUp]
         public void Setup()
         {
+            stubery = new StubRepository();
             mockery = new MockRepository();
             securityService = mockery.DynamicMock<ISecurityService>();
             id = new Guid();    
@@ -41,7 +44,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_authenticate_the_user_set_a_cookie_with_a_security_token_and_redirect_to_the_card_wall()
         {
-            AuthenticateRequest request = new AuthenticateRequest("test.user", "test123");
+            AuthenticateRequest request = stubery.GetStub<AuthenticateRequest>();
             AuthenticateResponse response = new AuthenticateResponse(id);
 
             using (mockery.Record())
@@ -71,6 +74,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
     [TestFixture]
     public class When_trying_to_access_the_application_with_invalid_credentials : ControllerUnitTestBase
     {
+        private StubRepository stubery;
         private MockRepository mockery;
         private SecurityController controller;
         private ISecurityService securityService;
@@ -78,6 +82,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [SetUp]
         public void Setup()
         {
+            stubery = new StubRepository();
             mockery = new MockRepository();
             securityService = mockery.DynamicMock<ISecurityService>();
 
@@ -88,7 +93,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_clear_the_security_cookie_and_redirect_to_the_sign_in_view_with_an_error_message()
         {
-            AuthenticateRequest request = new AuthenticateRequest("invalid", "credentials");
+            AuthenticateRequest request = stubery.GetStub<AuthenticateRequest>();
 
             using (mockery.Record())
             {
@@ -116,7 +121,9 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Controllers
         [Test]
         public void Should_clear_the_security_cookie_and_redirect_to_the_sign_in_view_with_an_error_message_when_credentials_are_blank()
         {
-            AuthenticateRequest request = new AuthenticateRequest("", "");
+            AuthenticateRequest request = stubery.GetStub<AuthenticateRequest>();
+            request.UserName = "";
+            request.Password = "";
 
             using (mockery.Record())
             {

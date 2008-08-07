@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
+using PixelDragons.PixelBugs.Core.Messages;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Stubs
 {
@@ -55,6 +56,8 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Stubs
                                    Priority = GetStub<CardPriorityDTO>(),
                                    Type = GetStub<CardTypeDTO>()
                                });
+
+            repository.Add(new AuthenticateRequest{ UserName = "userName", Password = "password"});
         }
 
         public T GetStub<T>()

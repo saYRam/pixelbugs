@@ -7,6 +7,7 @@ using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 using Rhino.Mocks;
+using System;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
 {
@@ -69,6 +70,31 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
             }
             
             AssertCard(card);
+        }
+
+        [Test]
+        public void Should_map_from_a_single_instance_with_null_child_objects()
+        {
+            cardDetailsDTO.Owner.Id = Guid.Empty;
+            cardDetailsDTO.Status.Id = Guid.Empty;
+            cardDetailsDTO.Priority.Id = Guid.Empty;
+            cardDetailsDTO.Type.Id = Guid.Empty;
+
+            using (mockery.Record())
+            {
+                Expect.Call(cardRepository.FindById(cardDetailsDTO.Id)).Return(card);
+            }
+
+            using (mockery.Playback())
+            {
+                card = mapper.MapFrom(cardDetailsDTO);
+            }
+
+            Assert.That(card.Id, Is.EqualTo(cardDetailsDTO.Id));
+            Assert.That(card.Title, Is.EqualTo(cardDetailsDTO.Title));
+            Assert.That(card.Body, Is.EqualTo(cardDetailsDTO.Body));
+            Assert.That(card.Number, Is.EqualTo(cardDetailsDTO.Number));
+            Assert.That(card.Points, Is.EqualTo(cardDetailsDTO.Points));
         }
 
         [Test]

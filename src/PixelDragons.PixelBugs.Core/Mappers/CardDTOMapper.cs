@@ -9,7 +9,16 @@ namespace PixelDragons.PixelBugs.Core.Mappers
     {
         public CardDTO MapFrom(Card card)
         {
-            return new CardDTO(card.Id, card.Title, card.Number, card.Status.Id, card.Type.Colour, card.Priority.Colour, card.Priority.Name);
+            return new CardDTO
+                {
+                    Id = card.Id, 
+                    Title = card.Title, 
+                    Number = card.Number, 
+                    StatusId = card.Status.Id,
+                    TypeColour = card.Type.Colour,
+                    PriorityColour = card.Priority.Colour,
+                    PriorityName = card.Priority.Name
+                };
         }
 
         public IEnumerable<CardDTO> MapCollection(Card[] cards)

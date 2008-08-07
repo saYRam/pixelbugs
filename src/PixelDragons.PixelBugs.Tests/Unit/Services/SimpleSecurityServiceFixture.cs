@@ -10,12 +10,14 @@ using PixelDragons.PixelBugs.Core.Mappers;
 using PixelDragons.PixelBugs.Core.Messages;
 using PixelDragons.PixelBugs.Core.Services;
 using Rhino.Mocks;
+using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Services
 {
     [TestFixture]
     public class When_authenticating_a_user
     {
+        private StubRepository stubery;
         private MockRepository mockery;
         private SimpleSecurityService service;
         private IRepository<User> userRepositoty;
@@ -26,6 +28,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         public void TestSetup()
         {
             mockery = new MockRepository();
+            stubery = new StubRepository();
 
             userRepositoty = mockery.DynamicMock<IRepository<User>>();
             query = mockery.DynamicMock<IQueryBuilder>();
@@ -49,7 +52,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Playback())
             {
-                response = service.Authenticate(new AuthenticateRequest("userName", "password"));
+                response = service.Authenticate(stubery.GetStub<AuthenticateRequest>());
             }
 
             Assert.That(response.Id, Is.EqualTo(users[0].Id));
@@ -67,7 +70,7 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
 
             using (mockery.Playback())
             {
-                service.Authenticate(new AuthenticateRequest("invalid", "credentials"));
+                service.Authenticate(stubery.GetStub<AuthenticateRequest>());
             }
         }
 
@@ -75,7 +78,11 @@ namespace PixelDragons.PixelBugs.Tests.Unit.Services
         [ExpectedException(typeof(InvalidRequestException))]
         public void Should_throw_an_exception_if_request_data_is_invalid()
         {
-            service.Authenticate(new AuthenticateRequest(null, null));
+            AuthenticateRequest request = stubery.GetStub<AuthenticateRequest>();
+            request.UserName = null;
+            request.Password = null;
+
+            service.Authenticate(request);
         }
 
     }

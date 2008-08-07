@@ -8,7 +8,7 @@ namespace PixelDragons.PixelBugs.Core.DTOs
         {
         }
 
-        public CardDTO(Guid id, string title, int number, Guid statusId, string typeColour, string priorityColour, string priorityName)
+        /*public CardDTO(Guid id, string title, int number, Guid statusId, string typeColour, string priorityColour, string priorityName)
         {
             Id = id;
             Title = title;
@@ -17,7 +17,7 @@ namespace PixelDragons.PixelBugs.Core.DTOs
             TypeColour = typeColour;
             PriorityColour = priorityColour;
             PriorityName = priorityName;
-        }
+        }*/
 
         public Guid Id { get; set; }
         public string Title { get; set; }

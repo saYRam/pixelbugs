@@ -1,6 +1,6 @@
 using System;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.Messages.Impl
 {
     public class AuthenticateResponse     
     {

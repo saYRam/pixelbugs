@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Stubs
 {

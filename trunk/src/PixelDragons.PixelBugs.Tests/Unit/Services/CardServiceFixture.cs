@@ -7,8 +7,8 @@ using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Mappers;
-using PixelDragons.PixelBugs.Core.Messages;
-using PixelDragons.PixelBugs.Core.Services;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
+using PixelDragons.PixelBugs.Core.Services.Impl;
 using Rhino.Mocks;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Services

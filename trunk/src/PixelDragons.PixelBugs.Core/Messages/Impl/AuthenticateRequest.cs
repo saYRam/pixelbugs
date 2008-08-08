@@ -1,21 +1,11 @@
 using PixelDragons.PixelBugs.Core.Exceptions;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.Messages.Impl
 {
     public class AuthenticateRequest : IRequest
     {
         public string Password { get; set; }
         public string UserName { get; set; }
-
-        public AuthenticateRequest()
-        {
-        }
-
-        /*public AuthenticateRequest(string userName, string password)
-        {
-            UserName = userName;
-            Password = password;
-        }*/
 
         public void Validate()
         {

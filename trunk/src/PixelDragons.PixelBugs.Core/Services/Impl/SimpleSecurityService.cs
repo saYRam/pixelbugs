@@ -5,10 +5,10 @@ using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Mappers;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 
-namespace PixelDragons.PixelBugs.Core.Services
+namespace PixelDragons.PixelBugs.Core.Services.Impl
 {
     public class SimpleSecurityService : ISecurityService
     {

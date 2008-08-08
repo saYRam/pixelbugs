@@ -2,7 +2,7 @@ using System;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.Messages.Impl
 {
     public class RetrieveUserPermissionsRequest : IRequest
     {

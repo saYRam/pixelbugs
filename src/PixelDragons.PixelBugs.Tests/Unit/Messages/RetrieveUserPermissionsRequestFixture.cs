@@ -1,8 +1,8 @@
 using System;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
 using NUnit.Framework;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Messages
 {

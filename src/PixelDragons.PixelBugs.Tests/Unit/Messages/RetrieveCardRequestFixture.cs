@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Messages
 {

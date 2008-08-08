@@ -1,7 +1,7 @@
 using NHibernate.Criterion;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 
 namespace PixelDragons.PixelBugs.Core.Queries.Users
 {

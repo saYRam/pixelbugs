@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.TestSupport;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Core.Services;
 using PixelDragons.PixelBugs.Web.Controllers;
 using Rhino.Mocks;

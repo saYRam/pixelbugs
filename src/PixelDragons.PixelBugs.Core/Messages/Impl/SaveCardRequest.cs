@@ -2,7 +2,7 @@ using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
 using PixelDragons.PixelBugs.Core.Messages;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.Messages.Impl
 {
     public class SaveCardRequest : IRequest
     {

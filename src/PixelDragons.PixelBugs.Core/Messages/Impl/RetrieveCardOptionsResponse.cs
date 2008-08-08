@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.DTOs;
 
-namespace PixelDragons.PixelBugs.Core.Messages
+namespace PixelDragons.PixelBugs.Core.Messages.Impl
 {
     public class RetrieveCardOptionsResponse
     {

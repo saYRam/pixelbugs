@@ -1,7 +1,7 @@
 ﻿using System.Security;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 
 namespace PixelDragons.PixelBugs.Core.Services
 {

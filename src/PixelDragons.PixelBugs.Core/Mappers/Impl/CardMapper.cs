@@ -5,7 +5,7 @@ using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
 
-namespace PixelDragons.PixelBugs.Core.Mappers
+namespace PixelDragons.PixelBugs.Core.Mappers.Impl
 {
     public class CardMapper : ICardMapper
     {

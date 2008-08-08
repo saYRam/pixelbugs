@@ -5,6 +5,7 @@ using PixelDragons.PixelBugs.Core.Domain;
 using System.Collections.Generic;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
+using PixelDragons.PixelBugs.Core.Mappers.Impl;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Mappers
 {

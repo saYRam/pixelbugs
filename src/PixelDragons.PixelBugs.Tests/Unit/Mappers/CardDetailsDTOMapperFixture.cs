@@ -4,6 +4,7 @@ using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
+using PixelDragons.PixelBugs.Core.Mappers.Impl;
 using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Mappers

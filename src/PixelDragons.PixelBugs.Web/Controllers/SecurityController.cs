@@ -3,7 +3,7 @@ using System.Security;
 using System.Web;
 using Castle.MonoRail.Framework;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Core.Services;
 
 namespace PixelDragons.PixelBugs.Web.Controllers

@@ -4,7 +4,7 @@ using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
-using PixelDragons.PixelBugs.Core.Mappers;
+using PixelDragons.PixelBugs.Core.Mappers.Impl;
 using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 using Rhino.Mocks;
 using System;

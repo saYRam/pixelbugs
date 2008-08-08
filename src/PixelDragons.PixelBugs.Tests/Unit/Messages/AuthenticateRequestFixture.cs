@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.PixelBugs.Core.Exceptions;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Tests.Unit.Stubs;
 
 namespace PixelDragons.PixelBugs.Tests.Unit.Messages

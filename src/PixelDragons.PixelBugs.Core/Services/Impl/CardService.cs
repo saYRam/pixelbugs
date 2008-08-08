@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Castle.Services.Transaction;
 using PixelDragons.Commons.Repositories;
 using PixelDragons.PixelBugs.Core.Domain;
 using PixelDragons.PixelBugs.Core.DTOs;
 using PixelDragons.PixelBugs.Core.Mappers;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Core.Queries.CardPriorities;
 using PixelDragons.PixelBugs.Core.Queries.Cards;
 using PixelDragons.PixelBugs.Core.Queries.CardStatuses;
 using PixelDragons.PixelBugs.Core.Queries.CardTypes;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 
-namespace PixelDragons.PixelBugs.Core.Services
+namespace PixelDragons.PixelBugs.Core.Services.Impl
 {
     [Transactional]
     public class CardService : ICardService

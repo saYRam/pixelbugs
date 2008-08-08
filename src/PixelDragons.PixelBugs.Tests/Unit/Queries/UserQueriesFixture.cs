@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using PixelDragons.Commons.Repositories;
-using PixelDragons.PixelBugs.Core.Messages;
+using PixelDragons.PixelBugs.Core.Messages.Impl;
 using PixelDragons.PixelBugs.Core.Queries.Users;
 using Rhino.Mocks;
 using PixelDragons.PixelBugs.Tests.Unit.Stubs;

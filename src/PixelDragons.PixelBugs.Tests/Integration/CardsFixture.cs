@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using PixelDragons.PixelBugs.Tests.Integration;
+using PixelDragons.PixelBugs.Tests.Integration.Base;
 using WatiN.Core;
 
 namespace PixelDragons.PixelBugs.Tests.Integration

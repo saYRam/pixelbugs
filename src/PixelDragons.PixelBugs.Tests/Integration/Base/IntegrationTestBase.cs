@@ -5,7 +5,7 @@ using NUnit.Framework;
 using PixelDragons.Commons.TestSupport;
 using WatiN.Core;
 
-namespace PixelDragons.PixelBugs.Tests.Integration
+namespace PixelDragons.PixelBugs.Tests.Integration.Base
 {
     [TestFixture]
     public abstract class IntegrationTestBase : TestFixtureBase

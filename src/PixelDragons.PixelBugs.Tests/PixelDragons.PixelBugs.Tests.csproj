@@ -120,7 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\IntegrationTestBase.cs" />
+    <Compile Include="Integration\Base\IntegrationTestBase.cs" />
     <Compile Include="Integration\CardsFixture.cs" />
     <Compile Include="Integration\SecurityFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

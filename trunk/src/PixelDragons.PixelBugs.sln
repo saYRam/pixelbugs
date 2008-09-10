@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.PixelBugs.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PixelDragons.Commons", "PixelDragons.Commons\PixelDragons.Commons.csproj", "{F14F3D16-E36B-405F-A908-F1106BCF38F2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B324FE48-6FD2-4D7B-B89A-058C7B9445D9}"
+	ProjectSection(SolutionItems) = preProject
+		..\common-project.xml = ..\common-project.xml
+		..\common.xml = ..\common.xml
+		..\default.build = ..\default.build
+		..\How to Build.txt = ..\How to Build.txt
+		..\sandcastle_docs.shfb = ..\sandcastle_docs.shfb
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="PixelDragons.PixelBugs.Web"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+
+	<property name="root.dir" value="../../" />
+	<include buildfile="${root.dir}/common-project.xml" />
+
+	<target name="init" depends="common.init">
+		<assemblyfileset id="project.references" basedir="${build.dir}">
+			<include name="Castle.ActiveRecord.dll" />
+			<include name="Castle.Components.Common.TemplateEngine.dll" />
+			<include name="Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.dll" />
+			<include name="Castle.Components.Validator.dll" />
+			<include name="Castle.Core.dll" />
+			<include name="Castle.DynamicProxy.dll" />
+			<include name="Castle.DynamicProxy2.dll" />
+			<include name="Castle.Facilities.ActiveRecordIntegration.dll" />
+			<include name="Castle.Facilities.AutomaticTransactionManagement.dll" />
+			<include name="Castle.Facilities.Logging.dll" />
+			<include name="Castle.MicroKernel.dll" />
+			<include name="Castle.MonoRail.ActiveRecordSupport.dll" />
+			<include name="Castle.MonoRail.Framework.dll" />
+			<include name="Castle.MonoRail.Framework.Views.NVelocity.dll" />
+			<include name="Castle.MonoRail.JSONSupport.dll" />
+			<include name="Castle.MonoRail.WindsorExtension.dll" />
+			<include name="Castle.Services.Logging.Log4netIntegration.dll" />
+			<include name="Castle.Services.Transaction.dll" />
+			<include name="Castle.Windsor.dll" />
+			<include name="Iesi.Collections.dll" />
+			<include name="log4net.dll" />
+			<include name="Newtonsoft.Json.dll" />
+			<include name="NHibernate.dll" />
+			<include name="NVelocity.dll" />
+			<include name="PixelDragons.Commons.dll" />
+			<include name="PixelDragons.PixelBugs.Core.dll" />
+		</assemblyfileset>
+	</target>
+
+	<target name="generate-assemblyinfo" depends="init common.generate-assemblyinfo" />
+	<target name="build" description="Build ${project::get-name()}" depends="generate-assemblyinfo common.compile-dll" />
+
+</project>

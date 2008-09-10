@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="PixelDragons.PixelBugs.Core"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+
+	<property name="root.dir" value="../../" />
+	<include buildfile="${root.dir}/common-project.xml" />
+
+	<target name="init" depends="common.init">
+		<assemblyfileset id="project.references" basedir="${build.dir}">
+			<include name="Castle.ActiveRecord.dll" />
+			<include name="Castle.Services.Transaction.dll" />
+			<include name="NHibernate.dll" />
+			<include name="PixelDragons.Commons.dll" />
+		</assemblyfileset>
+	</target>
+
+	<target name="generate-assemblyinfo" depends="init common.generate-assemblyinfo" />
+	<target name="build" description="Build ${project::get-name()}" depends="generate-assemblyinfo common.compile-dll" />
+
+</project>

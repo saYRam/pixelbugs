@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="PixelDragons.PixelBugs.Tests"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+
+	<property name="root.dir" value="../../" />
+	<include buildfile="${root.dir}/common-project.xml" />
+
+	<target name="init" depends="common.init">
+		<assemblyfileset id="project.references" basedir="${build.dir}">
+			<include name="Castle.Components.Validator.dll" />
+			<include name="Castle.Core.dll" />
+			<include name="Castle.DynamicProxy2.dll" />
+			<include name="Castle.MicroKernel.dll" />
+			<include name="Castle.MonoRail.ActiveRecordSupport.dll" />
+			<include name="Castle.MonoRail.Framework.dll" />
+			<include name="Castle.MonoRail.Framework.Views.NVelocity.dll" />
+			<include name="Castle.MonoRail.TestSupport.dll" />
+			<include name="Castle.MonoRail.WindsorExtension.dll" />
+			<include name="Castle.Windsor.dll" />
+			<include name="Interop.SHDocVw.dll" />
+			<include name="NHibernate.dll" />
+			<include name="nunit.framework.dll" />
+			<include name="NVelocity.dll" />
+			<include name="PixelDragons.Commons.dll" />
+			<include name="PixelDragons.PixelBugs.Core.dll" />
+			<include name="PixelDragons.PixelBugs.Web.dll" />
+			<include name="Rhino.Mocks.dll" />
+			<include name="WatiN.Core.dll" />
+			<include name="WebDev.WebHost.dll" />
+		</assemblyfileset>
+	</target>
+
+	<!-- common.run-tests -->
+	<target name="generate-assemblyinfo" depends="init common.generate-assemblyinfo" />
+	<target name="build" depends="generate-assemblyinfo common.compile-tests configure-tests common.run-tests common.run-tests-with-coverage" description="Runs the tests" />
+
+	<target name="configure-tests">
+		<property name="arconfig" value="${src.dir}/arconfig.xml" />
+		<if test="${file::exists(arconfig)}">
+			<copy file="${arconfig}" tofile="${build.dir}/arconfig.xml"	/>
+		</if>
+	</target>
+
+</project>

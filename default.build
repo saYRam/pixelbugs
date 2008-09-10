@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="PixelBugs"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+	
+	<property name="product.name" value="PixelBugs" />
+	<property name="root.dir" value="." />
+	<include buildfile="common.xml" />
+
+	<target name="paths" description="Dumps the paths" depends="common.init">
+		<echo message="### Paths ###" />
+		<echo message="root.dir: ${root.dir}" />
+		<echo message="src.dir: ${src.dir}" />
+		<echo message="lib.dir: ${lib.dir}" />
+		<echo message="build.base.dir: ${build.base.dir}" />
+		<echo message="build.dir: ${build.dir}" />
+	</target>
+	
+	<fileset id="buildfiles.all">
+		<!-- Files have to be in dependency order -->
+		<include name="src/PixelDragons.Commons/default.build" />
+		<include name="src/PixelDragons.PixelBugs.Core/default.build" />
+		<include name="src/PixelDragons.PixelBugs.Web/default.build" />
+
+		<!-- Testing projects -->
+		<include name="src/PixelDragons.PixelBugs.Tests/default.build" if="${common.testrunner.enabled}"/>
+	</fileset>
+
+	<fileset id="buildfiles.deploy">
+		<include name="src/PixelDragons.PixelBugs.Web/default.build" />
+	</fileset>
+
+	<target name="debug" description="Selects the debug build configuration">
+		<property name="project.config" value="debug" />
+	</target>
+
+	<target name="deploy" depends="build" description="Deploys the website to the deployment directory">
+		<nant target="deploy">
+			<buildfiles refid="buildfiles.deploy" />
+		</nant>
+		<copy todir="${build.dir}">
+			<fileset>
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="release" description="Selects the release build configuration">
+		<property name="project.config" value="release" />
+	</target>
+
+	<target name="quick" description="Speed up the build by skipping tests">
+		<property name="common.testrunner.enabled" value="false" />
+	</target>
+
+	<target name="build"
+		depends="init copy-referenced-assemblies"
+		description="Builds in the current configuration">
+
+		<nant target="build">
+			<buildfiles refid="buildfiles.all" />
+		</nant>
+	</target>
+
+	<target name="rebuild"
+		depends="init recreate-build-directory build"
+		description="Rebuilds in the current configuration" />
+
+	<target name="init" depends="common.init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${testresults.dir}" />
+		
+		<call target="common.find-svninfo" />
+		<call target="common.find-nunit" if="${common.testrunner.enabled}" />
+	</target>
+	
+	<target name="clean" description="Deletes current build artifacts" depends="common.init">
+		<delete dir="${build.dir}" failonerror="false" />
+		<delete>
+			<fileset basedir="${build.base.dir}">
+				<include name="*.*" />
+			</fileset>
+		</delete>
+	</target>
+		
+	<target name="clean-vs" description="Delete Visual Studio artifacts" depends="common.init">
+		<!-- NB - this target will fail if you have a solution open in Visual Studio -->
+		<echo message="Gathering files for removal..." />
+		<foreach item="File" property="filename">
+			<in>
+				<items basedir=".">
+					<include name="**/*.suo" />
+					<include name="*/*.csproj.user" />
+				</items>
+			</in>
+			<do>
+				<delete file="${filename}" />
+			</do>
+		</foreach>
+		<echo message="Gathering folders for removal..." />
+		<foreach item="Folder" property="foldername">
+			<in>
+				<items basedir=".">
+					<include name="**/obj" />
+					<include name="**/_ReSharper*" />
+				</items>
+			</in>
+			<do>
+				<delete dir="${foldername}" failonerror="false" />
+			</do>
+		</foreach>
+	</target>
+
+	<target name="cleanall" description="Deletes all build artifacts" depends="common.init">
+		<echo message="Deleting all builds from all configurations" />
+		<delete dir="${build.base.dir}" failonerror="false" />
+		<call target="clean-vs" />
+	</target>
+	
+	<target name="recreate-build-directory">
+		<echo message="Current Directory is ${project::get-base-directory()}" />
+		<echo message="Build Directory is ${build.dir}" />
+
+		<!-- Prepare build directory -->
+		<delete dir="${build.dir}" failonerror="false" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${testresults.dir}" />
+		<call target="copy-referenced-assemblies" />
+		<property name="build.rebuild" value="true" />
+	</target>
+
+	<target name="copy-referenced-assemblies">
+		<!-- Copy framework-neutral libraries -->
+		<copy todir="${build.dir}" overwrite="true" >
+			<fileset basedir="${lib.dir}">
+				<include name="*.dll" />
+				<include name="*.xml" />
+				<include name="*.license.txt" />
+			</fileset>
+		</copy>
+		
+		<!-- Copy family-specific libraries installed on the system-->
+		<copy file="${path::combine(nant::get-base-directory(), 'NAnt.Core.dll')}" todir="${lib.family.dir}" />
+
+		<!-- Copy family-specific libraries -->
+		<!-- 
+			The build of log4net works just fine for all versions of .NET.
+			When they do get framework specific extensions then we
+			can just move them to the framework specific section
+		-->
+		<copy todir="${build.dir}" overwrite="true">
+			<fileset basedir="${lib.family.dir}">
+				<include name="*.dll" />
+				<include name="*.xml" />
+				<include name="*.license.txt" />
+			</fileset>
+		</copy>
+
+		<!-- Copy framework-specific libraries -->
+		<copy todir="${build.dir}" overwrite="true">
+			<fileset basedir="${lib.framework.dir}">
+				<include name="*.dll" />
+				<include name="*.xml" />
+				<include name="*.license.txt" />
+			</fileset>
+		</copy>
+
+		<!-- Copy framework-specific extension libraries -->
+		<copy todir="${build.dir}" overwrite="true" 
+            if="${lib.framework.dir != lib.framework.ext.dir}">
+			<fileset basedir="${lib.framework.ext.dir}">
+				<include name="*.dll" />
+				<include name="*.xml" />
+				<include name="*.license.txt" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="generate-assemblyinfo"
+		depends="init"
+		description="Generate AssemblyInfo files">
+
+		<property name="visual-studio" value="true" />
+		<nant target="generate-assemblyinfo">
+			<buildfiles refid="buildfiles.all" />
+		</nant>
+
+	</target>
+
+	<target name="build-all-frameworks" depends="init">
+		<!-- Save the current framework -->
+		<property name="current.framework.saved" value="${nant.settings.currentframework}" />
+
+		<!-- Execute build for each framework -->
+		<foreach item="String" delim=" " property="framework" in="net-1.1 net-2.0">
+			<call target="set-${framework}-framework-configuration" />
+			<call target="build" />
+		</foreach>
+
+		<!-- Reset the current framework to the saved value -->
+		<call target="set-${current.framework.saved}-framework-configuration" />
+	</target>
+
+	<!-- Packaging related tasks -->
+
+	<target name="zip-deploy" depends="deploy">
+		<property name="build.zip.dir" value="${build.dir}" overwrite="false" />
+		<property name="build.zip.file" value="${product.name}-${framework::get-target-framework()}-${project.config}-${datetime::get-year(datetime::now())}-${datetime::get-month(datetime::now())}-${datetime::get-day(datetime::now())} (r${svn.revision}).zip" overwrite="false" dynamic="true" />
+		<property name="build.zip.fullpath" value="${build.zip.dir}/${build.zip.file}" readonly="true" />
+
+		<!-- Create the master zip file with all files included -->
+		<zip zipfile="${build.zip.fullpath}">
+			<fileset basedir="${build.dir}/deploy">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+	</target>
+	
+	<description>Documentation generation.</description>
+	<property name="outputDocs.file" value="${product.name}"/>
+	
+	<description>Generates documentation with default properties.</description>
+	<target name="releaseDocs" depends="init,cleanup">
+		<property name="sanddoc.visibleitems" value="Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected" />
+		<property name="sanddoc.missingtags" value="Summary, Parameter, AutoDocumentCtors, Namespace" />
+		<call target="generateReleaseDocs"/>
+	</target>
+	
+	<description>Generates documentation for developers, with all missing information indicated and private members visible.</description>
+	<target name="devDocs" depends="init,cleanup">
+		<property name="sanddoc.visibleitems" value="Attributes, InheritedMembers, InheritedFrameworkMembers, Privates, Protected, SealedProtected" />
+		<property name="sanddoc.missingtags" value="Summary, Parameter, Returns, Value, AutoDocumentCtors, Namespace" />
+		<property name="outputDocs.file" value="${product.name}-Development-Docs"/>
+		<call target="generateReleaseDocs"/>
+	</target>
+	
+	<description>Generates documentation for release.</description>
+	<target name="generateReleaseDocs">
+		<property name="root.dir" value="." />
+		<exec program="SandcastleBuilderConsole" basedir="${shfb.dir}" commandline='sandcastle_docs.shfb'>
+			<arg value="-FrameworkVersion=${framework::get-clr-version(framework::get-target-framework())}" />
+			<arg value="-SandcastlePath=${sandcastle.dir}" />
+			<arg value="-HtmlHelp1xCompilerPath=${htmlhelp1x.dir}" />
+			<arg value="-OutputPath=${docs.dir}" />
+			<arg value="-HtmlHelpName=${outputDocs.file}" />
+			<arg value="-HelpFileFormat=HtmlHelp1x" />
+			<arg value="-VisibleItems=${sanddoc.visibleitems}" />
+			<arg value="-MissingTags=${sanddoc.missingtags}" />
+		</exec>
+	</target>
+	
+	<description>Cleans up prior to documentation generation.</description>
+	<target name="cleanup">
+		<delete>
+			<fileset>
+				<include name="${docs.dir}/**"/>
+				<exclude name="**/*.chm"/>
+			</fileset>
+		</delete>
+	</target>
+
+</project>

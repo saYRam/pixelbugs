@@ -8,9 +8,26 @@ using WatiN.Core;
 namespace PixelDragons.PixelBugs.Tests.Integration.Base
 {
     [TestFixture]
-    public abstract class IntegrationTestBase : TestFixtureBase
+    public abstract class IntegrationTestBase
     {
         private Server webServer;
+        protected string server;
+        protected int port;
+        protected string extension;
+        protected string physicalPath;
+
+        protected IntegrationTestBase()
+        {
+            server = ConfigurationManager.AppSettings["server"] ?? "localhost";
+            extension = ConfigurationManager.AppSettings["extension"] ?? "rails";
+            physicalPath = ConfigurationManager.AppSettings["physicalPath"] ?? "";
+            port = 80;
+            
+            if(ConfigurationManager.AppSettings["port"] != null)
+            {
+                port = int.Parse(ConfigurationManager.AppSettings["port"]);
+            }
+        }
 
         [TestFixtureSetUp]
         public void FixtureSetUp()    

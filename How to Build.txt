@@ -1,0 +1,29 @@
+You will need:
+	nant beta: 0.86
+	empty database on localhost called pixelbugs_testing (for unit tests)
+
+When you first check out the solution run a clean build by executing "nant" in 
+the src directory. This will create the AssemblyInfo.cs files with the correct 
+version number.
+
+To disable tests: 
+	nant -D:common.testrunner.enabled=false
+  
+To specify Nunit categories to exclude (case-sensitive): 
+	nant -D:common.testrunner.categoryexclusions=category names
+
+To perform a release build
+	nant -D:project.config=release
+  
+To perform a clean
+	nant clean
+  
+To perform a rebuild
+	nant rebuild
+  
+To generate documentation
+	nant releaseDocs
+	
+You can combine targets too. To rebuild, run tests with coverage report (excluding Integration tests) and generate documentation:
+	nant -D:common.testrunner.categoryexclusions=Integration rebuild releaseDocs
+ 

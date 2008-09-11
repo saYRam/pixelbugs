@@ -11,6 +11,6 @@ namespace PixelDragons.Commons.Repositories
         /// Builds a <see cref="DetachedCriteria"/> from the available data for this query
         /// </summary>
         /// <returns>Returns a valid <see cref="DetachedCriteria"/></returns>
-        DetachedCriteria BuildQuery();
+        DetachedCriteria BuildQuery();  //Would be nice to refactor this to return a linq query that can be executed by the repository (NHibernate.Linq/Linq2Sql/ActiveRecord.Linq etc)
     }
 }
